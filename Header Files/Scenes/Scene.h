@@ -2,16 +2,18 @@
 
 #include "IScene.h"
 #include <glm/glm.hpp>
+#include <memory>
 
 using namespace glm;
 using namespace std;
 
 class Camera;
+class Gui;
 
 class Scene : public IScene
 {
 public:
-	Scene();
+	Scene(const shared_ptr<fvec3> clearColor);
 	~Scene() = default;
 
 	void updateGameObjects(const float deltaTime) override;
@@ -19,9 +21,6 @@ public:
 
 private:
 	unique_ptr<Camera> camera;
-	// Cube *cube;
-	// IGui *gui;
-	// ivec2 windowSize;
-
-	void renderGui();
+	// unique_ptr<Cube> cube;
+	unique_ptr<Gui> gui;
 };

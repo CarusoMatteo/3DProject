@@ -9,7 +9,7 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const string windowTitle)
 {
 	this->clearColor = clearColor;
 	Window::I();
-	this->scene = unique_ptr<Scene>(new Scene());
+	this->scene = unique_ptr<Scene>(new Scene(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)

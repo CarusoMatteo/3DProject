@@ -1,15 +1,8 @@
 #pragma once
 #include "IGameObject.h"
-#include <memory>
 
 using namespace std;
 
-class Mesh;
-
-/**
- * @brief Represents a background gameObject in the game.
- * Doesn't have a Bounding Box.
- */
 class Camera : public IGameObject
 {
 public:
@@ -20,5 +13,5 @@ public:
 	void render() override;
 
 private:
-	unique_ptr<Mesh> mesh;
+	// unique_ptr<Mesh> mesh;
 };

@@ -11,13 +11,15 @@ using namespace glm;
 class Gui : public IGui
 {
 public:
-	Gui(const fvec3 *clearColorRef);
+	Gui(const shared_ptr<fvec3> clearColor);
 
 	void drawGui() override;
-	const fvec3 *getClearColorRef() override;
+	const shared_ptr<fvec3> getClearColor() override;
 
 private:
-	const fvec3 *clearColorRef;
+	const fvec2 settingsWindowPosition = fvec2(10, 10);
 
-	void settingsWindow(const fvec2 position);
+	shared_ptr<fvec3> clearColor;
+
+	void settingsWindow();
 };

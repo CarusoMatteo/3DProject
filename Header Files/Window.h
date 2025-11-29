@@ -31,6 +31,7 @@ private:
 
 	Window();
 
+	// Can't be smart pointer.
 	GLFWwindow *window;
 
 	void initializeWindow();

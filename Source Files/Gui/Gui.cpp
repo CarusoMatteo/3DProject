@@ -3,10 +3,14 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
+#include <memory>
 
-Gui::Gui(const fvec3 *clearColorRef) : IGui()
+using namespace glm;
+using namespace std;
+
+Gui::Gui(const shared_ptr<fvec3> clearColor) : IGui()
 {
-	this->clearColorRef = clearColorRef;
+	this->clearColor = clearColor;
 }
 
 void Gui::drawGui()
@@ -20,7 +24,7 @@ void Gui::drawGui()
 	// Disables the ini file saving/loading.
 	ImGui::GetIO().IniFilename = nullptr;
 
-	settingsWindow(fvec2(10, 10));
+	settingsWindow();
 
 	// Ends the ImGui frame declaration.
 	ImGui::End();
@@ -29,23 +33,24 @@ void Gui::drawGui()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-const fvec3 *Gui::getClearColorRef()
+const shared_ptr<fvec3> Gui::getClearColor()
 {
-	return this->clearColorRef;
+	return this->clearColor;
 }
 
-void Gui::settingsWindow(const fvec2 position)
+void Gui::settingsWindow()
 {
-	dvec2 *mousePosition = InputEvents::getCursorPosition();
-
 	// Sets the position for the next window.
-	ImGui::SetNextWindowPos(ImVec2(position.x, position.y));
+	ImGui::SetNextWindowPos(ImVec2(this->settingsWindowPosition.x, this->settingsWindowPosition.y));
 
 	ImGui::Begin("Impostazioni", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
 
-	ImGui::ColorEdit3("Colore di Sfondo", (float *)this->clearColorRef);
-	ImGui::Text("Coordinate Mouse relative alla finestra GLFW: (%.1f, %.1f)", mousePosition->x, mousePosition->y);
+	ImGui::ColorEdit3("Colore di Sfondo", (float *)this->clearColor.get());
+
+	// TODO:
+	// ImGui::Text("Coordinate Mouse relative alla finestra GLFW: (%.1f, %.1f)", mousePosition->x, mousePosition->y);
 	// ImGui::Checkbox("Wireframe", Mesh::getIsWireframeRef());
 	// ImGui::Checkbox("Bounding Box", MeshBB::shouldDrawBoundingBoxRef());
+
 	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
 }

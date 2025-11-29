@@ -6,10 +6,6 @@ using namespace std;
 
 class Mesh;
 
-/**
- * @brief Represents a background gameObject in the game.
- * Doesn't have a Bounding Box.
- */
 class Cube : public IGameObject
 {
 public:
