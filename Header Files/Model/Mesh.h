@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <string>
+#include <vector>
 
 using namespace glm;
 using namespace std;

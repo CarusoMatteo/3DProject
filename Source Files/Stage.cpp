@@ -24,8 +24,8 @@ void Stage::renderScene() const
 
 void Stage::drawClearColor() const
 {
-	glClearColor(this->clearColor.get()->x, this->clearColor.get()->y, this->clearColor.get()->z, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(this->clearColor.get()->r, this->clearColor.get()->g, this->clearColor.get()->b, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 bool Stage::shouldWindowClose() const

@@ -1,16 +1,14 @@
 #pragma once
 
-#include <string>
-#include <memory>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <GLFW/glfw3.h>
-#include <ImGui/imgui_impl_glfw.h>
-#include <ImGui/imgui_impl_opengl3.h>
-#include <ImGui/imgui.h>
-#include <GLFW/glfw3.h>
+#include <memory>
+#include <string>
 
 using namespace glm;
 using namespace std;
+
+struct ProjectionData;
 
 class Window
 {
@@ -23,11 +21,16 @@ public:
 	void swapBuffers();
 	void pollEvents();
 	ivec2 getSize();
+	ProjectionData makeProjectionData();
 
 private:
+	static unique_ptr<Window> instance;
+
 	const string windowTitle = "Progetto 3D";
 	const fvec2 monitorPercentageSize = fvec2(0.8f);
-	static unique_ptr<Window> instance;
+	const float fovY = 45.0f;
+	const float nearPlane = 0.1f;
+	const float farPlane = 2000.0f;
 
 	Window();
 
@@ -38,5 +41,5 @@ private:
 	void initInputEvents();
 	void initializeGui();
 	void initOpenGL();
-	static fmat4 createProjectionMatrix(int windowWidth, int windowHeight);
+	fmat4 makeProjectionMatrix();
 };

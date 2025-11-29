@@ -1,3 +1,4 @@
+#include "../Header Files/ProjectionData.h"
 #include "../Header Files/Window.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -164,13 +165,22 @@ void Window::initOpenGL()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-fmat4 Window::createProjectionMatrix(int windowWidth, int windowHeight)
+fmat4 Window::makeProjectionMatrix()
 {
 	// TODO: find a better place to put the camera parameters
 	const float fovYDegrees = 45.0f;
-	const float aspect = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+	const float aspect = static_cast<float>(this->getSize().x) / static_cast<float>(this->getSize().y);
 	const float near_plane = 0.1f;
 	const float far_plane = 2000.0f;
 
 	return perspective(radians(fovYDegrees), aspect, near_plane, far_plane);
+}
+
+ProjectionData Window::makeProjectionData()
+{
+	return ProjectionData{
+		this->fovY,
+		static_cast<float>(this->getSize().x) / static_cast<float>(this->getSize().y),
+		this->nearPlane,
+		this->farPlane};
 }

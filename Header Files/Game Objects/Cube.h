@@ -1,4 +1,5 @@
 #pragma once
+#include "../Model/Model.h"
 #include "IGameObject.h"
 #include <memory>
 
@@ -9,12 +10,12 @@ class Mesh;
 class Cube : public IGameObject
 {
 public:
-	Cube() = default;
+	Cube();
 	~Cube() = default;
 
 	void update(const float deltaTime) override;
 	void render() override;
 
 private:
-	unique_ptr<Mesh> mesh;
+	unique_ptr<Model> model;
 };

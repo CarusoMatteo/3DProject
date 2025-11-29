@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include "../Game Objects/Camera.h"
+#include "../Game Objects/Cube.h"
+#include "../Gui/Gui.h"
 #include "IScene.h"
 #include <glm/glm.hpp>
 #include <memory>
@@ -21,6 +24,6 @@ public:
 
 private:
 	unique_ptr<Camera> camera;
-	// unique_ptr<Cube> cube;
+	unique_ptr<Cube> cube;
 	unique_ptr<Gui> gui;
 };
