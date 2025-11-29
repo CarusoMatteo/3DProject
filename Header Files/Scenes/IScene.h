@@ -1,0 +1,8 @@
+﻿#pragma once
+
+class IScene
+{
+public:
+	virtual void updateGameObjects(float deltaTime) = 0;
+	virtual void renderScene() = 0;
+};

@@ -1,0 +1,17 @@
+#pragma once
+
+#include <vector>
+#include <glm/glm.hpp>
+
+using namespace glm;
+using namespace std;
+
+class ShapeMaker
+{
+public:
+private:
+	ShapeMaker() = default;
+	~ShapeMaker() = default;
+
+	static void addBoundingBoxVertices(vector<fvec3> *vertices, vector<fvec4> *colors);
+};
