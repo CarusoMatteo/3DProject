@@ -13,5 +13,5 @@ public:
 	virtual ~IGui() = default;
 	/// @brief Draws the GUI elements.
 	virtual void drawGui() = 0;
-	virtual fvec3 *getClearColorRef() = 0;
+	virtual const fvec3 *getClearColorRef() = 0;
 };

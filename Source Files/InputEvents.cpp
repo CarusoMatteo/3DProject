@@ -3,15 +3,15 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
+void InputEvents::keyCallback(const GLFWwindow *window, const int key, const int scancode, const int action, const int mods)
 {
 }
 
-void InputEvents::cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
+void InputEvents::cursorPositionCallback(const GLFWwindow *window, const double xpos, const double ypos)
 {
 }
 
-void InputEvents::framebufferSizeCallback(GLFWwindow *window, int width, int height)
+void InputEvents::framebufferSizeCallback(const GLFWwindow *window, const int width, const int height)
 {
 }
 

@@ -10,11 +10,11 @@ class Mesh;
  * @brief Represents a background gameObject in the game.
  * Doesn't have a Bounding Box.
  */
-class Cube : public IGameObject
+class Camera : public IGameObject
 {
 public:
-	Cube() = default;
-	~Cube() = default;
+	Camera() = default;
+	~Camera() = default;
 
 	void update(const float deltaTime) override;
 	void render() override;

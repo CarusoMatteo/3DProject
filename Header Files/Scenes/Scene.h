@@ -6,26 +6,22 @@
 using namespace glm;
 using namespace std;
 
-class Cube;
-class IGui;
+class Camera;
 
-/**
- * @brief Represents the menu scene of the game.
- * It only contains the background and the Gui.
- */
 class Scene : public IScene
 {
 public:
-	Scene() = default;
+	Scene();
 	~Scene() = default;
 
-	void updateGameObjects(float deltaTime) override;
+	void updateGameObjects(const float deltaTime) override;
 	void renderScene() override;
 
 private:
-	Cube *cube;
-	IGui *gui;
-	ivec2 windowSize;
+	unique_ptr<Camera> camera;
+	// Cube *cube;
+	// IGui *gui;
+	// ivec2 windowSize;
 
 	void renderGui();
 };

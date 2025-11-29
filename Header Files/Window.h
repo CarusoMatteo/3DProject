@@ -4,6 +4,10 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
+#include <ImGui/imgui_impl_glfw.h>
+#include <ImGui/imgui_impl_opengl3.h>
+#include <ImGui/imgui.h>
+#include <GLFW/glfw3.h>
 
 using namespace glm;
 using namespace std;
@@ -11,18 +15,25 @@ using namespace std;
 class Window
 {
 public:
-	Window(const string windowTitle);
-	~Window() = default;
+	// Singleton access.
+	static Window *I();
+	~Window();
 
-	bool shouldWindowClose();
+	bool shouldClose();
 	void swapBuffers();
 	void pollEvents();
-	ivec2 getWindowSize();
+	ivec2 getSize();
 
 private:
-	shared_ptr<GLFWwindow> window;
+	const string windowTitle = "Progetto 3D";
+	const fvec2 monitorPercentageSize = fvec2(0.8f);
+	static unique_ptr<Window> instance;
 
-	void initializeWindow(string windowTitle, double monitorPercentageWidth, double monitorPercentageHeight);
+	Window();
+
+	GLFWwindow *window;
+
+	void initializeWindow();
 	void initInputEvents();
 	void initializeGui();
 	void initOpenGL();

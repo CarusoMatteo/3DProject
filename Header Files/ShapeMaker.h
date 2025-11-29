@@ -13,5 +13,5 @@ private:
 	ShapeMaker() = default;
 	~ShapeMaker() = default;
 
-	static void addBoundingBoxVertices(vector<fvec3> *vertices, vector<fvec4> *colors);
+	static void addBoundingBoxVertices(const vector<fvec3> *vertices, const vector<fvec4> *colors);
 };

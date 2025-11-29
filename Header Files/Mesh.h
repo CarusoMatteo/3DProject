@@ -18,15 +18,15 @@ public:
 	~Mesh() = default;
 
 	/// @brief Renders the mesh using the static Renderer class.
-	virtual void render(float currentTime);
-	static void setProjectionMatrix(fmat4 projection);
+	virtual void render(const float currentTime);
+	static void setProjectionMatrix(const fmat4 projection);
 	static bool *getIsWireframeRef();
 	static bool shouldDrawWireframe();
-	void updateScreenSize(ivec2 newScreenSize);
+	void updateScreenSize(const ivec2 newScreenSize);
 	fvec3 getPosition() const;
-	void setPosition(fvec3 newPosition);
-	void setCreationTime(float creationTime);
-	void setIsVisible(bool isVisible);
+	void setPosition(const fvec3 newPosition);
+	void setCreationTime(const float creationTime);
+	void setIsVisible(const bool isVisible);
 	ivec2 getWindowSize() const;
 
 protected:
@@ -75,7 +75,7 @@ protected:
 	 * @param vertexShaderName Name of the vertex shader file.
 	 * @param fragmentShaderName Name of the fragment shader file.
 	 */
-	void buildShader(string vertexShaderName, string fragmentShaderName);
+	void buildShader(const string vertexShaderName, const string fragmentShaderName);
 	///@brief Initializes the VAO for this mesh.
 	void initVao();
 	/// @brief Initializes the VBOs for this mesh.

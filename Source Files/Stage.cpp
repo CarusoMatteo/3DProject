@@ -5,34 +5,40 @@
 #include <memory>
 #include <string>
 
-Stage::Stage(const fvec3 *clearColor, const string windowTitle)
+Stage::Stage(const shared_ptr<fvec3> clearColor, const string windowTitle)
 {
 	this->clearColor = clearColor;
-	this->window = make_shared<Window>(windowTitle);
-	this->scene = make_shared<Scene>();
+	Window::I();
+	this->scene = unique_ptr<Scene>(new Scene());
 }
 
-void Stage::updateGameObjects(float deltaTime)
+void Stage::updateGameObjects(const float deltaTime)
 {
+	this->scene->updateGameObjects(deltaTime);
 }
 
 void Stage::renderScene() const
 {
+	this->scene->renderScene();
 }
 
 void Stage::drawClearColor() const
 {
+	glClearColor(this->clearColor.get()->x, this->clearColor.get()->y, this->clearColor.get()->z, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 bool Stage::shouldWindowClose() const
 {
-	return false;
+	return Window::I()->shouldClose();
 }
 
 void Stage::swapBuffers() const
 {
+	Window::I()->swapBuffers();
 }
 
 void Stage::pollEvents() const
 {
+	Window::I()->pollEvents();
 }

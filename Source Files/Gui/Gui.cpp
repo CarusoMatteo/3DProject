@@ -4,8 +4,9 @@
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
 
-Gui::Gui(fvec3 *clearColorRef) : IGui(), clearColorRef(clearColorRef)
+Gui::Gui(const fvec3 *clearColorRef) : IGui()
 {
+	this->clearColorRef = clearColorRef;
 }
 
 void Gui::drawGui()
@@ -28,12 +29,12 @@ void Gui::drawGui()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-fvec3 *Gui::getClearColorRef()
+const fvec3 *Gui::getClearColorRef()
 {
-	return nullptr;
+	return this->clearColorRef;
 }
 
-void Gui::settingsWindow(fvec2 position)
+void Gui::settingsWindow(const fvec2 position)
 {
 	dvec2 *mousePosition = InputEvents::getCursorPosition();
 

@@ -137,6 +137,7 @@
     <ClCompile Include="..\.common\ImGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\.common\ImGui\imgui_tables.cpp" />
     <ClCompile Include="..\.common\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source Files\Game Objects\Camera.cpp" />
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
     <ClCompile Include="Source Files\glad.c" />
     <ClCompile Include="Source Files\Gui\Gui.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="..\.common\ImGui\imstb_textedit.h" />
     <ClInclude Include="..\.common\ImGui\imstb_truetype.h" />
     <ClInclude Include="Header Files\ButtonStates.h" />
+    <ClInclude Include="Header Files\Game Objects\Camera.h" />
     <ClInclude Include="Header Files\Game Objects\Cube.h" />
     <ClInclude Include="Header Files\Game Objects\IGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
