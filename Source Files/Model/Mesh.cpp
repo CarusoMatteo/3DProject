@@ -4,9 +4,11 @@
 #include "../../Header Files/Model/ShaderFiles.h"
 #include "../../Header Files/Model/Transform.h"
 #include <memory>
+#include <string>
 
-Mesh::Mesh(const BufferValues values, const ShaderFiles files, const Transform transform)
+Mesh::Mesh(const string name, const BufferValues values, const ShaderFiles files, const Transform transform)
 {
+	this->name = name;
 	this->values = values;
 	this->shader = unique_ptr<Shader>(new Shader(files, values));
 	this->transform = transform;

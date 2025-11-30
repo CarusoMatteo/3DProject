@@ -14,7 +14,7 @@ struct ShaderFiles;
 class Mesh
 {
 public:
-	Mesh(const BufferValues values, const ShaderFiles files, const Transform transform);
+	Mesh(const string name, const BufferValues values, const ShaderFiles files, const Transform transform);
 	~Mesh() = default;
 
 	void render();
@@ -24,4 +24,6 @@ private:
 	unique_ptr<Shader> shader;
 	BufferValues values;
 	Transform transform;
+	// ShadingType shadingType;
+	// Material material;
 };

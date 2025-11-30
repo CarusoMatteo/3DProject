@@ -7,11 +7,11 @@ using namespace glm;
 
 struct Transform
 {
-	fvec3 position;
-	float rotation;
-	fvec3 rotationAxis;
-	fvec3 scale;
-	fvec3 anchorPoint;
+	fvec3 position = fvec3(0);
+	float rotation = 0.0f;
+	fvec3 rotationAxis = fvec3(0);
+	fvec3 scale = fvec3(1);
+	fvec3 anchorPoint = fvec3(0);
 
 	fmat4 toMatrix() const
 	{
@@ -25,10 +25,10 @@ struct Transform
 
 struct CameraTransform
 {
-	fvec3 position = fvec3(0);
-	fvec3 target = fvec3(0, 0, -1);
-	fvec3 up = fvec3(0, 1, 0);
-	fvec3 direction = fvec3(0, 0, -1);
+	fvec3 position;
+	fvec3 target;
+	fvec3 up;
+	fvec3 direction;
 
 	fmat4 toMatrix() const
 	{

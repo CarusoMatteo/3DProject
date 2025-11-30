@@ -5,95 +5,36 @@
 #include "../../Header Files/Model/Transform.h"
 #include <glm/glm.hpp>
 #include <memory>
+#include <string>
 #include <vector>
 
 using namespace std;
 using namespace glm;
 
-shared_ptr<Mesh> MeshFactory::cube(const float length, const ShaderFiles files, Transform transform)
+shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const ShaderFiles files, Transform transform)
 {
-	vector<fvec3> vertices;
-	vector<fvec4> colors;
-	vector<fvec3> normals;
-	vector<unsigned int> indices;
-	vector<fvec2> textures;
-	const fvec3 anchor = fvec3(0);
+	const fvec2 halfSize = size / 2.0f;
 
-	const float halfLength = length / 2.0f;
-
-	vertices.push_back(fvec3(-halfLength, -halfLength, halfLength));
-	colors.push_back(fvec4(1.0, 0.0, 0.0, 1));
-	vertices.push_back(fvec3(halfLength, -halfLength, halfLength));
-	colors.push_back(fvec4(0.0, 1.0, 0.0, 1));
-	vertices.push_back(fvec3(halfLength, halfLength, halfLength));
-	colors.push_back(fvec4(0.0, 0.0, 1.0, 1));
-	vertices.push_back(fvec3(-halfLength, halfLength, halfLength));
-	colors.push_back(fvec4(1.0, 0.0, 1.0, 1.0));
-	// back
-	vertices.push_back(fvec3(-halfLength, -halfLength, -halfLength));
-	colors.push_back(fvec4(1.0, 1.0, 1.0, 1.0));
-	vertices.push_back(fvec3(halfLength, -halfLength, -halfLength));
-	colors.push_back(fvec4(1.0, 1.0, 1.0, 1.0));
-	vertices.push_back(fvec3(halfLength, halfLength, -halfLength));
-	colors.push_back(fvec4(1.0, 1.0, 1.0, 1.0));
-	vertices.push_back(fvec3(-halfLength, halfLength, -halfLength));
-	colors.push_back(fvec4(1.0, 1.0, 1.0, 1.0));
-
-	// Indica come i vertici sono legati tre a tre.
-	// Sono 12 terne che definiscono i 12 triangoli che compongono le 6 facce del cubo.
-	indices.push_back(0);
-	indices.push_back(1);
-	indices.push_back(2);
-
-	indices.push_back(2);
-	indices.push_back(3);
-	indices.push_back(0);
-
-	indices.push_back(1);
-	indices.push_back(5);
-	indices.push_back(6);
-
-	indices.push_back(6);
-	indices.push_back(2);
-	indices.push_back(1);
-
-	indices.push_back(7);
-	indices.push_back(6);
-	indices.push_back(5);
-
-	indices.push_back(5);
-	indices.push_back(4);
-	indices.push_back(7);
-
-	indices.push_back(4);
-	indices.push_back(0);
-	indices.push_back(3);
-
-	indices.push_back(3);
-	indices.push_back(7);
-	indices.push_back(4);
-
-	indices.push_back(4);
-	indices.push_back(5);
-	indices.push_back(1);
-
-	indices.push_back(1);
-	indices.push_back(0);
-	indices.push_back(4);
-
-	indices.push_back(3);
-	indices.push_back(2);
-	indices.push_back(6);
-
-	indices.push_back(6);
-	indices.push_back(7);
-	indices.push_back(3);
-
-	transform.anchorPoint = anchor;
-	// Add the anchor to indices?
-	// vertices.push_back(anchor);
-	// colors.push_back(fvec4(0.0, 1.0, 0.0, 1.0));
-	// indices.push_back(nv - 1);
+	transform.anchorPoint = fvec3(0);
+	const vector<fvec3> vertices = {
+		vec3(-halfSize.x, 0, halfSize.y),
+		vec3(halfSize.x, 0, halfSize.y),
+		vec3(halfSize.x, 0, -halfSize.y),
+		vec3(-halfSize.x, 0, -halfSize.y)};
+	const vector<fvec4> colors = {
+		fvec4(1),
+		fvec4(1),
+		fvec4(1),
+		fvec4(1)};
+	const vector<unsigned int> indices = {
+		0, 1, 2,
+		2, 3, 0};
+	const vector<fvec3> normals = {
+		vec3(0, 1, 0),
+		vec3(0, 1, 0),
+		vec3(0, 1, 0),
+		vec3(0, 1, 0)};
+	const vector<fvec2> textures; // Not set
 
 	const BufferValues bufferValues = {
 		vertices,
@@ -102,5 +43,65 @@ shared_ptr<Mesh> MeshFactory::cube(const float length, const ShaderFiles files, 
 		indices,
 		textures};
 
-	return shared_ptr<Mesh>(new Mesh(bufferValues, files, transform));
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, files, transform));
 }
+
+shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const ShaderFiles files, Transform transform)
+{
+	const float halfLength = length / 2.0f;
+
+	transform.anchorPoint = fvec3(0);
+	const vector<fvec3> vertices = {
+		// Front
+		fvec3(-halfLength, -halfLength, halfLength),
+		fvec3(halfLength, -halfLength, halfLength),
+		fvec3(halfLength, halfLength, halfLength),
+		fvec3(-halfLength, halfLength, halfLength),
+		// Back
+		fvec3(-halfLength, -halfLength, -halfLength),
+		fvec3(halfLength, -halfLength, -halfLength),
+		fvec3(halfLength, halfLength, -halfLength),
+		fvec3(-halfLength, halfLength, -halfLength)};
+	const vector<fvec4> colors = {
+		// Front
+		fvec4(1, 0, 0, 1),
+		fvec4(0, 1, 0, 1),
+		fvec4(0, 0, 1, 1),
+		fvec4(1, 0, 1, 1),
+		// Back
+		fvec4(1),
+		fvec4(1),
+		fvec4(1),
+		fvec4(1)};
+	const vector<fvec3> normals; // Not set
+	const vector<unsigned int> indices = {
+		// Show how the vertices are connected three by three, with 12 triplets.
+		0, 1, 2,
+		2, 3, 0,
+		1, 5, 6,
+		6, 2, 1,
+		7, 6, 5,
+		5, 4, 7,
+		4, 0, 3,
+		3, 7, 4,
+		4, 5, 1,
+		1, 0, 4,
+		3, 2, 6,
+		6, 7, 3};
+	const vector<fvec2> textures; // Not set
+
+	const BufferValues bufferValues = {
+		vertices,
+		colors,
+		normals,
+		indices,
+		textures};
+
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, files, transform));
+}
+
+// Consider adding anchor to the vertex and index vector
+// mesh->vertices.push_back(anchor); // Memorizzo come ultimo vertice l'ancora per poterla visualizzare
+// mesh->colors.push_back(anchorColor);
+// mesh->ancora_obj = vec4(anchor, 1.0); // memorizzo l'ancora nel campo ancora_obj
+// mesh->indices.push_back(nv - 1);

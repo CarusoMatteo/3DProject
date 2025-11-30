@@ -26,4 +26,5 @@ struct BufferValues
 	vector<fvec3> normals;
 	vector<unsigned int> indices;
 	vector<fvec2> textures;
+	// fvec4 tintColor;
 };

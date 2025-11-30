@@ -10,9 +10,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
-#include <stdexcept>
 
 using namespace std;
 using namespace glm;
@@ -59,7 +59,6 @@ void Shader::initVbos(const BufferValues values)
 	// Generates and makes active the VBO for the vertices
 	glGenBuffers(1, &this->addresses.vertices);
 	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.vertices);
-
 	glBufferData(GL_ARRAY_BUFFER, values.vertices.size() * sizeof(fvec3), values.vertices.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 	glEnableVertexAttribArray(0);
@@ -96,6 +95,7 @@ void Shader::initUniformReferences()
 	this->uniforms.projectionMatrix.location = glGetUniformLocation(this->programId, this->uniforms.projectionMatrix.name.c_str());
 	this->uniforms.modelMatrix.location = glGetUniformLocation(this->programId, this->uniforms.modelMatrix.name.c_str());
 	this->uniforms.viewMatrix.location = glGetUniformLocation(this->programId, this->uniforms.viewMatrix.name.c_str());
+	this->uniforms.viewPosition.location = glGetUniformLocation(this->programId, this->uniforms.viewPosition.name.c_str());
 	this->uniforms.creationTime.location = glGetUniformLocation(this->programId, this->uniforms.creationTime.name.c_str());
 	this->uniforms.currentTime.location = glGetUniformLocation(this->programId, this->uniforms.currentTime.name.c_str());
 	this->uniforms.screenSize.location = glGetUniformLocation(this->programId, this->uniforms.screenSize.name.c_str());
@@ -107,6 +107,7 @@ void Shader::updateUniformValues(const Transform model)
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = model.toMatrix();
 	this->uniforms.viewMatrix.value = Camera::I()->makeViewMatrix();
+	this->uniforms.viewPosition.value = Camera::I()->getPosition();
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
 	this->uniforms.isVisible.value = true;
@@ -117,6 +118,8 @@ void Shader::passUniforms()
 	glUniformMatrix4fv(this->uniforms.projectionMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.projectionMatrix.value));
 	glUniformMatrix4fv(this->uniforms.modelMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.modelMatrix.value));
 	glUniformMatrix4fv(this->uniforms.viewMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.viewMatrix.value));
+	glUniform3fv(this->uniforms.viewPosition.location, 1, value_ptr(this->uniforms.viewPosition.value));
+
 	glUniform1f(this->uniforms.creationTime.location, this->uniforms.creationTime.value);
 	glUniform1f(this->uniforms.currentTime.location, this->uniforms.currentTime.value);
 	glUniform2f(

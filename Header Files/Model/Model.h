@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Transform.h"
 #include <memory>
 #include <vector>
 
@@ -10,9 +11,12 @@ class Mesh;
 class Model
 {
 public:
-	Model(const vector<shared_ptr<Mesh>> meshes);
+	Model(const Transform transform, const vector<shared_ptr<Mesh>> meshes);
 	~Model() = default;
+
+	void render() const;
 
 private:
 	vector<shared_ptr<Mesh>> meshes;
+	Transform transform;
 };
