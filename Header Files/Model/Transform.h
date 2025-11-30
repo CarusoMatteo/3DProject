@@ -17,7 +17,8 @@ struct Transform
 	{
 		fmat4 transformMatrix = fmat4(1.0f);
 		transformMatrix = glm::translate(transformMatrix, position);
-		transformMatrix = glm::rotate(transformMatrix, rotation, rotationAxis);
+		if (rotationAxis != fvec3(0))
+			transformMatrix = glm::rotate(transformMatrix, radians(rotation), rotationAxis);
 		transformMatrix = glm::scale(transformMatrix, scale);
 		return transformMatrix;
 	}
@@ -32,7 +33,6 @@ struct CameraTransform
 
 	fmat4 toMatrix() const
 	{
-		// TODO: May be wrong
 		return glm::lookAt(position, target, up);
 	}
 };

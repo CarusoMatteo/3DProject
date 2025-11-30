@@ -2,15 +2,20 @@
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/ShaderFiles.h"
 #include "../../Header Files/Model/Transform.h"
+#include <glm/glm.hpp>
 #include <memory>
+#include <string>
+
+using namespace glm;
+using namespace std;
 
 Plane::Plane()
 {
 	const string name = "Plane";
 	const fvec2 size = fvec2(1);
 	const ShaderFiles shaderFiles = {
-		"Shaders/Cube/Vertex.glsl",
-		"Shaders/Cube/Fragment.glsl"};
+		"Shaders/Default/Default.vert",
+		"Shaders/Default/Default.frag"};
 
 	Transform planeTransform = {
 		fvec3(0, -1.5f, 0),
