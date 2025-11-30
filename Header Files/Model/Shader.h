@@ -2,6 +2,7 @@
 
 #include "Buffers.h"
 #include "Uniforms.h"
+#include <memory>
 
 using namespace std;
 using namespace glm;
@@ -17,7 +18,13 @@ public:
 
 	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values);
 
+	static shared_ptr<bool> getDrawWireframeFlag();
+	static shared_ptr<bool> getDrawAnchorFlag();
+
 private:
+	static shared_ptr<bool> drawWireframe;
+	static shared_ptr<bool> drawAnchor;
+
 	unsigned int programId;
 	BuffersAddresses addresses;
 	Uniforms uniforms;

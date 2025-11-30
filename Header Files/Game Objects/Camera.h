@@ -16,7 +16,6 @@ public:
 	// Singleton access.
 	static Camera *I();
 
-	Camera();
 	~Camera() = default;
 
 	void update(const float deltaTime) override;
@@ -26,6 +25,8 @@ public:
 
 private:
 	static unique_ptr<Camera> instance;
+
+	Camera();
 
 	CameraTransform transform;
 	CameraProjection projection;

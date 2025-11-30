@@ -33,6 +33,6 @@ struct CameraTransform
 	fmat4 toMatrix() const
 	{
 		// TODO: May be wrong
-		return glm::lookAt(position, position + direction, up);
+		return glm::lookAt(position, target, up);
 	}
 };

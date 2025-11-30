@@ -10,12 +10,28 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 using namespace std;
 using namespace glm;
+
+shared_ptr<bool> Shader::drawWireframe = make_shared<bool>(false);
+shared_ptr<bool> Shader::drawAnchor = make_shared<bool>(false);
+
+shared_ptr<bool> Shader::getDrawWireframeFlag()
+{
+	return Shader::drawWireframe;
+}
+
+shared_ptr<bool> Shader::getDrawAnchorFlag()
+{
+	return Shader::drawAnchor;
+}
 
 Shader::Shader(const ShaderFiles files, const BufferValues bufferValues)
 {
@@ -131,11 +147,28 @@ void Shader::passUniforms()
 
 void Shader::draw(const BufferValues values) const
 {
+	if (*Shader::drawWireframe)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
 	// Bind the Vertex Array Object (VAO) of the shape, which contains the vertex data to be drawn
 	glBindVertexArray(this->addresses.vao);
 
 	// Draw the vertices of the shape as specified by renderMode, starting from the first vertex (0), for vertexCount vertices in total
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(values.indices.size()), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<int>(values.indices.size() - 1), GL_UNSIGNED_INT, 0);
+
+	if (*Shader::drawAnchor)
+	{
+		glPointSize(15.0f);
+		const unsigned int anchorIndex = values.indices.back();
+		glDrawElements(GL_TRIANGLES, 1, GL_UNSIGNED_INT, BUFFER_OFFSET(anchorIndex * sizeof(unsigned int)));
+	}
+
 	glBindVertexArray(0);
 }
 

@@ -21,7 +21,9 @@ public:
 	void renderScene() override;
 
 private:
-	// unique_ptr<Camera> camera; Use singleton access instead
+	// Do not save. Use singleton access instead
+	// unique_ptr<Camera> camera;
+
 	unique_ptr<Plane> plane;
 	unique_ptr<Cube> cube;
 	unique_ptr<PointLight> light;

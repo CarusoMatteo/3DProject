@@ -17,23 +17,29 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const S
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
-		vec3(-halfSize.x, 0, halfSize.y),
-		vec3(halfSize.x, 0, halfSize.y),
-		vec3(halfSize.x, 0, -halfSize.y),
-		vec3(-halfSize.x, 0, -halfSize.y)};
+		fvec3(-halfSize.x, 0, halfSize.y),
+		fvec3(halfSize.x, 0, halfSize.y),
+		fvec3(halfSize.x, 0, -halfSize.y),
+		fvec3(-halfSize.x, 0, -halfSize.y),
+		// Anchor
+		transform.anchorPoint};
 	const vector<fvec4> colors = {
 		fvec4(1),
 		fvec4(1),
 		fvec4(1),
+		fvec4(1),
+		// Anchor
 		fvec4(1)};
 	const vector<unsigned int> indices = {
 		0, 1, 2,
-		2, 3, 0};
+		2, 3, 0,
+		// Anchor
+		4};
 	const vector<fvec3> normals = {
-		vec3(0, 1, 0),
-		vec3(0, 1, 0),
-		vec3(0, 1, 0),
-		vec3(0, 1, 0)};
+		fvec3(0, 1, 0),
+		fvec3(0, 1, 0),
+		fvec3(0, 1, 0),
+		fvec3(0, 1, 0)};
 	const vector<fvec2> textures; // Not set
 
 	const BufferValues bufferValues = {
@@ -61,7 +67,9 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		fvec3(-halfLength, -halfLength, -halfLength),
 		fvec3(halfLength, -halfLength, -halfLength),
 		fvec3(halfLength, halfLength, -halfLength),
-		fvec3(-halfLength, halfLength, -halfLength)};
+		fvec3(-halfLength, halfLength, -halfLength),
+		// Anchor
+		transform.anchorPoint};
 	const vector<fvec4> colors = {
 		// Front
 		fvec4(1, 0, 0, 1),
@@ -72,8 +80,9 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		fvec4(1),
 		fvec4(1),
 		fvec4(1),
+		fvec4(1),
+		// Anchor
 		fvec4(1)};
-	const vector<fvec3> normals; // Not set
 	const vector<unsigned int> indices = {
 		// Show how the vertices are connected three by three, with 12 triplets.
 		0, 1, 2,
@@ -87,7 +96,20 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		4, 5, 1,
 		1, 0, 4,
 		3, 2, 6,
-		6, 7, 3};
+		6, 7, 3,
+		// Anchor
+		8};
+	const vector<fvec3> normals = {
+		// Front
+		normalize(vec3(0, 0, 1)),
+		normalize(vec3(0, 0, 1)),
+		normalize(vec3(0, 0, 1)),
+		normalize(vec3(0, 0, 1)),
+		// Back
+		normalize(vec3(0, 0, -1)),
+		normalize(vec3(0, 0, -1)),
+		normalize(vec3(0, 0, -1)),
+		normalize(vec3(0, 0, -1))};
 	const vector<fvec2> textures; // Not set
 
 	const BufferValues bufferValues = {
