@@ -5,26 +5,17 @@
 
 using namespace std;
 
-/**
- * @brief A utility class for building OpenGL shaders from source files.
- */
+struct ShaderFiles;
+
 class ShaderBuilder
 {
 public:
-	/**
-	 * @brief Builds a shader program from vertex and fragment shader source files.
-	 *
-	 * @param vertexfilename The path to the vertex shader source file.
-	 * @param fragmentfilename The path to the fragment shader source file.
-	 * @return GLuint The ID of the created shader program.
-	 */
-	static GLuint buildShader(const string vertexfilename, const string fragmentfilename);
+	static unsigned int buildShader(ShaderFiles files);
 
 private:
+	static const bool shouldPrintLogs = false;
+	static char *readShaderSource(const string file);
+
 	ShaderBuilder() = default;
 	~ShaderBuilder() = default;
-
-	/// @brief Whether to print success logs during shader compilation and linking.
-	static bool shouldPrintLogs;
-	static char *readShaderSource(const string shaderFile);
 };

@@ -1,22 +1,21 @@
 #include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/ShaderFiles.h"
+#include "../../Header Files/ShaderBuilder.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
-
-// TODO:
-// #include "../../Header Files/Model/ShaderBuilder.h"
 
 using namespace std;
 using namespace glm;
 
 Shader::Shader(const ShaderFiles files, const BufferValues bufferValues)
 {
-	// TODO:
-	// this->programId = ShaderBuilder::buildShader(files);
+	this->programId = ShaderBuilder::buildShader(files);
+	this->initVao();
 	this->initVbos(bufferValues);
+	this->initUniformReferences();
 }
 
 void Shader::render()
