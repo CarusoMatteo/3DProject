@@ -39,10 +39,10 @@ Shader::~Shader()
 	glDeleteVertexArrays(1, &this->addresses.vao);
 }
 
-void Shader::render(const Transform model, const BufferValues values)
+void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values)
 {
 	glUseProgram(this->programId);
-	this->updateUniformValues(model);
+	this->updateUniformValues(modelTransform, meshTransform);
 	this->passUniforms();
 	this->draw(values);
 	this->checkGLErrors();
@@ -102,10 +102,10 @@ void Shader::initUniformReferences()
 	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
 }
 
-void Shader::updateUniformValues(const Transform model)
+void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform)
 {
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
-	this->uniforms.modelMatrix.value = model.toMatrix();
+	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
 	this->uniforms.viewMatrix.value = Camera::I()->makeViewMatrix();
 	this->uniforms.viewPosition.value = Camera::I()->getPosition();
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());

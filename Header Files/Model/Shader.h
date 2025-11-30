@@ -15,7 +15,7 @@ public:
 	Shader(const ShaderFiles files, const BufferValues bufferValues);
 	~Shader();
 
-	void render(const Transform model, const BufferValues values);
+	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values);
 
 private:
 	unsigned int programId;
@@ -26,7 +26,7 @@ private:
 	void initVbos(const BufferValues bufferValues);
 	void initUniformReferences();
 
-	void updateUniformValues(const Transform model);
+	void updateUniformValues(const Transform modelTransform, const Transform meshTransform);
 	void passUniforms();
 	void draw(const BufferValues values) const;
 	void checkGLErrors();

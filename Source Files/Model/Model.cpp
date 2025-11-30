@@ -14,6 +14,6 @@ void Model::render() const
 {
 	for (const auto &mesh : meshes)
 	{
-		mesh->render();
+		mesh->render(this->transform);
 	}
 }

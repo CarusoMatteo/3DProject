@@ -17,7 +17,7 @@ public:
 	Mesh(const string name, const BufferValues values, const ShaderFiles files, const Transform transform);
 	~Mesh() = default;
 
-	void render();
+	void render(Transform modelTransform) const;
 
 private:
 	string name;

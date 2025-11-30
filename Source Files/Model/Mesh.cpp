@@ -14,7 +14,7 @@ Mesh::Mesh(const string name, const BufferValues values, const ShaderFiles files
 	this->transform = transform;
 }
 
-void Mesh::render()
+void Mesh::render(Transform modelTransform) const
 {
-	this->shader->render(this->transform, this->values);
+	this->shader->render(modelTransform, this->transform, this->values);
 }
