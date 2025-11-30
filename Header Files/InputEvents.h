@@ -13,20 +13,17 @@ using namespace std;
 class InputEvents
 {
 public:
-	static void keyCallback(const GLFWwindow *window, const int key, const int scancode, const int action, const int mods);
-	static void cursorPositionCallback(const GLFWwindow *window, const double xpos, const double ypos);
-	static void framebufferSizeCallback(const GLFWwindow *window, const int width, const int height);
+	static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+	static void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos);
+	static void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 	// Add more callbacks as needed here
 
 	static ButtonStates *getButtonStates();
 	static dvec2 *getCursorPosition();
-	static ivec2 getCurrentWindowSize();
-	static void setCurrentWindowSize(const ivec2 newSize);
 
 private:
-	static ButtonStates buttonStates;
-	static dvec2 cursorPosition;
-	static ivec2 currentWindowSize;
+	const static ButtonStates buttonStates;
+	const static dvec2 cursorPosition;
 
 	InputEvents() = default;
 	~InputEvents() = default;

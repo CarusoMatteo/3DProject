@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../Model/Model.h"
 #include "IGameObject.h"
 #include <memory>
@@ -17,5 +18,5 @@ public:
 	void render() override;
 
 private:
-	unique_ptr<Model> model;
+	shared_ptr<Model> model;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-struct ProjectionData
+struct CameraProjection
 {
 	float fovY;
 	float aspectRatio;

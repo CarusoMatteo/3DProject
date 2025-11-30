@@ -1,6 +1,8 @@
 #pragma once
+
+#include "../CameraProjection.h"
 #include "../Model/BoundingBox.h"
-#include "../ProjectionData.h"
+#include "../Model/Transform.h"
 #include "IGameObject.h"
 #include <glm/glm.hpp>
 #include <memory>
@@ -11,6 +13,9 @@ using namespace std;
 class Camera : public IGameObject
 {
 public:
+	// Singleton access.
+	static Camera *I();
+
 	Camera();
 	~Camera() = default;
 
@@ -18,11 +23,18 @@ public:
 	void render() override;
 
 private:
-	fvec3 position = fvec3(0);
-	fvec3 target = fvec3(0, 0, -1);
-	fvec3 up = fvec3(0, 1, 0);
-	fvec3 direction = fvec3(0, 0, -1);
-	ProjectionData projectionData;
+	static unique_ptr<Camera> instance;
+
+	const float fovY = 45.0f;
+	const float nearPlane = 0.1f;
+	const float farPlane = 2000.0f;
+
+	CameraTransform transform;
+	CameraProjection projection;
 
 	unique_ptr<BoundingBox> boundingBox;
+
+	fmat4 makeProjectionMatrix() const;
+	void setTransform();
+	void setProjectionData();
 };

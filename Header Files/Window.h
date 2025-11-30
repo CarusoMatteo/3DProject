@@ -8,8 +8,6 @@
 using namespace glm;
 using namespace std;
 
-struct ProjectionData;
-
 class Window
 {
 public:
@@ -21,16 +19,12 @@ public:
 	void swapBuffers();
 	void pollEvents();
 	ivec2 getSize();
-	ProjectionData makeProjectionData();
 
 private:
 	static unique_ptr<Window> instance;
 
 	const string windowTitle = "Progetto 3D";
 	const fvec2 monitorPercentageSize = fvec2(0.8f);
-	const float fovY = 45.0f;
-	const float nearPlane = 0.1f;
-	const float farPlane = 2000.0f;
 
 	Window();
 
@@ -41,5 +35,4 @@ private:
 	void initInputEvents();
 	void initializeGui();
 	void initOpenGL();
-	fmat4 makeProjectionMatrix();
 };

@@ -1,9 +1,8 @@
-#include "../Header Files/ProjectionData.h"
+#include "../Header Files/InputEvents.h"
 #include "../Header Files/Window.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
@@ -15,11 +14,11 @@ unique_ptr<Window> Window::instance = nullptr;
 
 Window *Window::I()
 {
-	if (instance == nullptr)
+	if (Window::instance == nullptr)
 	{
-		instance = unique_ptr<Window>(new Window());
+		Window::instance = unique_ptr<Window>(new Window());
 	}
-	return instance.get();
+	return Window::instance.get();
 }
 
 Window::Window()
@@ -28,10 +27,6 @@ Window::Window()
 	this->initInputEvents();
 	this->initializeGui();
 	this->initOpenGL();
-
-	// TODO:
-	// InputEvents::setCurrentWindowSize(ivec2(this->windowWidth, this->windowHeight));
-	// Mesh::setProjectionMatrix(createProjectionMatrix(this->windowWidth, this->windowHeight));
 }
 
 Window::~Window()
@@ -70,7 +65,6 @@ ivec2 Window::getSize()
 
 void Window::initializeWindow()
 {
-
 	// If glfwInit fails, throw an exception.
 	if (!glfwInit())
 	{
@@ -133,10 +127,9 @@ void Window::initializeWindow()
 
 void Window::initInputEvents()
 {
-	// TODO:
-	// glfwSetKeyCallback(window, InputEvents::keyCallback);
-	// glfwSetCursorPosCallback(window, InputEvents::cursorPositionCallback);
-	// glfwSetFramebufferSizeCallback(window, InputEvents::framebufferSizeCallback);
+	glfwSetKeyCallback(window, InputEvents::keyCallback);
+	glfwSetCursorPosCallback(window, InputEvents::cursorPositionCallback);
+	glfwSetFramebufferSizeCallback(window, InputEvents::framebufferSizeCallback);
 }
 
 void Window::initializeGui()
@@ -163,24 +156,4 @@ void Window::initOpenGL()
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-fmat4 Window::makeProjectionMatrix()
-{
-	// TODO: find a better place to put the camera parameters
-	const float fovYDegrees = 45.0f;
-	const float aspect = static_cast<float>(this->getSize().x) / static_cast<float>(this->getSize().y);
-	const float near_plane = 0.1f;
-	const float far_plane = 2000.0f;
-
-	return perspective(radians(fovYDegrees), aspect, near_plane, far_plane);
-}
-
-ProjectionData Window::makeProjectionData()
-{
-	return ProjectionData{
-		this->fovY,
-		static_cast<float>(this->getSize().x) / static_cast<float>(this->getSize().y),
-		this->nearPlane,
-		this->farPlane};
 }

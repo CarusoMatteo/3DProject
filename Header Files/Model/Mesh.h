@@ -1,85 +1,34 @@
 #pragma once
 
-#include <glad/glad.h>
+#include "Transform.h"
 #include <glm/glm.hpp>
+#include <memory>
 #include <string>
 #include <vector>
 
 using namespace glm;
 using namespace std;
 
-/**
- * @brief Class representing a mesh with a shader associated to it.
- */
+class Shader;
+struct ShaderFiles;
+
 class Mesh
 {
 public:
-	Mesh() = default;
+	Mesh(const vector<fvec3> vertices, const vector<fvec4> colors, const vector<unsigned int> indices, const ShaderFiles files, const Transform transform);
 	~Mesh() = default;
 
-	/// @brief Renders the mesh using the static Renderer class.
-	virtual void render(const float currentTime);
-	static void setProjectionMatrix(const fmat4 projection);
-	static bool *getIsWireframeRef();
-	static bool shouldDrawWireframe();
-	void updateScreenSize(const ivec2 newScreenSize);
-	fvec3 getPosition() const;
-	void setPosition(const fvec3 newPosition);
-	void setCreationTime(const float creationTime);
-	void setIsVisible(const bool isVisible);
-	ivec2 getWindowSize() const;
+	void render();
 
-protected:
-	static bool isWireframe;
-
-	// Shader compilation information
-
-	GLuint programId;
-	GLuint vaoAddress;
-	GLuint verticesVboAddress;
-	GLuint colorsVboAddress;
-
+private:
 	vector<fvec3> vertices;
 	vector<fvec4> colors;
+	vector<unsigned int> indices;
+	vector<fvec3> normals;
+	vector<fvec2> textureCoords;
 
-	GLenum drawMode;
-	ivec2 windowSize;
+	Transform transform;
 
-	/// @brief Projection matrix to place object in world space. The same for all meshes.
-	static fmat4 projectionMatrix;
-	GLuint projectionMatrixUniformLocation;
-
-	/// @brief Model matrix of this mesh.
-	fmat4 modelMatrix;
-	GLuint modelMatrixUniformLocation;
-
-	/// @brief Position of this mesh in world space.
-	fvec3 position;
-	/// @brief Rotation of this mesh in degrees.
-	float rotationDegrees;
-	/// @brief Scale vector of this mesh.
-	fvec3 scaleVector;
-
-	/// @brief Time of creation of mesh. Used for some animation.
-	float creationTime;
-	GLuint creationTimeUniformLocation;
-	/// @brief Whether the mesh is visible or not. Used for toggling visibility in shaders.
-	bool isVisible = true;
-	GLuint isVisibleUniformLocation;
-
-	GLuint currentTimeUniformLocation;
-	GLuint screenSizeUniformLocation;
-
-	/**
-	 * @brief Builds the shader program from vertex and fragment shader files.
-	 * @param vertexShaderName Name of the vertex shader file.
-	 * @param fragmentShaderName Name of the fragment shader file.
-	 */
-	void buildShader(const string vertexShaderName, const string fragmentShaderName);
-	///@brief Initializes the VAO for this mesh.
-	void initVao();
-	/// @brief Initializes the VBOs for this mesh.
-	void initVbos();
-	/// @brief Initializes the uniform references locations for this mesh.
-	void initUniformReferences();
+	string name;
+	unique_ptr<Shader> shader;
 };

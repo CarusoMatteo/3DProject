@@ -3,15 +3,15 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-void InputEvents::keyCallback(const GLFWwindow *window, const int key, const int scancode, const int action, const int mods)
+void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 }
 
-void InputEvents::cursorPositionCallback(const GLFWwindow *window, const double xpos, const double ypos)
+void InputEvents::cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
 {
 }
 
-void InputEvents::framebufferSizeCallback(const GLFWwindow *window, const int width, const int height)
+void InputEvents::framebufferSizeCallback(GLFWwindow *window, int width, int height)
 {
 }
 
@@ -23,13 +23,4 @@ ButtonStates *InputEvents::getButtonStates()
 dvec2 *InputEvents::getCursorPosition()
 {
 	return nullptr;
-}
-
-ivec2 InputEvents::getCurrentWindowSize()
-{
-	return ivec2();
-}
-
-void InputEvents::setCurrentWindowSize(ivec2 newSize)
-{
 }
