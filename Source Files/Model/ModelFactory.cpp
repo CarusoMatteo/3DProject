@@ -9,7 +9,7 @@
 using namespace std;
 using namespace glm;
 
-shared_ptr<Model> ModelFactory::cube(float length, ShaderFiles files)
+shared_ptr<Model> ModelFactory::cube(const float length, const ShaderFiles files)
 {
 	const fvec3 cubePosition(0.0f);
 	const float cubeRotation = 0.0f;

@@ -10,7 +10,7 @@ class Mesh;
 class Model
 {
 public:
-	Model(vector<shared_ptr<Mesh>> meshes);
+	Model(const vector<shared_ptr<Mesh>> meshes);
 	~Model() = default;
 
 private:

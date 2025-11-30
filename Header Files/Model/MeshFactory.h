@@ -11,7 +11,7 @@ struct Transform;
 class MeshFactory
 {
 public:
-	static shared_ptr<Mesh> cube(float length, ShaderFiles files, Transform transform);
+	static shared_ptr<Mesh> cube(const float length, const ShaderFiles files, Transform transform);
 
 private:
 	MeshFactory() = default;

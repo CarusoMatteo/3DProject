@@ -152,7 +152,6 @@
     <ClCompile Include="Source Files\Random.cpp" />
     <ClCompile Include="Source Files\Scenes\Scene.cpp" />
     <ClCompile Include="Source Files\ShaderBuilder.cpp" />
-    <ClCompile Include="Source Files\ShapeMaker.cpp" />
     <ClCompile Include="Source Files\Stage.cpp" />
     <ClCompile Include="Source Files\Window.cpp" />
   </ItemGroup>
@@ -191,8 +190,6 @@
     <ClInclude Include="Header Files\Scenes\IScene.h" />
     <ClInclude Include="Header Files\Scenes\Scene.h" />
     <ClInclude Include="Header Files\ShaderBuilder.h" />
-    <ClInclude Include="Header Files\Shape.h" />
-    <ClInclude Include="Header Files\ShapeMaker.h" />
     <ClInclude Include="Header Files\Stage.h" />
     <ClInclude Include="Header Files\Window.h" />
   </ItemGroup>

@@ -10,7 +10,7 @@
 using namespace std;
 using namespace glm;
 
-shared_ptr<Mesh> MeshFactory::cube(float length, ShaderFiles files, Transform transform)
+shared_ptr<Mesh> MeshFactory::cube(const float length, const ShaderFiles files, Transform transform)
 {
 	vector<fvec3> vertices;
 	vector<fvec4> colors;

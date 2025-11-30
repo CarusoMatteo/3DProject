@@ -10,9 +10,6 @@
 using namespace glm;
 using namespace std;
 
-class Camera;
-class Gui;
-
 class Scene : public IScene
 {
 public:

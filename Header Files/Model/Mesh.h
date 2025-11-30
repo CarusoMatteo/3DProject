@@ -20,10 +20,8 @@ public:
 	void render();
 
 private:
-	BufferValues values;
-
-	Transform transform;
-
 	string name;
 	unique_ptr<Shader> shader;
+	BufferValues values;
+	Transform transform;
 };
