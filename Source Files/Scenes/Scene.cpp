@@ -12,7 +12,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 	Camera::I();
 	this->plane = unique_ptr<Plane>(new Plane());
 	this->cube = unique_ptr<Cube>(new Cube());
-	this->light = unique_ptr<PointLight>(new PointLight());
+	PointLight::I();
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 }
 

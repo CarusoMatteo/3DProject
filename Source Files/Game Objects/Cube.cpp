@@ -10,8 +10,8 @@ Cube::Cube()
 	const string name = "Cube";
 	const float length = 1.0f;
 	const ShaderFiles shaderFiles = {
-		"Shaders/Default/Default.vert",
-		"Shaders/Default/Default.frag"};
+		"Shaders/Cube/Cube.vert",
+		"Shaders/Cube/Cube.frag"};
 
 	this->model = ModelFactory::cube(name, length, shaderFiles, Transform());
 }

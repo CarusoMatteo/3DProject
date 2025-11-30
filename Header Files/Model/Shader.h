@@ -7,6 +7,7 @@
 using namespace std;
 using namespace glm;
 
+struct Material;
 struct ShaderFiles;
 struct Transform;
 
@@ -16,7 +17,7 @@ public:
 	Shader(const ShaderFiles files, const BufferValues bufferValues);
 	~Shader();
 
-	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values);
+	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material);
 
 	static shared_ptr<bool> getDrawWireframeFlag();
 	static shared_ptr<bool> getDrawAnchorFlag();
@@ -33,7 +34,7 @@ private:
 	void initVbos(const BufferValues bufferValues);
 	void initUniformReferences();
 
-	void updateUniformValues(const Transform modelTransform, const Transform meshTransform);
+	void updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material);
 	void passUniforms();
 	void draw(const BufferValues values) const;
 	void checkGLErrors();

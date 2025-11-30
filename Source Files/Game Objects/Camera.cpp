@@ -5,6 +5,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <memory>
 
+using namespace glm;
+using namespace std;
+
 unique_ptr<Camera> Camera::instance = nullptr;
 
 Camera *Camera::I()

@@ -1,4 +1,6 @@
 #include "../../Header Files/Game Objects/Camera.h"
+#include "../../Header Files/Game Objects/PointLight.h"
+#include "../../Header Files/Game Objects/Material.h"
 #include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/ShaderFiles.h"
@@ -55,10 +57,10 @@ Shader::~Shader()
 	glDeleteVertexArrays(1, &this->addresses.vao);
 }
 
-void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values)
+void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material)
 {
 	glUseProgram(this->programId);
-	this->updateUniformValues(modelTransform, meshTransform);
+	this->updateUniformValues(modelTransform, meshTransform, material);
 	this->passUniforms();
 	this->draw(values);
 	this->checkGLErrors();
@@ -112,18 +114,38 @@ void Shader::initUniformReferences()
 	this->uniforms.modelMatrix.location = glGetUniformLocation(this->programId, this->uniforms.modelMatrix.name.c_str());
 	this->uniforms.viewMatrix.location = glGetUniformLocation(this->programId, this->uniforms.viewMatrix.name.c_str());
 	this->uniforms.viewPosition.location = glGetUniformLocation(this->programId, this->uniforms.viewPosition.name.c_str());
+
+	this->uniforms.lightPosition.location = glGetUniformLocation(this->programId, this->uniforms.lightPosition.name.c_str());
+	this->uniforms.lightColor.location = glGetUniformLocation(this->programId, this->uniforms.lightColor.name.c_str());
+	this->uniforms.lightPower.location = glGetUniformLocation(this->programId, this->uniforms.lightPower.name.c_str());
+
+	this->uniforms.materialAmbient.location = glGetUniformLocation(this->programId, this->uniforms.materialAmbient.name.c_str());
+	this->uniforms.materialDiffuse.location = glGetUniformLocation(this->programId, this->uniforms.materialDiffuse.name.c_str());
+	this->uniforms.materialSpecular.location = glGetUniformLocation(this->programId, this->uniforms.materialSpecular.name.c_str());
+	this->uniforms.materialShininess.location = glGetUniformLocation(this->programId, this->uniforms.materialShininess.name.c_str());
+
 	this->uniforms.creationTime.location = glGetUniformLocation(this->programId, this->uniforms.creationTime.name.c_str());
 	this->uniforms.currentTime.location = glGetUniformLocation(this->programId, this->uniforms.currentTime.name.c_str());
 	this->uniforms.screenSize.location = glGetUniformLocation(this->programId, this->uniforms.screenSize.name.c_str());
 	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
 }
 
-void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform)
+void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material)
 {
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
 	this->uniforms.viewMatrix.value = Camera::I()->makeViewMatrix();
 	this->uniforms.viewPosition.value = Camera::I()->getPosition();
+
+	this->uniforms.lightPosition.value = PointLight::I()->getPosition();
+	this->uniforms.lightColor.value = PointLight::I()->getColor();
+	this->uniforms.lightPower.value = PointLight::I()->getPower();
+
+	this->uniforms.materialAmbient.value = material.ambient;
+	this->uniforms.materialDiffuse.value = material.diffuse;
+	this->uniforms.materialSpecular.value = material.specular;
+	this->uniforms.materialShininess.value = material.shininess;
+
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
 	this->uniforms.isVisible.value = true;
@@ -136,12 +158,19 @@ void Shader::passUniforms()
 	glUniformMatrix4fv(this->uniforms.viewMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.viewMatrix.value));
 	glUniform3fv(this->uniforms.viewPosition.location, 1, value_ptr(this->uniforms.viewPosition.value));
 
+	glUniform3fv(this->uniforms.viewPosition.location, 1, value_ptr(this->uniforms.viewPosition.value));
+	glUniform3fv(this->uniforms.lightPosition.location, 1, value_ptr(this->uniforms.lightPosition.value));
+	glUniform3fv(this->uniforms.lightColor.location, 1, value_ptr(this->uniforms.lightColor.value));
+	glUniform1f(this->uniforms.lightPower.location, this->uniforms.lightPower.value);
+
+	glUniform3fv(this->uniforms.materialAmbient.location, 1, value_ptr(this->uniforms.materialAmbient.value));
+	glUniform3fv(this->uniforms.materialDiffuse.location, 1, value_ptr(this->uniforms.materialDiffuse.value));
+	glUniform3fv(this->uniforms.materialSpecular.location, 1, value_ptr(this->uniforms.materialSpecular.value));
+	glUniform1f(this->uniforms.materialShininess.location, this->uniforms.materialShininess.value);
+
 	glUniform1f(this->uniforms.creationTime.location, this->uniforms.creationTime.value);
 	glUniform1f(this->uniforms.currentTime.location, this->uniforms.currentTime.value);
-	glUniform2f(
-		this->uniforms.screenSize.location,
-		static_cast<GLfloat>(this->uniforms.screenSize.value.x),
-		static_cast<GLfloat>(this->uniforms.screenSize.value.y));
+	glUniform2iv(this->uniforms.screenSize.location, 1, value_ptr(this->uniforms.screenSize.value));
 	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Game Objects/Material.h"
 #include "Buffers.h"
 #include "Shader.h"
 #include "Transform.h"
@@ -14,7 +15,7 @@ struct ShaderFiles;
 class Mesh
 {
 public:
-	Mesh(const string name, const BufferValues values, const ShaderFiles files, const Transform transform);
+	Mesh(const string name, const BufferValues values, const ShaderFiles files, const Transform transform, const Material material);
 	~Mesh() = default;
 
 	void render(Transform modelTransform) const;
@@ -25,5 +26,5 @@ private:
 	BufferValues values;
 	Transform transform;
 	// ShadingType shadingType;
-	// Material material;
+	Material material;
 };

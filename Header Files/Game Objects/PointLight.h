@@ -2,6 +2,7 @@
 
 #include "IGameObject.h"
 #include <glm/glm.hpp>
+#include <memory>
 
 using namespace std;
 using namespace glm;
@@ -11,13 +12,23 @@ class Mesh;
 class PointLight : public IGameObject
 {
 public:
-	PointLight();
+	// Singleton access.
+	static PointLight *I();
+
 	~PointLight() = default;
 
 	void update(const float deltaTime) override;
 
+	fvec3 getPosition() const;
+	fvec3 getColor() const;
+	float getPower() const;
+
 private:
-	const fvec3 position = fvec3(1, 0, 50);
-	const fvec3 color = fvec3(1);
-	const float power = 2.0f;
+	static unique_ptr<PointLight> instance;
+
+	PointLight();
+
+	fvec3 position;
+	fvec3 color;
+	float power;
 };
