@@ -21,6 +21,8 @@ public:
 
 	void update(const float deltaTime) override;
 	void render() override;
+	fmat4 makeProjectionMatrix() const;
+	fmat4 makeViewMatrix() const;
 
 private:
 	static unique_ptr<Camera> instance;
@@ -34,7 +36,6 @@ private:
 
 	unique_ptr<BoundingBox> boundingBox;
 
-	fmat4 makeProjectionMatrix() const;
 	void setTransform();
 	void setProjectionData();
 };

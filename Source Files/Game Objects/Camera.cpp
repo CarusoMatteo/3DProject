@@ -39,6 +39,11 @@ fmat4 Camera::makeProjectionMatrix() const
 	return perspective(radians(this->projection.fovY), aspect, this->projection.nearPlane, this->projection.farPlane);
 }
 
+fmat4 Camera::makeViewMatrix() const
+{
+	return this->transform.toMatrix();
+}
+
 void Camera::setTransform()
 {
 	const fvec3 position = fvec3(0);

@@ -1,49 +1,52 @@
 #pragma once
 
-#include <any>
+#include <glm/glm.hpp>
 #include <string>
 
 using namespace std;
 using namespace glm;
 
+template <typename T>
 struct Uniform
 {
 	string name;
 	unsigned int location = static_cast<unsigned int>(-1);
-	std::any value;
+	T value;
 };
+
 #ifdef USE_UBOs
 struct UniformValues
 {
-	mat4 projectionMatrix;
-	mat4 modelMatrix;
-	mat4 viewMatrix;
+	fmat4 projectionMatrix;
+	fmat4 modelMatrix;
+	fmat4 viewMatrix;
 	float creationTime;
 	float currentTime;
-	fvec2 screenSize;
-	bool isVisible;
+	ivec2 screenSize;
+	int isVisible;
 };
 #endif
+
 struct Uniforms
 {
-	Uniform projectionMatrix = {"projectionMatrix"};
-	Uniform modelMatrix = {"modelMatrix"};
-	Uniform viewMatrix = {"viewMatrix"};
-	Uniform creationTime = {"creationTime"};
-	Uniform currentTime = {"currentTime"};
-	Uniform screenSize = {"screenSize"};
-	Uniform isVisible = {"isVisible"};
+	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
+	Uniform<fmat4> modelMatrix = {"modelMatrix"};
+	Uniform<fmat4> viewMatrix = {"viewMatrix"};
+	Uniform<float> creationTime = {"creationTime"};
+	Uniform<float> currentTime = {"currentTime"};
+	Uniform<ivec2> screenSize = {"screenSize"};
+	Uniform<bool> isVisible = {"isVisible"};
 #ifdef USE_UBOs
 	UniformValues toValues()
 	{
 		return {
-			any_cast<mat4>(projectionMatrix.value),
-			any_cast<mat4>(modelMatrix.value),
-			any_cast<mat4>(viewMatrix.value),
-			any_cast<float>(creationTime.value),
-			any_cast<float>(currentTime.value),
-			any_cast<fvec2>(screenSize.value),
-			any_cast<bool>(isVisible.value)};
+			projectionMatrix.value,
+			modelMatrix.value,
+			viewMatrix.value,
+			creationTime.value,
+			currentTime.value,
+			screenSize.value,
+			isVisible.value};
 	}
 #endif
 };

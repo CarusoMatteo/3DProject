@@ -7,21 +7,27 @@ using namespace std;
 using namespace glm;
 
 struct ShaderFiles;
+struct Transform;
 
 class Shader
 {
 public:
 	Shader(const ShaderFiles files, const BufferValues bufferValues);
-	~Shader() = default;
+	~Shader();
 
-	void render();
+	void render(const Transform model, const BufferValues values);
 
 private:
 	unsigned int programId;
-	BuffersAddresses buffers;
+	BuffersAddresses addresses;
 	Uniforms uniforms;
 
 	void initVao();
 	void initVbos(const BufferValues bufferValues);
 	void initUniformReferences();
+
+	void updateUniformValues(const Transform model);
+	void passUniforms();
+	void draw(const BufferValues values) const;
+	void checkGLErrors();
 };
