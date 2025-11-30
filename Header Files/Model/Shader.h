@@ -1,30 +1,27 @@
 #pragma once
 
-#include <string>
+#include "Buffers.h"
+#include "Uniforms.h"
 
 using namespace std;
+using namespace glm;
 
 struct ShaderFiles;
 
 class Shader
 {
 public:
-	Shader(ShaderFiles files);
+	Shader(const ShaderFiles files, const BufferValues bufferValues);
 	~Shader() = default;
 
 	void render();
 
 private:
 	unsigned int programId;
-	unsigned int vaoAddress;
-	unsigned int verticesVboAddress;
-	unsigned int colorsVboAddress;
-	unsigned int normalsVboAddress;
-	unsigned int indicesVboAddress;
-	unsigned int textureCoordsVboAddress;
+	BuffersAddresses buffers;
+	Uniforms uniforms;
 
-	void buildShader(const string vertexShaderName, const string fragmentShaderName);
 	void initVao();
-	void initVbos();
+	void initVbos(const BufferValues bufferValues);
 	void initUniformReferences();
 };

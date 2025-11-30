@@ -9,6 +9,7 @@ Cube::Cube()
 	const ShaderFiles shaderFiles = {
 		"Shaders/Cube/Vertex.glsl",
 		"Shaders/Cube/Fragment.glsl"};
+
 	this->model = ModelFactory::cube(length, shaderFiles);
 }
 

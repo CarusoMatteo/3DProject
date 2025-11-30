@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\matte\Documents\Uni\Computer Graphics\.common\dependencies_GL_GLFW\include;C:\Users\matte\Documents\Uni\Computer Graphics\.common\dependencies_GL_GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -176,6 +177,7 @@
     <ClInclude Include="Header Files\InputEventsType.h" />
     <ClInclude Include="Header Files\Mesh.h" />
     <ClInclude Include="Header Files\Model\BoundingBox.h" />
+    <ClInclude Include="Header Files\Model\Buffers.h" />
     <ClInclude Include="Header Files\Model\Mesh.h" />
     <ClInclude Include="Header Files\Model\MeshFactory.h" />
     <ClInclude Include="Header Files\Model\Model.h" />
@@ -184,6 +186,7 @@
     <ClInclude Include="Header Files\Model\ShaderFiles.h" />
     <ClInclude Include="Header Files\Model\Transform.h" />
     <ClInclude Include="Header Files\CameraProjection.h" />
+    <ClInclude Include="Header Files\Model\Uniforms.h" />
     <ClInclude Include="Header Files\Random.h" />
     <ClInclude Include="Header Files\Scenes\IScene.h" />
     <ClInclude Include="Header Files\Scenes\Scene.h" />

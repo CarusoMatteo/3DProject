@@ -1,8 +1,10 @@
+#include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/MeshFactory.h"
 #include "../../Header Files/Model/ShaderFiles.h"
 #include "../../Header Files/Model/Transform.h"
 #include <glm/glm.hpp>
+#include <memory>
 #include <vector>
 
 using namespace std;
@@ -12,7 +14,9 @@ shared_ptr<Mesh> MeshFactory::cube(float length, ShaderFiles files, Transform tr
 {
 	vector<fvec3> vertices;
 	vector<fvec4> colors;
+	vector<fvec3> normals;
 	vector<unsigned int> indices;
+	vector<fvec2> textures;
 	const fvec3 anchor = fvec3(0);
 
 	const float halfLength = length / 2.0f;
@@ -91,5 +95,12 @@ shared_ptr<Mesh> MeshFactory::cube(float length, ShaderFiles files, Transform tr
 	// colors.push_back(fvec4(0.0, 1.0, 0.0, 1.0));
 	// indices.push_back(nv - 1);
 
-	return shared_ptr<Mesh>(new Mesh(vertices, colors, indices, files, transform));
+	const BufferValues bufferValues = {
+		vertices,
+		colors,
+		normals,
+		indices,
+		textures};
+
+	return shared_ptr<Mesh>(new Mesh(bufferValues, files, transform));
 }
