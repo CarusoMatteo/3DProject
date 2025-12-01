@@ -18,7 +18,9 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 
 void Scene::updateGameObjects(float deltaTime)
 {
+	PointLight::I()->update(deltaTime);
 	Camera::I()->update(deltaTime);
+	this->plane->update(deltaTime);
 	this->cube->update(deltaTime);
 }
 
