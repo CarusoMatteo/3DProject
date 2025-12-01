@@ -29,6 +29,11 @@ Camera::Camera()
 
 void Camera::update(float deltaTime)
 {
+	moveFirstPerson(deltaTime);
+}
+
+void Camera::moveAlongAxes(float deltaTime)
+{
 	fvec3 movementDirection = fvec3(0);
 	if (InputEvents::getButtonStates().at(InputEventsType::FORWARD))
 		movementDirection.z -= 1.0f;
@@ -47,6 +52,53 @@ void Camera::update(float deltaTime)
 		movementDirection = normalize(movementDirection);
 
 	this->transform.position += movementDirection * speed * deltaTime;
+}
+
+void Camera::moveFirstPerson(float deltaTime)
+{
+	fvec3 movementDirection = fvec3(0);
+	if (InputEvents::getButtonStates().at(InputEventsType::FORWARD))
+	{
+		this->transform.direction = this->transform.target - this->transform.position;
+		this->transform.position += this->transform.direction * this->speed * deltaTime;
+		this->transform.target = this->transform.position + this->transform.direction;
+	}
+	if (InputEvents::getButtonStates().at(InputEventsType::BACKWARD))
+	{
+		this->transform.direction = this->transform.target - this->transform.position;
+		this->transform.position -= this->transform.direction * this->speed * deltaTime;
+		this->transform.target = this->transform.position + this->transform.direction;
+	}
+	if (InputEvents::getButtonStates().at(InputEventsType::LEFT))
+	{
+		this->transform.direction = this->transform.target - this->transform.position;
+		fvec3 slide_vector = cross(this->transform.direction, this->transform.up) * this->speed * deltaTime; // Perpendicular to direction and up
+		this->transform.position -= slide_vector;
+		this->transform.target -= slide_vector;
+	}
+	if (InputEvents::getButtonStates().at(InputEventsType::RIGHT))
+	{
+		this->transform.direction = this->transform.target - this->transform.position;
+		fvec3 slide_vector = cross(this->transform.direction, this->transform.up) * this->speed * deltaTime; // Perpendicular to direction and up
+		this->transform.position += slide_vector;
+		this->transform.target += slide_vector;
+	}
+	if (InputEvents::getButtonStates().at(InputEventsType::UP))
+	{
+		this->transform.direction = this->transform.target - this->transform.position;
+		fvec3 slide_vector = normalize(cross(this->transform.direction, this->transform.up));		  // Perpendicular to direction and side
+		fvec3 upDirection = cross(this->transform.direction, slide_vector) * this->speed * deltaTime; // Up vector with inverse cross product
+		this->transform.position -= upDirection;
+		this->transform.target -= upDirection;
+	}
+	if (InputEvents::getButtonStates().at(InputEventsType::DOWN))
+	{
+		this->transform.direction = this->transform.target - this->transform.position;
+		fvec3 slide_vector = normalize(cross(this->transform.direction, this->transform.up));
+		fvec3 upDirection = cross(this->transform.direction, slide_vector) * this->speed * deltaTime;
+		this->transform.position += upDirection;
+		this->transform.target += upDirection;
+	}
 }
 
 fmat4 Camera::makeProjectionMatrix() const
@@ -69,10 +121,10 @@ fvec3 Camera::getPosition() const
 
 void Camera::setTransform()
 {
-	const fvec3 position = fvec3(1.0f, 1.0f, 1.0f) * 2.0f;
-	const fvec3 target = fvec3(0);
-	const fvec3 up = fvec3(0, 1, 0);
-	const fvec3 direction = target - position;
+	fvec3 position = fvec3(0, 0, 1);
+	fvec3 target = fvec3(0);
+	fvec3 up = fvec3(0, 1, 0);
+	fvec3 direction = target - position;
 
 	this->transform = {position, target, up, direction};
 }

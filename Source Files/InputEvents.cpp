@@ -62,10 +62,12 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 			buttonStates->at(InputEventsType::UP) = false;
 		break;
 	case GLFW_KEY_LEFT_SHIFT:
+	case GLFW_KEY_C:
 		if (action == GLFW_PRESS)
 			buttonStates->at(InputEventsType::DOWN) = true;
 		else if (action == GLFW_RELEASE)
 			buttonStates->at(InputEventsType::DOWN) = false;
+		break;
 	default:
 		break;
 	}

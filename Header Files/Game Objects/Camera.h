@@ -34,6 +34,8 @@ private:
 
 	unique_ptr<BoundingBox> boundingBox;
 
+	void moveAlongAxes(float deltaTime);
+	void moveFirstPerson(float deltaTime);
 	void setTransform();
 	void setProjectionData();
 };
