@@ -1,5 +1,7 @@
 #include "../../Header Files/Gui/Gui.h"
+#include "../../Header Files/Gui/IGui.h"
 #include "../../Header Files/InputEvents.h"
+#include "../../Header Files/Model/Shader.h"
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
@@ -47,9 +49,11 @@ void Gui::settingsWindow()
 
 	ImGui::ColorEdit3("Colore di Sfondo", (float *)this->clearColor.get());
 
-	// TODO:
-	// ImGui::Text("Coordinate Mouse relative alla finestra GLFW: (%.1f, %.1f)", mousePosition->x, mousePosition->y);
-	// ImGui::Checkbox("Wireframe", Mesh::getIsWireframeRef());
+	fvec2 mousePosition = InputEvents::getCursorPosition();
+
+	ImGui::Text("Coordinate Mouse relative alla finestra GLFW: (%.1f, %.1f)", mousePosition.x, mousePosition.y);
+	ImGui::Checkbox("Wireframe", Shader::getDrawWireframeFlag().get());
+	ImGui::Checkbox("Ancora", Shader::getDrawAnchorFlag().get());
 	// ImGui::Checkbox("Bounding Box", MeshBB::shouldDrawBoundingBoxRef());
 
 	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);

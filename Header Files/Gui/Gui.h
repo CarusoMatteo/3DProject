@@ -2,6 +2,7 @@
 
 #include "IGui.h"
 #include <glm/glm.hpp>
+#include <memory>
 
 using namespace glm;
 

@@ -3,6 +3,7 @@
 #include "ButtonStates.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <memory>
 
 using namespace glm;
 using namespace std;
@@ -18,13 +19,12 @@ public:
 	static void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 	// Add more callbacks as needed here
 
-	static ButtonStates *getButtonStates();
-	static dvec2 *getCursorPosition();
+	static ButtonStates getButtonStates();
+	static fvec2 getCursorPosition();
 
 private:
-	const static ButtonStates buttonStates;
-	const static dvec2 cursorPosition;
+	static unique_ptr<ButtonStates> buttonStates;
+	static unique_ptr<fvec2> cursorPosition;
 
 	InputEvents() = default;
-	~InputEvents() = default;
 };

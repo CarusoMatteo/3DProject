@@ -8,11 +8,11 @@ using namespace std;
 
 struct Material
 {
-	string name;
-	fvec3 ambient;
-	fvec3 diffuse;
-	fvec3 specular;
-	float shininess;
+	string name = "";
+	fvec3 ambient = fvec3(0);
+	fvec3 diffuse = fvec3(0);
+	fvec3 specular = fvec3(0);
+	float shininess = 0.0f;
 };
 
 struct Materials
