@@ -158,7 +158,6 @@ void Shader::passUniforms()
 	glUniformMatrix4fv(this->uniforms.viewMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.viewMatrix.value));
 	glUniform3fv(this->uniforms.viewPosition.location, 1, value_ptr(this->uniforms.viewPosition.value));
 
-	glUniform3fv(this->uniforms.viewPosition.location, 1, value_ptr(this->uniforms.viewPosition.value));
 	glUniform3fv(this->uniforms.lightPosition.location, 1, value_ptr(this->uniforms.lightPosition.value));
 	glUniform3fv(this->uniforms.lightColor.location, 1, value_ptr(this->uniforms.lightColor.value));
 	glUniform1f(this->uniforms.lightPower.location, this->uniforms.lightPower.value);

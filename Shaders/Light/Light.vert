@@ -39,10 +39,10 @@ void main()
 
 	// Transform the vertex normal to view coordinates.
 	// Since normals are not points, we cannot do View*Model*Normal.
-	vec3 N = normalize(transpose(inverse(mat3(viewMatrix * modelMatrix))) * vertexNormal);
+	vec3 N = normalize(mat3(transpose(inverse(viewMatrix * modelMatrix))) * vertexNormal);
 
 	// Find light direction (light -> point)
-	vec3 L = normalize((eyeLightPos - eyePosition).xyz);
+	vec3 L = normalize(eyeLightPos.xyz - eyePosition.xyz);
 
 	// Find view direction (view -> point)
 	vec3 V = normalize(viewPosition - eyePosition.xyz);
@@ -54,7 +54,7 @@ void main()
 	vec3 ambient = light.power * material.ambient;
 
 	// Angle between light and normal
-	float cos_theta = max(dot(L, N), 0);
+	float cos_theta = max(dot(N, L), 0);
 	// I_d * k_d * cos(theta)
 	vec3 diffuse = light.power * cos_theta * material.diffuse;
 
@@ -64,5 +64,5 @@ void main()
 	vec3 specular = light.power * cos_alpha_n * material.specular; 
 
 	// The original color is given by diffuse, no longer by aColor
-	outColor = vec4(ambient + diffuse + specular, 0.0);
+	outColor = vec4(ambient + diffuse + specular, 1.0);
 }
