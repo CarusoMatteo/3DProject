@@ -16,13 +16,7 @@ Mesh::Mesh(const string name, const BufferValues values, const ShaderFiles files
 	this->material = material;
 }
 
-#include <iostream>
-using namespace std;
-
 void Mesh::render(Transform modelTransform) const
 {
-	cout << "Rendering Cube\t";
-	cout << "Position: " << this->transform.position.x << ", " << this->transform.position.y << ", " << this->transform.position.z << endl;
-
 	this->shader->render(modelTransform, this->transform, this->values, this->material);
 }
