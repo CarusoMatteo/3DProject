@@ -1,3 +1,4 @@
+#include "../../Header Files/Game Objects/Material.h"
 #include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/MeshFactory.h"
@@ -7,7 +8,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "../../Header Files/Game Objects/Material.h"
 
 using namespace std;
 using namespace glm;
@@ -39,7 +39,7 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const S
 		fvec4(1)};
 	const vector<unsigned int> indices = {
 		0, 1, 2,
-		2, 3, 0,
+		0, 2, 3,
 		// Anchor
 		4};
 	const vector<fvec3> normals = {
@@ -67,7 +67,7 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		fvec3(0.1, 0.0, 0.0),
 		fvec3(0.6, 0.1, 0.1),
 		fvec3(0.7, 0.6, 0.6),
-		150.0f};
+		15000.0f};
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {

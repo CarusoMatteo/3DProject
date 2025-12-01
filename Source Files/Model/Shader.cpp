@@ -1,6 +1,6 @@
 #include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Game Objects/Material.h"
+#include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/ShaderFiles.h"
@@ -96,11 +96,11 @@ void Shader::initVbos(const BufferValues values)
 	glEnableVertexAttribArray(2);
 
 	// Generates and makes active the VBO for the texture coordinates
-	glGenBuffers(1, &this->addresses.textures);
-	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textures);
-	glBufferData(GL_ARRAY_BUFFER, values.textures.size() * sizeof(fvec2), values.textures.data(), GL_STATIC_DRAW);
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
-	glEnableVertexAttribArray(3);
+	// glGenBuffers(1, &this->addresses.textures);
+	// glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textures);
+	// glBufferData(GL_ARRAY_BUFFER, values.textures.size() * sizeof(fvec2), values.textures.data(), GL_STATIC_DRAW);
+	// glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	// glEnableVertexAttribArray(3);
 
 	// Generates and makes active the EBO for the indices
 	glGenBuffers(1, &this->addresses.indices);
@@ -148,7 +148,6 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
-	this->uniforms.isVisible.value = true;
 }
 
 void Shader::passUniforms()

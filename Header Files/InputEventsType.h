@@ -1,11 +1,12 @@
 #pragma once
 
-enum class InputEventsType
+enum InputEventsType
 {
-	MOVE_UP,
-	MOVE_DOWN,
-	MOVE_LEFT,
-	MOVE_RIGHT,
-	SHOOT,
+	FORWARD,
+	BACKWARD,
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN,
 	count
 };

@@ -24,7 +24,7 @@ void Scene::updateGameObjects(float deltaTime)
 
 void Scene::renderScene()
 {
-	// this->plane->render();
+	this->plane->render();
 	this->cube->render();
 	this->gui->drawGui();
 }

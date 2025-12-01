@@ -1,5 +1,6 @@
 #include "../Header Files/ButtonStates.h"
 #include "../Header Files/InputEvents.h"
+#include "../Header Files/InputEventsType.h"
 #include "../Header Files/Window.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -30,6 +31,41 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 		if (action == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, true);
 		break;
+	case GLFW_KEY_W:
+		if (action == GLFW_PRESS)
+			buttonStates->at(InputEventsType::FORWARD) = true;
+		else if (action == GLFW_RELEASE)
+			buttonStates->at(InputEventsType::FORWARD) = false;
+		break;
+	case GLFW_KEY_S:
+		if (action == GLFW_PRESS)
+			buttonStates->at(InputEventsType::BACKWARD) = true;
+		else if (action == GLFW_RELEASE)
+			buttonStates->at(InputEventsType::BACKWARD) = false;
+		break;
+	case GLFW_KEY_A:
+		if (action == GLFW_PRESS)
+			buttonStates->at(InputEventsType::LEFT) = true;
+		else if (action == GLFW_RELEASE)
+			buttonStates->at(InputEventsType::LEFT) = false;
+		break;
+	case GLFW_KEY_D:
+		if (action == GLFW_PRESS)
+			buttonStates->at(InputEventsType::RIGHT) = true;
+		else if (action == GLFW_RELEASE)
+			buttonStates->at(InputEventsType::RIGHT) = false;
+		break;
+	case GLFW_KEY_SPACE:
+		if (action == GLFW_PRESS)
+			buttonStates->at(InputEventsType::UP) = true;
+		else if (action == GLFW_RELEASE)
+			buttonStates->at(InputEventsType::UP) = false;
+		break;
+	case GLFW_KEY_LEFT_SHIFT:
+		if (action == GLFW_PRESS)
+			buttonStates->at(InputEventsType::DOWN) = true;
+		else if (action == GLFW_RELEASE)
+			buttonStates->at(InputEventsType::DOWN) = false;
 	default:
 		break;
 	}

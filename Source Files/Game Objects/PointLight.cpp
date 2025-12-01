@@ -18,7 +18,7 @@ PointLight *PointLight::I()
 
 PointLight::PointLight()
 {
-	this->position = fvec3(1, 0, 50);
+	this->position = fvec3(-10, 10, 10);
 	this->color = fvec3(1);
 	this->power = 2.0f;
 }
