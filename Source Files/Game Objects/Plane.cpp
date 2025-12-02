@@ -14,8 +14,8 @@ Plane::Plane()
 	const string name = "Plane";
 	const fvec2 size = fvec2(1);
 	const ShaderFiles shaderFiles = {
-		"Shaders/Light/Light.vert",
-		"Shaders/Light/Light.frag"};
+		"Shaders/Phong/Phong.vert",
+		"Shaders/Phong/Phong.frag"};
 
 	Transform planeTransform = {
 		fvec3(0, -1.5f, 0),

@@ -2,6 +2,7 @@
 #include "../../Header Files/Gui/IGui.h"
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Game Objects/PointLight.h"
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
@@ -55,6 +56,11 @@ void Gui::settingsWindow()
 	ImGui::Checkbox("Wireframe", Shader::getDrawWireframeFlag().get());
 	ImGui::Checkbox("Ancora", Shader::getDrawAnchorFlag().get());
 	// ImGui::Checkbox("Bounding Box", MeshBB::shouldDrawBoundingBoxRef());
+
+	fvec3 *lightPositionPtr = PointLight::I()->getPositionPtr();
+	ImGui::SliderFloat("Light position x", &lightPositionPtr->x, -50.0f, 50.0f);
+	ImGui::SliderFloat("Light position y", &lightPositionPtr->y, -50.0f, 50.0f);
+	ImGui::SliderFloat("Light position z", &lightPositionPtr->z, -50.0f, 50.0f);
 
 	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
 }

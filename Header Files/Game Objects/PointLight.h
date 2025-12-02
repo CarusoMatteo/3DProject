@@ -20,6 +20,7 @@ public:
 	void update(const float deltaTime) override;
 
 	fvec3 getPosition() const;
+	fvec3 *getPositionPtr();
 	fvec3 getColor() const;
 	float getPower() const;
 

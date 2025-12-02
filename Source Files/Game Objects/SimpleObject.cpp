@@ -14,8 +14,8 @@ SimpleObject::SimpleObject()
 	const string name = "SimpleObject";
 	const fvec3 radius = fvec3(1.0f);
 	const ShaderFiles shaderFiles = {
-		"Shaders/Light/Light.vert",
-		"Shaders/Light/Light.frag"};
+		"Shaders/Phong/Phong.vert",
+		"Shaders/Phong/Phong.frag"};
 
 	this->model = ModelFactory::sphere(name, radius, shaderFiles, Transform());
 }

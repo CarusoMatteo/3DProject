@@ -139,16 +139,16 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const ShaderFiles files, Transform transform)
 {
 	// Number of subdivisions along the y axis
-	const int stacks = 30;
+	const int stacks = 100;
 	// Number of subdivisions along the x axis
-	const int slices = 30;
+	const int slices = 100;
 	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0); // Tecnically not used if we use the Phong illumination shader.
 	const Material material = {
 		"Red Plastic",
 		fvec3(0.1, 0.0, 0.0),
 		fvec3(0.6, 0.1, 0.1),
 		fvec3(0.7, 0.6, 0.6),
-		15000.0f};
+		150.0f};
 
 	transform.anchorPoint = fvec3(0);
 	vector<fvec3> vertices;

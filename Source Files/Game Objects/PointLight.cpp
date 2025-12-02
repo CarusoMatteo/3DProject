@@ -27,6 +27,11 @@ void PointLight::update(float deltaTime)
 {
 }
 
+fvec3 *PointLight::getPositionPtr()
+{
+	return &this->position;
+}
+
 fvec3 PointLight::getPosition() const
 {
 	return this->position;
