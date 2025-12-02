@@ -4,6 +4,7 @@
 #include "../../Header Files/Model/MeshFactory.h"
 #include "../../Header Files/Model/ShaderFiles.h"
 #include "../../Header Files/Model/Transform.h"
+#include <cmath>
 #include <glm/glm.hpp>
 #include <memory>
 #include <string>
@@ -191,7 +192,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 
 	vertices.push_back(transform.anchorPoint);
 	colors.push_back(fvec4(1));
-	indices.push_back(vertices.size() - 1);
+	indices.push_back(static_cast<unsigned int>(vertices.size() - 1));
 
 	const BufferValues bufferValues = {
 		vertices,
