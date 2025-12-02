@@ -8,11 +8,11 @@ using namespace std;
 
 class Mesh;
 
-class Cube : public IVisibleGameObject
+class SimpleObject : public IVisibleGameObject
 {
 public:
-	Cube();
-	~Cube() = default;
+	SimpleObject();
+	~SimpleObject() = default;
 
 	void update(const float deltaTime) override;
 	void render() override;

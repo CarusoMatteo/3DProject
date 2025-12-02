@@ -135,6 +135,74 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, files, transform, material));
 }
 
+shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const ShaderFiles files, Transform transform)
+{
+	// Number of subdivisions along the y axis
+	const int stacks = 30;
+	// Number of subdivisions along the x axis
+	const int slices = 30;
+	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0); // Tecnically not used if we use the Phong illumination shader.
+	const Material material = {
+		"Red Plastic",
+		fvec3(0.1, 0.0, 0.0),
+		fvec3(0.6, 0.1, 0.1),
+		fvec3(0.7, 0.6, 0.6),
+		15000.0f};
+
+	transform.anchorPoint = fvec3(0);
+	vector<fvec3> vertices;
+	vector<fvec4> colors;
+	vector<fvec3> normals;
+	vector<unsigned int> indices;
+	vector<fvec2> textures; // Not set
+
+	for (int i = 0; i <= stacks; i++)
+	{
+		const float V = i / static_cast<float>(stacks);
+		const float phi = V * pi<float>();
+
+		// Loop through slices
+		for (int j = 0; j <= slices; j++)
+		{
+			const float U = j / static_cast<float>(slices);
+			const float theta = U * 2 * pi<float>();
+
+			// Find the vertex position
+			const float x = radius.x * (cosf(theta) * sinf(phi));
+			const float y = radius.y * cosf(phi);
+			const float z = radius.z * sinf(theta) * sinf(phi);
+
+			vertices.push_back(fvec3(x, y, z));
+			colors.push_back(color);
+			normals.push_back(fvec3(x, y, z));
+		}
+	}
+
+	// Find the index
+	for (int i = 0; i < slices * stacks + slices; i++)
+	{
+		indices.push_back(i);
+		indices.push_back(i + slices + 1);
+		indices.push_back(i + slices);
+		indices.push_back(i + slices + 1);
+		indices.push_back(i);
+		indices.push_back(i + 1);
+	}
+
+	vertices.push_back(transform.anchorPoint);
+	colors.push_back(fvec4(1));
+	indices.push_back(vertices.size() - 1);
+
+	const BufferValues bufferValues = {
+		vertices,
+		colors,
+		normals,
+		indices,
+		textures};
+
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, files, transform, material));
+}
+
 // Consider adding anchor to the vertex and index vector
 // mesh->vertices.push_back(anchor); // Memorizzo come ultimo vertice l'ancora per poterla visualizzare
 // mesh->colors.push_back(anchorColor);

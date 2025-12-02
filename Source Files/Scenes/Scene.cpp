@@ -1,5 +1,5 @@
 #include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/Game Objects/Cube.h"
+#include "../../Header Files/Game Objects/SimpleObject.h"
 #include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Gui/Gui.h"
@@ -11,7 +11,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I();
 	this->plane = unique_ptr<Plane>(new Plane());
-	this->cube = unique_ptr<Cube>(new Cube());
+	this->cube = unique_ptr<SimpleObject>(new SimpleObject());
 	PointLight::I();
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 }

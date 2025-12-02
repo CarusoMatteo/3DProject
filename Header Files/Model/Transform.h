@@ -5,20 +5,25 @@
 
 using namespace glm;
 
+struct Rotation
+{
+	float angle = 0.0f;
+	fvec3 axis = fvec3(0);
+};
+
 struct Transform
 {
 	fvec3 position = fvec3(0);
-	float rotation = 0.0f;
-	fvec3 rotationAxis = fvec3(0);
+	Rotation rotation;
 	fvec3 scale = fvec3(1);
 	fvec3 anchorPoint = fvec3(0);
 
 	fmat4 toMatrix() const
 	{
 		fmat4 transformMatrix = fmat4(1.0f);
-		transformMatrix = glm::translate(transformMatrix, position);
-		if (rotationAxis != fvec3(0))
-			transformMatrix = glm::rotate(transformMatrix, radians(rotation), rotationAxis);
+		transformMatrix = translate(transformMatrix, position);
+		if (rotation.axis != fvec3(0))
+			transformMatrix = rotate(transformMatrix, radians(rotation.angle), rotation.axis);
 		transformMatrix = glm::scale(transformMatrix, scale);
 		return transformMatrix;
 	}

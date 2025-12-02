@@ -26,7 +26,7 @@ public:
 private:
 	static unique_ptr<Camera> instance;
 
-	const float speed = 5.0f;
+	const float speed = 2.5f;
 	Camera();
 
 	CameraTransform transform;

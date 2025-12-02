@@ -45,3 +45,20 @@ shared_ptr<Model> ModelFactory::cube(const string name, const float length, cons
 
 	return shared_ptr<Model>(new Model(modelTransform, {cubeMesh}));
 }
+
+shared_ptr<Model> ModelFactory::sphere(const string name, const fvec3 radius, const ShaderFiles files, Transform modelTransform)
+{
+	const fvec3 spherePosition(0.0f);
+	const float sphereRotation = 0.0f;
+	const fvec3 sphereRotationAxis(0.0f);
+
+	Transform sphereTransform = {
+		spherePosition,
+		sphereRotation,
+		sphereRotationAxis,
+		radius};
+
+	shared_ptr<Mesh> sphereMesh = MeshFactory::sphere(name, radius, files, sphereTransform);
+
+	return shared_ptr<Model>(new Model(modelTransform, {sphereMesh}));
+}

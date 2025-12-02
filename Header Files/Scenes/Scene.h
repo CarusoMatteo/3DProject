@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../Game Objects/Cube.h"
+#include "../Game Objects/SimpleObject.h"
 #include "../Game Objects/Plane.h"
 #include "../Game Objects/PointLight.h"
 #include "../Gui/Gui.h"
@@ -25,7 +25,7 @@ private:
 	// unique_ptr<Camera> camera;
 
 	unique_ptr<Plane> plane;
-	unique_ptr<Cube> cube;
+	unique_ptr<SimpleObject> cube;
 	unique_ptr<PointLight> light;
 	unique_ptr<Gui> gui;
 };

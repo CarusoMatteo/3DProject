@@ -121,7 +121,7 @@ fvec3 Camera::getPosition() const
 
 void Camera::setTransform()
 {
-	fvec3 position = fvec3(0, 0, 1);
+	fvec3 position = fvec3(0, 0, 5);
 	fvec3 target = fvec3(0);
 	fvec3 up = fvec3(0, 1, 0);
 	fvec3 direction = target - position;
