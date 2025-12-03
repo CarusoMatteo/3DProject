@@ -27,9 +27,20 @@ Plane::Plane()
 
 void Plane::update(float deltaTime)
 {
+	return;
 }
 
 void Plane::render()
 {
 	this->model->render();
+}
+
+Transform Plane::getTransform() const
+{
+	return this->model->getTransform();
+}
+
+void Plane::setTransform(const Transform transform)
+{
+	this->model->setTransform(transform);
 }

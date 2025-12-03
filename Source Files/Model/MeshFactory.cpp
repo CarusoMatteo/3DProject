@@ -16,12 +16,7 @@ using namespace glm;
 shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const ShaderFiles files, Transform transform)
 {
 	const fvec2 halfSize = size / 2.0f;
-	const Material material = {
-		"Snow White",
-		fvec3(0.2, 0.2, 0.2),
-		fvec3(0.95, 0.96, 0.98),
-		fvec3(0.8, 0.8, 0.8),
-		1.78125f};
+	const Material material = Materials().snowWhite;
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -63,12 +58,7 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const S
 shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const ShaderFiles files, Transform transform)
 {
 	const float halfLength = length / 2.0f;
-	const Material material = {
-		"Red Plastic",
-		fvec3(0.1, 0.0, 0.0),
-		fvec3(0.6, 0.1, 0.1),
-		fvec3(0.7, 0.6, 0.6),
-		15000.0f};
+	const Material material = Materials().redPlastic;
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -143,12 +133,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	// Number of subdivisions along the x axis
 	const int slices = 100;
 	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0); // Tecnically not used if we use the Phong illumination shader.
-	const Material material = {
-		"Red Plastic",
-		fvec3(0.1, 0.0, 0.0),
-		fvec3(0.6, 0.1, 0.1),
-		fvec3(0.7, 0.6, 0.6),
-		150.0f};
+	const Material material = Materials().brass;
 
 	transform.anchorPoint = fvec3(0);
 	vector<fvec3> vertices;

@@ -45,9 +45,6 @@
     <ClCompile Include="..\.common\ImGui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Game Objects\SimpleObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source Files\Gui\Gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,6 +96,12 @@
     <ClCompile Include="Source Files\Game Objects\PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\Game Objects\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Game Objects\Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\.common\ImGui\imconfig.h">
@@ -127,9 +130,6 @@
     </ClInclude>
     <ClInclude Include="..\.common\ImGui\imstb_truetype.h">
       <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Game Objects\SimpleObject.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Game Objects\IGameObject.h">
       <Filter>Header Files</Filter>
@@ -219,6 +219,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Model\Uniforms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Game Objects\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Game Objects\Sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

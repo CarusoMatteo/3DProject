@@ -1,12 +1,13 @@
 ﻿#pragma once
 
-#include "../Game Objects/SimpleObject.h"
+#include "../Game Objects/Cube.h"
 #include "../Game Objects/Plane.h"
-#include "../Game Objects/PointLight.h"
+#include "../Game Objects/Sphere.h"
 #include "../Gui/Gui.h"
 #include "IScene.h"
 #include <glm/glm.hpp>
 #include <memory>
+#include <vector>
 
 using namespace glm;
 using namespace std;
@@ -23,9 +24,14 @@ public:
 private:
 	// Do not save. Use singleton access instead
 	// unique_ptr<Camera> camera;
+	// Do not save. Use singleton access instead
+	// unique_ptr<PointLight> light;
 
 	unique_ptr<Plane> plane;
-	unique_ptr<SimpleObject> cube;
-	unique_ptr<PointLight> light;
+	vector<shared_ptr<Cube>> cubes;
+	vector<shared_ptr<Sphere>> spheres;
+
 	unique_ptr<Gui> gui;
+
+	void scatterObjects();
 };

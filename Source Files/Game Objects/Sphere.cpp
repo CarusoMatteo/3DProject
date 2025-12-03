@@ -1,4 +1,4 @@
-#include "../../Header Files/Game Objects/SimpleObject.h"
+#include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/ShaderFiles.h"
 #include "../../Header Files/Model/Transform.h"
@@ -9,9 +9,9 @@
 using namespace std;
 using namespace glm;
 
-SimpleObject::SimpleObject()
+Sphere::Sphere()
 {
-	const string name = "SimpleObject";
+	const string name = "Sphere";
 	const fvec3 radius = fvec3(1.0f);
 	const ShaderFiles shaderFiles = {
 		"Shaders/Phong/Phong.vert",
@@ -20,11 +20,21 @@ SimpleObject::SimpleObject()
 	this->model = ModelFactory::sphere(name, radius, shaderFiles, Transform());
 }
 
-void SimpleObject::update(float deltaTime)
+void Sphere::update(float deltaTime)
 {
 }
 
-void SimpleObject::render()
+void Sphere::render()
 {
 	this->model->render();
+}
+
+Transform Sphere::getTransform() const
+{
+	return this->model->getTransform();
+}
+
+void Sphere::setTransform(const Transform transform)
+{
+	this->model->setTransform(transform);
 }

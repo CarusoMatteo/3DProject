@@ -14,7 +14,6 @@ struct Transform;
 class Shader
 {
 public:
-	Shader(const ShaderFiles files, const BufferValues bufferValues);
 	~Shader();
 
 	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material);
@@ -22,7 +21,9 @@ public:
 	static shared_ptr<bool> getDrawWireframeFlag();
 	static shared_ptr<bool> getDrawAnchorFlag();
 
-private:
+protected:
+	Shader(const ShaderFiles files, const BufferValues bufferValues);
+
 	static shared_ptr<bool> drawWireframe;
 	static shared_ptr<bool> drawAnchor;
 
@@ -38,4 +39,16 @@ private:
 	void passUniforms();
 	void draw(const BufferValues values) const;
 	void checkGLErrors();
+};
+
+class PhongShader : public Shader
+{
+public:
+	PhongShader(const BufferValues bufferValues);
+};
+
+class BlinnPhongShader : public Shader
+{
+public:
+	BlinnPhongShader(const BufferValues bufferValues);
 };

@@ -17,3 +17,13 @@ void Model::render() const
 		mesh->render(this->transform);
 	}
 }
+
+Transform Model::getTransform() const
+{
+	return this->transform;
+}
+
+void Model::setTransform(const Transform transform)
+{
+	this->transform = transform;
+}

@@ -7,15 +7,19 @@
 using namespace std;
 
 class Mesh;
+struct Transform;
 
-class SimpleObject : public IVisibleGameObject
+class Cube : public IVisibleGameObject
 {
 public:
-	SimpleObject();
-	~SimpleObject() = default;
+	Cube();
+	~Cube() = default;
 
 	void update(const float deltaTime) override;
 	void render() override;
+
+	Transform getTransform() const override;
+	void setTransform(const Transform transform) override;
 
 private:
 	shared_ptr<Model> model;

@@ -22,6 +22,8 @@
 using namespace std;
 using namespace glm;
 
+#pragma region Shader
+
 shared_ptr<bool> Shader::drawWireframe = make_shared<bool>(false);
 shared_ptr<bool> Shader::drawAnchor = make_shared<bool>(false);
 
@@ -208,3 +210,23 @@ void Shader::checkGLErrors()
 		throw runtime_error("OpenGL encountered an error.");
 	}
 }
+
+#pragma endregion
+
+#pragma region PhongShader
+
+PhongShader::PhongShader(const BufferValues bufferValues)
+	: Shader({"Shaders/Phong.vert", "Shaders/Phong.frag"}, bufferValues)
+{
+}
+
+#pragma endregion
+
+#pragma region BlinnPhongShader
+
+BlinnPhongShader::BlinnPhongShader(const BufferValues bufferValues)
+	: Shader({"Shaders/BlinnPhong.vert", "Shaders/BlinnPhong.frag"}, bufferValues)
+{
+}
+
+#pragma endregion

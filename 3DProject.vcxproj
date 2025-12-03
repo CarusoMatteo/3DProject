@@ -139,9 +139,10 @@
     <ClCompile Include="..\.common\ImGui\imgui_tables.cpp" />
     <ClCompile Include="..\.common\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source Files\Game Objects\Camera.cpp" />
-    <ClCompile Include="Source Files\Game Objects\SimpleObject.cpp" />
+    <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
     <ClCompile Include="Source Files\Game Objects\Plane.cpp" />
     <ClCompile Include="Source Files\Game Objects\PointLight.cpp" />
+    <ClCompile Include="Source Files\Game Objects\Sphere.cpp" />
     <ClCompile Include="Source Files\glad.c" />
     <ClCompile Include="Source Files\Gui\Gui.cpp" />
     <ClCompile Include="Source Files\InputEvents.cpp" />
@@ -169,13 +170,14 @@
     <ClInclude Include="..\.common\ImGui\imstb_truetype.h" />
     <ClInclude Include="Header Files\ButtonStates.h" />
     <ClInclude Include="Header Files\Game Objects\Camera.h" />
-    <ClInclude Include="Header Files\Game Objects\SimpleObject.h" />
+    <ClInclude Include="Header Files\Game Objects\Cube.h" />
     <ClInclude Include="Header Files\Game Objects\IGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\Material.h" />
     <ClInclude Include="Header Files\Game Objects\Plane.h" />
     <ClInclude Include="Header Files\Game Objects\PointLight.h" />
+    <ClInclude Include="Header Files\Game Objects\Sphere.h" />
     <ClInclude Include="Header Files\Gui\Gui.h" />
     <ClInclude Include="Header Files\Gui\IGui.h" />
     <ClInclude Include="Header Files\InputEvents.h" />

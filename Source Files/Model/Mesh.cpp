@@ -11,7 +11,7 @@ Mesh::Mesh(const string name, const BufferValues values, const ShaderFiles files
 {
 	this->name = name;
 	this->values = values;
-	this->shader = unique_ptr<Shader>(new Shader(files, values));
+	this->shader = unique_ptr<PhongShader>(new PhongShader(values));
 	this->transform = transform;
 	this->material = material;
 }

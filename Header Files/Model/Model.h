@@ -16,6 +16,9 @@ public:
 
 	void render() const;
 
+	Transform getTransform() const;
+	void setTransform(const Transform transform);
+
 private:
 	vector<shared_ptr<Mesh>> meshes;
 	Transform transform;

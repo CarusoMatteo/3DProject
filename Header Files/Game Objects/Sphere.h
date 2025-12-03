@@ -9,11 +9,11 @@ using namespace std;
 
 class Mesh;
 
-class Plane : public IVisibleGameObject
+class Sphere : public IVisibleGameObject
 {
 public:
-	Plane();
-	~Plane() = default;
+	Sphere();
+	~Sphere() = default;
 
 	void update(const float deltaTime) override;
 	void render() override;
