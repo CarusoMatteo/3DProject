@@ -1,8 +1,18 @@
 #version 330 core
-in vec4 outColor;
+uniform bool useTexture;
+uniform sampler2D textureSampler;
+
+in vec4 color;
+in vec2 textureCoordinate;
+
 out vec4 fragColor;
 
 void main()
 {
-	fragColor = outColor;
+	fragColor = color;
+
+	if (useTexture)
+	{
+		fragColor *= texture(textureSampler, textureCoordinate);
+	}
 }

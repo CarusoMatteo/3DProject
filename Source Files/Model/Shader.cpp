@@ -45,6 +45,7 @@ Shader::Shader(const ShaderFiles files)
 
 	this->uniforms.creationTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.isVisible.value = true;
+	this->uniforms.useTexture.value = false;
 }
 
 Shader::~Shader()
@@ -103,11 +104,11 @@ void Shader::initVbos(const BufferValues values)
 	glEnableVertexAttribArray(2);
 
 	// Generates and makes active the VBO for the texture coordinates
-	// glGenBuffers(1, &this->addresses.textures);
-	// glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textures);
-	// glBufferData(GL_ARRAY_BUFFER, values.textures.size() * sizeof(fvec2), values.textures.data(), GL_STATIC_DRAW);
-	// glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
-	// glEnableVertexAttribArray(3);
+	glGenBuffers(1, &this->addresses.textures);
+	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textures);
+	glBufferData(GL_ARRAY_BUFFER, values.textures.size() * sizeof(fvec2), values.textures.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	glEnableVertexAttribArray(3);
 
 	// Generates and makes active the EBO for the indices
 	glGenBuffers(1, &this->addresses.indices);
@@ -135,6 +136,11 @@ void Shader::initUniformReferences()
 	this->uniforms.currentTime.location = glGetUniformLocation(this->programId, this->uniforms.currentTime.name.c_str());
 	this->uniforms.screenSize.location = glGetUniformLocation(this->programId, this->uniforms.screenSize.name.c_str());
 	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
+
+	//this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
+	//this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
+	//this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
+	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
 }
 
 void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material)
@@ -155,6 +161,10 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
+
+	// this->uniforms.skybox.value = ???;
+	// this->uniforms.cubeMap.value = ???;
+	// this->uniforms.texture.value = ???;
 }
 
 void Shader::passUniforms()

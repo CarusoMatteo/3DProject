@@ -49,6 +49,11 @@ struct Uniforms
 	Uniform<ivec2> screenSize = {"screenSize"};
 	Uniform<bool> isVisible = {"isVisible"};
 
+	// Uniform<SamplerCube> skybox = {"skybox"};
+	// Uniform<SampplerCube> cubeMap = {"cubeMap"};
+	// Uniform<Sampler2D> texture = {"textureSampler"};
+	Uniform<bool> useTexture = {"useTexture"};
+
 #ifdef USE_UBOs
 	UniformValues toValues()
 	{
