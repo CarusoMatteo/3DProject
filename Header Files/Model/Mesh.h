@@ -2,7 +2,6 @@
 
 #include "../Game Objects/Material.h"
 #include "Buffers.h"
-#include "Shader.h"
 #include "Transform.h"
 #include <memory>
 #include <string>
@@ -10,19 +9,19 @@
 using namespace glm;
 using namespace std;
 
-struct ShaderFiles;
+class Shader;
 
 class Mesh
 {
 public:
-	Mesh(const string name, const BufferValues values, const ShaderFiles files, const Transform transform, const Material material);
+	Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material);
 	~Mesh() = default;
 
 	void render(Transform modelTransform) const;
 
 private:
 	string name;
-	unique_ptr<Shader> shader;
+	shared_ptr<Shader> shader;
 	BufferValues values;
 	Transform transform;
 	// ShadingType shadingType;

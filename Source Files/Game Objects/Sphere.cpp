@@ -1,6 +1,6 @@
 #include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Model/ModelFactory.h"
-#include "../../Header Files/Model/ShaderFiles.h"
+#include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/Transform.h"
 #include <glm/glm.hpp>
 #include <memory>
@@ -13,11 +13,8 @@ Sphere::Sphere()
 {
 	const string name = "Sphere";
 	const fvec3 radius = fvec3(1.0f);
-	const ShaderFiles shaderFiles = {
-		"Shaders/Phong/Phong.vert",
-		"Shaders/Phong/Phong.frag"};
 
-	this->model = ModelFactory::sphere(name, radius, shaderFiles, Transform());
+	this->model = ModelFactory::sphere(name, radius, ShaderFactory::createUnlitShader(), Transform());
 }
 
 void Sphere::update(float deltaTime)

@@ -16,13 +16,14 @@ class Shader
 public:
 	~Shader();
 
+	void setBufferValues(const BufferValues bufferValues);
 	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material);
 
 	static shared_ptr<bool> getDrawWireframeFlag();
 	static shared_ptr<bool> getDrawAnchorFlag();
 
 protected:
-	Shader(const ShaderFiles files, const BufferValues bufferValues);
+	Shader(const ShaderFiles files);
 
 	static shared_ptr<bool> drawWireframe;
 	static shared_ptr<bool> drawAnchor;
@@ -41,14 +42,28 @@ protected:
 	void checkGLErrors();
 };
 
+class UnlitShader : public Shader
+{
+public:
+	UnlitShader();
+};
+
 class PhongShader : public Shader
 {
 public:
-	PhongShader(const BufferValues bufferValues);
+	PhongShader();
 };
 
 class BlinnPhongShader : public Shader
 {
 public:
-	BlinnPhongShader(const BufferValues bufferValues);
+	BlinnPhongShader();
+};
+
+class ShaderFactory
+{
+public:
+	static shared_ptr<Shader> createUnlitShader();
+	static shared_ptr<Shader> createPhongShader();
+	static shared_ptr<Shader> createBlinnPhongShader();
 };

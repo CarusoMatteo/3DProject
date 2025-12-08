@@ -37,11 +37,10 @@ shared_ptr<bool> Shader::getDrawAnchorFlag()
 	return Shader::drawAnchor;
 }
 
-Shader::Shader(const ShaderFiles files, const BufferValues bufferValues)
+Shader::Shader(const ShaderFiles files)
 {
 	this->programId = ShaderBuilder::buildShader(files);
 	this->initVao();
-	this->initVbos(bufferValues);
 	this->initUniformReferences();
 
 	this->uniforms.creationTime.value = static_cast<float>(glfwGetTime());
@@ -57,6 +56,12 @@ Shader::~Shader()
 	glDeleteBuffers(1, &this->addresses.indices);
 	glDeleteBuffers(1, &this->addresses.textures);
 	glDeleteVertexArrays(1, &this->addresses.vao);
+}
+
+void Shader::setBufferValues(const BufferValues bufferValues)
+{
+	this->initVbos(bufferValues);
+	this->checkGLErrors();
 }
 
 void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material)
@@ -212,21 +217,45 @@ void Shader::checkGLErrors()
 }
 
 #pragma endregion
+#pragma region UnlitShader
 
-#pragma region PhongShader
-
-PhongShader::PhongShader(const BufferValues bufferValues)
-	: Shader({"Shaders/Phong.vert", "Shaders/Phong.frag"}, bufferValues)
+UnlitShader::UnlitShader()
+	: Shader({"Shaders/Unlit/Unlit.vert", "Shaders/Unlit/Unlit.frag"})
 {
 }
 
 #pragma endregion
+#pragma region PhongShader
 
+PhongShader::PhongShader()
+	: Shader({"Shaders/Phong/Phong.vert", "Shaders/Phong/Phong.frag"})
+{
+}
+
+#pragma endregion
 #pragma region BlinnPhongShader
 
-BlinnPhongShader::BlinnPhongShader(const BufferValues bufferValues)
-	: Shader({"Shaders/BlinnPhong.vert", "Shaders/BlinnPhong.frag"}, bufferValues)
+BlinnPhongShader::BlinnPhongShader()
+	: Shader({"Shaders/BlinnPhong/BlinnPhong.vert", "Shaders/BlinnPhong/BlinnPhong.frag"})
 {
+}
+
+#pragma endregion
+#pragma region ShaderFactory
+
+shared_ptr<Shader> ShaderFactory::createUnlitShader()
+{
+	return shared_ptr<Shader>(new UnlitShader());
+}
+
+shared_ptr<Shader> ShaderFactory::createPhongShader()
+{
+	return shared_ptr<Shader>(new PhongShader());
+}
+
+shared_ptr<Shader> ShaderFactory::createBlinnPhongShader()
+{
+	return shared_ptr<Shader>(new BlinnPhongShader());
 }
 
 #pragma endregion

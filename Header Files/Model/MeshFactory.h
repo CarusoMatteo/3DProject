@@ -8,15 +8,15 @@ using namespace glm;
 using namespace std;
 
 class Mesh;
-struct ShaderFiles;
+class Shader;
 struct Transform;
 
 class MeshFactory
 {
 public:
-	static shared_ptr<Mesh> plane(const string name, const fvec2 size, const ShaderFiles files, Transform transform);
-	static shared_ptr<Mesh> cube(const string name, const float length, const ShaderFiles files, Transform transform);
-	static shared_ptr<Mesh> sphere(const string name, const fvec3 radius, const ShaderFiles files, Transform transform);
+	static shared_ptr<Mesh> plane(const string name, const fvec2 size, const shared_ptr<Shader> shader, Transform transform);
+	static shared_ptr<Mesh> cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform);
+	static shared_ptr<Mesh> sphere(const string name, const fvec3 radius, const shared_ptr<Shader> shader, Transform transform);
 
 private:
 	MeshFactory() = default;

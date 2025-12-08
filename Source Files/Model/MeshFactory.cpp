@@ -2,7 +2,7 @@
 #include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/MeshFactory.h"
-#include "../../Header Files/Model/ShaderFiles.h"
+#include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/Transform.h"
 #include <cmath>
 #include <glm/glm.hpp>
@@ -13,7 +13,7 @@
 using namespace std;
 using namespace glm;
 
-shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const ShaderFiles files, Transform transform)
+shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Shader> shader, Transform transform)
 {
 	const fvec2 halfSize = size / 2.0f;
 	const Material material = Materials().snowWhite;
@@ -52,10 +52,12 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const S
 		indices,
 		textures};
 
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, files, transform, material));
+	shader->setBufferValues(bufferValues);
+
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material));
 }
 
-shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const ShaderFiles files, Transform transform)
+shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform)
 {
 	const float halfLength = length / 2.0f;
 	const Material material = Materials().redPlastic;
@@ -123,10 +125,12 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		indices,
 		textures};
 
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, files, transform, material));
+	shader->setBufferValues(bufferValues);
+
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material));
 }
 
-shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const ShaderFiles files, Transform transform)
+shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Shader> shader, Transform transform)
 {
 	// Number of subdivisions along the y axis
 	const int stacks = 100;
@@ -186,7 +190,9 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 		indices,
 		textures};
 
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, files, transform, material));
+	shader->setBufferValues(bufferValues);
+
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material));
 }
 
 // Consider adding anchor to the vertex and index vector
