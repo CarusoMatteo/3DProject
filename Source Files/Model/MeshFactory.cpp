@@ -62,7 +62,7 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform)
 {
 	const float halfLength = length / 2.0f;
-	const MaterialType material = MaterialType::NO_MATERIAL;
+	const MaterialType material = MaterialType::RED_PLASTIC;
 	const TextureType texture = TextureType::NO_TEXTURE;
 
 	transform.anchorPoint = fvec3(0);
@@ -140,7 +140,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	// Number of subdivisions along the x axis
 	const int slices = 100;
 	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0);
-	const MaterialType material = MaterialType::NO_MATERIAL;
+	const MaterialType material = MaterialType::EMERALD;
 	const TextureType texture = TextureType::NO_TEXTURE;
 
 	transform.anchorPoint = fvec3(0);

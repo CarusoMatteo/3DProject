@@ -163,6 +163,7 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
+	this->uniforms.useTexture.value = false;
 
 	// this->uniforms.skybox.value = ???;
 	// this->uniforms.cubeMap.value = ???;
@@ -228,7 +229,8 @@ void Shader::checkGLErrors()
 	}
 }
 
-ShaderType Shader::getShaderType() const {
+ShaderType Shader::getShaderType() const
+{
 	return this->shaderType;
 }
 
