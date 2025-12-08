@@ -8,5 +8,5 @@ enum InputEventsType
 	RIGHT,
 	UP,
 	DOWN,
-	count
+	COUNT
 };

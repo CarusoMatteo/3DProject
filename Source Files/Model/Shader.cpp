@@ -7,6 +7,7 @@
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/ShaderBuilder.h"
 #include "../../Header Files/Window.h"
+#include <gl/GL.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -37,7 +38,7 @@ shared_ptr<bool> Shader::getDrawAnchorFlag()
 	return Shader::drawAnchor;
 }
 
-Shader::Shader(const ShaderFiles files)
+Shader::Shader(const ShaderFiles files, const ShaderType shaderType)
 {
 	this->programId = ShaderBuilder::buildShader(files);
 	this->initVao();
@@ -46,6 +47,7 @@ Shader::Shader(const ShaderFiles files)
 	this->uniforms.creationTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.isVisible.value = true;
 	this->uniforms.useTexture.value = false;
+	this->shaderType = shaderType;
 }
 
 Shader::~Shader()
@@ -137,9 +139,9 @@ void Shader::initUniformReferences()
 	this->uniforms.screenSize.location = glGetUniformLocation(this->programId, this->uniforms.screenSize.name.c_str());
 	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
 
-	//this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
-	//this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
-	//this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
+	// this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
+	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
+	// this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
 }
 
@@ -226,11 +228,15 @@ void Shader::checkGLErrors()
 	}
 }
 
+ShaderType Shader::getShaderType() const {
+	return this->shaderType;
+}
+
 #pragma endregion
 #pragma region UnlitShader
 
 UnlitShader::UnlitShader()
-	: Shader({"Shaders/Unlit/Unlit.vert", "Shaders/Unlit/Unlit.frag"})
+	: Shader({"Shaders/Unlit/Unlit.vert", "Shaders/Unlit/Unlit.frag"}, ShaderType::UNLIT)
 {
 }
 
@@ -238,7 +244,7 @@ UnlitShader::UnlitShader()
 #pragma region PhongShader
 
 PhongShader::PhongShader()
-	: Shader({"Shaders/Phong/Phong.vert", "Shaders/Phong/Phong.frag"})
+	: Shader({"Shaders/Phong/Phong.vert", "Shaders/Phong/Phong.frag"}, ShaderType::PHONG)
 {
 }
 
@@ -246,12 +252,26 @@ PhongShader::PhongShader()
 #pragma region BlinnPhongShader
 
 BlinnPhongShader::BlinnPhongShader()
-	: Shader({"Shaders/BlinnPhong/BlinnPhong.vert", "Shaders/BlinnPhong/BlinnPhong.frag"})
+	: Shader({"Shaders/BlinnPhong/BlinnPhong.vert", "Shaders/BlinnPhong/BlinnPhong.frag"}, ShaderType::BLINN_PHONG)
+{
+}
+
+#pragma endregion
+#pragma region ReflectionShader
+
+ReflectionShader::ReflectionShader()
+	: Shader({"Shaders/Reflection/Reflection.vert", "Shaders/Reflection/Reflection.frag"}, ShaderType::REFLECTION)
 {
 }
 
 #pragma endregion
 #pragma region ShaderFactory
+
+const vector<string> ShaderFactory::shaderNames = {
+	"Unlit",
+	"Phong",
+	"Blinn-Phong",
+	"Reflection"};
 
 shared_ptr<Shader> ShaderFactory::createUnlitShader()
 {
@@ -266,6 +286,11 @@ shared_ptr<Shader> ShaderFactory::createPhongShader()
 shared_ptr<Shader> ShaderFactory::createBlinnPhongShader()
 {
 	return shared_ptr<Shader>(new BlinnPhongShader());
+}
+
+shared_ptr<Shader> ShaderFactory::createReflectionShader()
+{
+	return shared_ptr<Shader>(new ReflectionShader());
 }
 
 #pragma endregion

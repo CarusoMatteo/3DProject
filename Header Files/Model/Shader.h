@@ -3,6 +3,8 @@
 #include "Buffers.h"
 #include "Uniforms.h"
 #include <memory>
+#include <string>
+#include <vector>
 
 using namespace std;
 using namespace glm;
@@ -10,6 +12,14 @@ using namespace glm;
 struct Material;
 struct ShaderFiles;
 struct Transform;
+
+enum ShaderType
+{
+	UNLIT,
+	PHONG,
+	BLINN_PHONG,
+	REFLECTION
+};
 
 class Shader
 {
@@ -21,9 +31,10 @@ public:
 
 	static shared_ptr<bool> getDrawWireframeFlag();
 	static shared_ptr<bool> getDrawAnchorFlag();
+	ShaderType getShaderType() const;
 
 protected:
-	Shader(const ShaderFiles files);
+	Shader(const ShaderFiles files, const ShaderType shaderType);
 
 	static shared_ptr<bool> drawWireframe;
 	static shared_ptr<bool> drawAnchor;
@@ -31,6 +42,7 @@ protected:
 	unsigned int programId;
 	BuffersAddresses addresses;
 	Uniforms uniforms;
+	ShaderType shaderType;
 
 	void initVao();
 	void initVbos(const BufferValues bufferValues);
@@ -60,10 +72,19 @@ public:
 	BlinnPhongShader();
 };
 
+class ReflectionShader : public Shader
+{
+public:
+	ReflectionShader();
+};
+
 class ShaderFactory
 {
 public:
 	static shared_ptr<Shader> createUnlitShader();
 	static shared_ptr<Shader> createPhongShader();
 	static shared_ptr<Shader> createBlinnPhongShader();
+	static shared_ptr<Shader> createReflectionShader();
+
+	static const vector<string> shaderNames;
 };

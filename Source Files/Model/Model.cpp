@@ -27,3 +27,8 @@ void Model::setTransform(const Transform transform)
 {
 	this->transform = transform;
 }
+
+vector<shared_ptr<Mesh>> Model::getMeshes() const
+{
+	return this->meshes;
+}

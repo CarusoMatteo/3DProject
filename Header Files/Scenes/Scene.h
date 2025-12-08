@@ -1,8 +1,6 @@
 ﻿#pragma once
 
-#include "../Game Objects/Cube.h"
-#include "../Game Objects/Plane.h"
-#include "../Game Objects/Sphere.h"
+#include "../Game Objects/IVisibleGameObject.h"
 #include "../Gui/Gui.h"
 #include "IScene.h"
 #include <glm/glm.hpp>
@@ -27,9 +25,7 @@ private:
 	// Do not save. Use singleton access instead
 	// unique_ptr<PointLight> light;
 
-	unique_ptr<Plane> plane;
-	vector<shared_ptr<Cube>> cubes;
-	vector<shared_ptr<Sphere>> spheres;
+	vector<shared_ptr<IVisibleGameObject>> gameObjects;
 
 	unique_ptr<Gui> gui;
 

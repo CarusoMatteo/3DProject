@@ -19,6 +19,8 @@ public:
 	Transform getTransform() const;
 	void setTransform(const Transform transform);
 
+	vector<shared_ptr<Mesh>> getMeshes() const;
+
 private:
 	vector<shared_ptr<Mesh>> meshes;
 	Transform transform;

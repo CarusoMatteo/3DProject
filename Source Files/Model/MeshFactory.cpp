@@ -1,4 +1,5 @@
 #include "../../Header Files/Game Objects/Material.h"
+#include "../../Header Files/Game Objects/Texture.h"
 #include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/MeshFactory.h"
@@ -16,7 +17,8 @@ using namespace glm;
 shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Shader> shader, Transform transform)
 {
 	const fvec2 halfSize = size / 2.0f;
-	const Material material = Materials().snowWhite;
+	const MaterialType material = MaterialType::SNOW_WHITE;
+	const TextureType texture = TextureType::NO_TEXTURE;
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -54,13 +56,14 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 
 	shader->setBufferValues(bufferValues);
 
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material));
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
 shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform)
 {
 	const float halfLength = length / 2.0f;
-	const Material material = Materials().redPlastic;
+	const MaterialType material = MaterialType::NO_MATERIAL;
+	const TextureType texture = TextureType::NO_TEXTURE;
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -127,7 +130,7 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 
 	shader->setBufferValues(bufferValues);
 
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material));
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
 shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Shader> shader, Transform transform)
@@ -136,8 +139,9 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	const int stacks = 100;
 	// Number of subdivisions along the x axis
 	const int slices = 100;
-	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0); // Tecnically not used if we use the Phong illumination shader.
-	const Material material = Materials().brass;
+	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0);
+	const MaterialType material = MaterialType::NO_MATERIAL;
+	const TextureType texture = TextureType::NO_TEXTURE;
 
 	transform.anchorPoint = fvec3(0);
 	vector<fvec3> vertices;
@@ -192,7 +196,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 
 	shader->setBufferValues(bufferValues);
 
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material));
+	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
 // Consider adding anchor to the vertex and index vector

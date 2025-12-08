@@ -1,8 +1,8 @@
 #pragma once
 
-#include <array>
 #include "InputEventsType.h"
+#include <array>
 
 using namespace std;
 
-using ButtonStates = array<bool, static_cast<size_t>(InputEventsType::count)>;
+using ButtonStates = array<bool, static_cast<size_t>(InputEventsType::COUNT)>;

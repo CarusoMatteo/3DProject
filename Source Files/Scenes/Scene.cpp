@@ -13,12 +13,11 @@
 Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I();
-	this->plane = unique_ptr<Plane>(new Plane());
-	this->cubes = {
+	this->gameObjects = {
+		shared_ptr<Plane>(new Plane()),
 		shared_ptr<Cube>(new Cube()),
 		shared_ptr<Cube>(new Cube()),
-		shared_ptr<Cube>(new Cube())};
-	this->spheres = {
+		shared_ptr<Cube>(new Cube()),
 		shared_ptr<Sphere>(new Sphere()),
 		shared_ptr<Sphere>(new Sphere()),
 		shared_ptr<Sphere>(new Sphere())};
@@ -32,49 +31,40 @@ void Scene::updateGameObjects(float deltaTime)
 {
 	PointLight::I()->update(deltaTime);
 	Camera::I()->update(deltaTime);
-	this->plane->update(deltaTime);
 
-	for (auto &cube : this->cubes)
+	for (auto &object : this->gameObjects)
 	{
-		cube->update(deltaTime);
-	}
-	for (auto &sphere : this->spheres)
-	{
-		sphere->update(deltaTime);
+		object->update(deltaTime);
 	}
 }
 
 void Scene::renderScene()
 {
-	this->plane->render();
-
-	for (auto &cube : this->cubes)
+	for (auto &object : this->gameObjects)
 	{
-		cube->render();
-	}
-	for (auto &sphere : this->spheres)
-	{
-		sphere->render();
+		object->render();
 	}
 
-	this->gui->drawGui();
+	this->gui->drawGui(this->gameObjects);
 }
 
 void Scene::scatterObjects()
 {
-	const float min = -5.0f;
-	const float max = 5.0f;
+	const float min = -10.0f;
+	const float max = 10.0f;
 
-	for (auto &&cube : this->cubes)
+	bool isFirst = true;
+
+	for (auto &&object : this->gameObjects)
 	{
-		cube->setTransform(Transform{
-			fvec3(Random::getRandomFloat(min, max), 0, Random::getRandomFloat(min, max)),
-			Rotation(),
-			fvec3(1)});
-	}
-	for (auto &&sphere : this->spheres)
-	{
-		sphere->setTransform(Transform{
+		if (isFirst)
+		{
+			// Skip the plane
+			isFirst = false;
+			continue;
+		}
+
+		object->setTransform(Transform{
 			fvec3(Random::getRandomFloat(min, max), 0, Random::getRandomFloat(min, max)),
 			Rotation(),
 			fvec3(1)});

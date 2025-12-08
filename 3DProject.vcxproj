@@ -140,9 +140,11 @@
     <ClCompile Include="..\.common\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source Files\Game Objects\Camera.cpp" />
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
+    <ClCompile Include="Source Files\Game Objects\Material.cpp" />
     <ClCompile Include="Source Files\Game Objects\Plane.cpp" />
     <ClCompile Include="Source Files\Game Objects\PointLight.cpp" />
     <ClCompile Include="Source Files\Game Objects\Sphere.cpp" />
+    <ClCompile Include="Source Files\Game Objects\Texture.cpp" />
     <ClCompile Include="Source Files\glad.c" />
     <ClCompile Include="Source Files\Gui\Gui.cpp" />
     <ClCompile Include="Source Files\InputEvents.cpp" />
@@ -178,6 +180,7 @@
     <ClInclude Include="Header Files\Game Objects\Plane.h" />
     <ClInclude Include="Header Files\Game Objects\PointLight.h" />
     <ClInclude Include="Header Files\Game Objects\Sphere.h" />
+    <ClInclude Include="Header Files\Game Objects\Texture.h" />
     <ClInclude Include="Header Files\Gui\Gui.h" />
     <ClInclude Include="Header Files\Gui\IGui.h" />
     <ClInclude Include="Header Files\InputEvents.h" />

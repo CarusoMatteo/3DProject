@@ -1,10 +1,12 @@
 #include "../../Header Files/Game Objects/Sphere.h"
+#include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/Transform.h"
 #include <glm/glm.hpp>
 #include <memory>
 #include <string>
+#include <vector>
 
 using namespace std;
 using namespace glm;
@@ -34,4 +36,14 @@ Transform Sphere::getTransform() const
 void Sphere::setTransform(const Transform transform)
 {
 	this->model->setTransform(transform);
+}
+
+vector<shared_ptr<Mesh>> Sphere::getMeshes() const
+{
+	return this->model->getMeshes();
+}
+
+string Sphere::getName() const
+{
+	return "Sphere";
 }

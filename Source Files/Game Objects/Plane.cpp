@@ -1,10 +1,12 @@
 #include "../../Header Files/Game Objects/Plane.h"
+#include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/Transform.h"
 #include <glm/glm.hpp>
 #include <memory>
 #include <string>
+#include <vector>
 
 using namespace glm;
 using namespace std;
@@ -40,4 +42,14 @@ Transform Plane::getTransform() const
 void Plane::setTransform(const Transform transform)
 {
 	this->model->setTransform(transform);
+}
+
+vector<shared_ptr<Mesh>> Plane::getMeshes() const
+{
+	return this->model->getMeshes();
+}
+
+string Plane::getName() const
+{
+	return "Plane";
 }

@@ -1,9 +1,11 @@
 #include "../../Header Files/Game Objects/Cube.h"
+#include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/Transform.h"
 #include <memory>
 #include <string>
+#include <vector>
 
 using namespace std;
 using namespace glm;
@@ -33,4 +35,14 @@ Transform Cube::getTransform() const
 void Cube::setTransform(const Transform transform)
 {
 	this->model->setTransform(transform);
+}
+
+vector<shared_ptr<Mesh>> Cube::getMeshes() const
+{
+	return this->model->getMeshes();
+}
+
+string Cube::getName() const
+{
+	return "Cube";
 }
