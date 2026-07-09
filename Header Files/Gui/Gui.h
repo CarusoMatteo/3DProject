@@ -28,7 +28,7 @@ public:
 
 private:
 	const fvec2 settingsWindowPosition = fvec2(10, 10);
-	const fvec2 inspectorWindowPosition = fvec2(10, 100);
+	const fvec2 inspectorWindowPosition = fvec2(1000, 10);
 
 	shared_ptr<fvec3> clearColor;
 	int selectedObjectIndex = NONE;
