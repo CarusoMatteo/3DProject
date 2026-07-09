@@ -1,7 +1,5 @@
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
-#include "../../Header Files/Game Objects/Material.h"
 #include "../../Header Files/Game Objects/PointLight.h"
-#include "../../Header Files/Game Objects/Texture.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Gui/IGui.h"
 #include "../../Header Files/InputEvents.h"
@@ -68,13 +66,13 @@ void Gui::settingsWindow()
 	// Sets the position for the next window.
 	ImGui::SetNextWindowPos(ImVec2(this->settingsWindowPosition.x, this->settingsWindowPosition.y));
 
-	ImGui::Begin("Impostazioni", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
+	ImGui::Begin("Settings", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
 
-	ImGui::ColorEdit3("Colore di Sfondo", (float *)this->clearColor.get());
+	ImGui::ColorEdit3("Background Color", (float *)this->clearColor.get());
 
 	fvec2 mousePosition = InputEvents::getCursorPosition();
 
-	ImGui::Text("Coordinate Mouse relative alla finestra GLFW: (%.1f, %.1f)", mousePosition.x, mousePosition.y);
+	ImGui::Text("Mouse Coordinates relative to GLFW Window: (%.1f, %.1f)", mousePosition.x, mousePosition.y);
 	ImGui::Checkbox("Wireframe", Shader::getDrawWireframeFlag().get());
 	ImGui::Checkbox("Ancora", Shader::getDrawAnchorFlag().get());
 	// ImGui::Checkbox("Bounding Box", MeshBB::shouldDrawBoundingBoxRef());
@@ -102,7 +100,7 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 
 		bool nodeOpen = ImGui::TreeNodeEx(label, nodeFlags);
 
-		// Click sull'oggetto (non su una mesh specifica)
+		// Click on the object (non on a specific mesh)
 		if (ImGui::IsItemClicked())
 		{
 			this->selectedObjectIndex = i;
@@ -137,109 +135,9 @@ void Gui::meshInspectorWindow(const shared_ptr<Mesh> mesh)
 	ImGui::Text("Mesh: %s", mesh->getName().c_str());
 	ImGui::Separator();
 
-	shaderSelectionSection(mesh);
-	materialSelectionSection(mesh);
-	textureSelectionSection(mesh);
 	transformEditorSection(mesh);
 
 	ImGui::PopID();
-}
-
-void Gui::materialSelectionSection(const shared_ptr<Mesh> mesh)
-{
-	// Shading/Material
-	if (ImGui::CollapsingHeader("Material##header"))
-	{
-		int materialType = mesh->getMaterialType();
-
-		if (ImGui::Combo("Material##combo", &materialType, c_str_array(MaterialsFactory::names), static_cast<int>(MaterialsFactory::names.size())))
-		{
-			mesh->setMaterialType(static_cast<MaterialType>(materialType));
-		}
-
-		if (mesh->getMaterialType() == MaterialType::CUSTOM_MATERIAL)
-		{
-			shared_ptr<Material> material = mesh->getCustomMaterial();
-
-			// Ambient, Diffuse, Specular: 3 componenti (RGB)
-			ImGui::ColorEdit3("Ambient", value_ptr(material->ambient));
-			ImGui::ColorEdit3("Diffuse", value_ptr(material->diffuse));
-			ImGui::ColorEdit3("Specular", value_ptr(material->specular));
-			// Shininess: un semplice float
-			ImGui::DragFloat("Shininess", &material->shininess, 1.0f, 1.0f, 512.0f);
-		}
-	}
-}
-
-void Gui::shaderSelectionSection(const shared_ptr<Mesh> mesh)
-{
-	if (ImGui::CollapsingHeader("Shader selection"))
-	{
-		// Selected index
-		int currentShaderIndex = mesh->getShaderType();
-
-		// Combo per selezione shader
-		if (ImGui::Combo("Shader", &currentShaderIndex, c_str_array(ShaderFactory::shaderNames), static_cast<int>(ShaderFactory::shaderNames.size())))
-		{
-			switch (currentShaderIndex)
-			{
-			case ShaderType::UNLIT:
-				mesh->setShader(ShaderFactory::createUnlitShader());
-				break;
-			case ShaderType::PHONG:
-				mesh->setShader(ShaderFactory::createPhongShader());
-				break;
-			case ShaderType::BLINN_PHONG:
-				mesh->setShader(ShaderFactory::createBlinnPhongShader());
-				break;
-			case ShaderType::REFLECTION:
-				mesh->setShader(ShaderFactory::createReflectionShader());
-				break;
-			default:
-				break;
-			}
-		}
-	}
-}
-
-void Gui::textureSelectionSection(const shared_ptr<Mesh> mesh)
-{
-	// Texture
-	if (ImGui::CollapsingHeader("Textures##header"))
-	{
-		int textureId = mesh->getTextureType();
-
-		// Combo per selezionare la texture
-		if (ImGui::Combo("Texture##combo", &textureId, c_str_array(TextureFactory::names), static_cast<int>(TextureFactory::names.size())))
-		{
-			mesh->setTextureType((TextureType)textureId);
-		}
-
-		// Anteprima della texture selezionata
-		texturePreviewSection(mesh);
-	}
-}
-
-void Gui::texturePreviewSection(shared_ptr<Mesh> mesh)
-{
-	TextureType currentTexture = mesh->getTextureType();
-
-	ImGui::Separator();
-	ImGui::Text("Texture preview:");
-
-	if (currentTexture != TextureType::NO_TEXTURE)
-	{
-		// OpenGL: GLuint -> ImTextureID (void*)
-		ImTextureID imguiTexID = (ImTextureID)(intptr_t)currentTexture;
-
-		ImVec2 previewSize(128, 128);
-
-		ImGui::Image(imguiTexID, previewSize);
-	}
-	else
-	{
-		ImGui::TextDisabled("No texture selected.");
-	}
 }
 
 void Gui::transformEditorSection(const shared_ptr<Mesh> mesh)

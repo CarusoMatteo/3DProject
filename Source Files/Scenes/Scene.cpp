@@ -32,7 +32,7 @@ void Scene::updateGameObjects(float deltaTime)
 	PointLight::I()->update(deltaTime);
 	Camera::I()->update(deltaTime);
 
-	for (auto &object : this->gameObjects)
+	for (auto &&object : this->gameObjects)
 	{
 		object->update(deltaTime);
 	}
@@ -40,7 +40,7 @@ void Scene::updateGameObjects(float deltaTime)
 
 void Scene::renderScene()
 {
-	for (auto &object : this->gameObjects)
+	for (auto &&object : this->gameObjects)
 	{
 		object->render();
 	}

@@ -41,9 +41,5 @@ private:
 	void settingsWindow();
 	void inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects);
 	void meshInspectorWindow(const shared_ptr<Mesh> mesh);
-	void textureSelectionSection(const shared_ptr<Mesh> mesh);
-	void texturePreviewSection(const shared_ptr<Mesh> mesh);
-	void materialSelectionSection(const shared_ptr<Mesh> mesh);
-	void shaderSelectionSection(const shared_ptr<Mesh> mesh);
 	void transformEditorSection(const shared_ptr<Mesh> mesh);
 };
