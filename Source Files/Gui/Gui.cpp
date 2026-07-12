@@ -3,6 +3,7 @@
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Gui/IGui.h"
 #include "../../Header Files/InputEvents.h"
+#include "../../Header Files/InputEventsType.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Shader.h"
 #include <cstdio>
@@ -66,7 +67,7 @@ void Gui::settingsWindow()
 	// Sets the position for the next window.
 	ImGui::SetNextWindowPos(ImVec2(this->settingsWindowPosition.x, this->settingsWindowPosition.y));
 
-	ImGui::Begin("Settings", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
+	ImGui::Begin("Settings", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove);
 
 	ImGui::ColorEdit3("Background Color", (float *)this->clearColor.get());
 
@@ -74,7 +75,7 @@ void Gui::settingsWindow()
 
 	ImGui::Text("Mouse Coordinates relative to GLFW Window: (%.1f, %.1f)", mousePosition.x, mousePosition.y);
 	ImGui::Checkbox("Wireframe", Shader::getDrawWireframeFlag().get());
-	ImGui::Checkbox("Ancora", Shader::getDrawAnchorFlag().get());
+	ImGui::Checkbox("Anchor", Shader::getDrawAnchorFlag().get());
 	// ImGui::Checkbox("Bounding Box", MeshBB::shouldDrawBoundingBoxRef());
 
 	fvec3 *lightPositionPtr = PointLight::I()->getPositionPtr();
@@ -83,6 +84,11 @@ void Gui::settingsWindow()
 	ImGui::SliderFloat("Light position z", &lightPositionPtr->z, -50.0f, 50.0f);
 
 	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+
+	ImGui::SeparatorText("Controls");
+	ImGui::Text("WASD: Move camera horizontallly");
+	ImGui::Text("QE: Move camera up/down");
+	ImGui::Text("TAB: %s", InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR) ? "Enable camera movement" : "Free cursor");
 	ImGui::End();
 }
 
@@ -95,7 +101,7 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 	for (int i = 0; i < objects.size(); ++i)
 	{
 		char label[64];
-		sprintf_s(label, sizeof(label), "%d. %s", i, objects.at(i)->getName().c_str());
+		sprintf_s(label, sizeof(label), "%d. %s", i+1, objects.at(i)->getName().c_str());
 		ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
 
 		bool nodeOpen = ImGui::TreeNodeEx(label, nodeFlags);
@@ -113,7 +119,7 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 			{
 				shared_ptr<Mesh> mesh = objects.at(i)->getMeshes().at(j);
 				char meshLabel[128];
-				sprintf_s(meshLabel, sizeof(meshLabel), "%d.%d. %s", i, j, mesh->getName().empty() ? "Mesh" : mesh->getName().c_str());
+				sprintf_s(meshLabel, sizeof(meshLabel), "%d.%d. %s", i+1, j+1, mesh->getName().empty() ? "Mesh" : mesh->getName().c_str());
 
 				bool isSelected = this->selectedObjectIndex == i && this->selectedMeshIndex == j;
 				if (ImGui::Selectable(meshLabel, isSelected))

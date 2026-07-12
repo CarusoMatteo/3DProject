@@ -30,8 +30,13 @@ Camera::Camera()
 void Camera::update(float deltaTime)
 {
 	moveFirstPerson(deltaTime);
+	if (!InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR))
+		panFirstPerson(deltaTime);
+	else
+		Window::I()->freeCursor();
 }
 
+/*
 void Camera::moveAlongAxes(float deltaTime)
 {
 	fvec3 movementDirection = fvec3(0);
@@ -53,6 +58,7 @@ void Camera::moveAlongAxes(float deltaTime)
 
 	this->transform.position += movementDirection * speed * deltaTime;
 }
+*/
 
 void Camera::moveFirstPerson(float deltaTime)
 {
@@ -99,6 +105,40 @@ void Camera::moveFirstPerson(float deltaTime)
 		this->transform.position += upDirection;
 		this->transform.target += upDirection;
 	}
+}
+
+void Camera::panFirstPerson(float deltaTime)
+{
+	const fvec2 centerCoordinates = fvec2(Window::I()->getSize().x / 2.0f, Window::I()->getSize().y / 2.0f);
+	const fvec2 cursorPosition = InputEvents::getCursorPosition();
+	const fvec2 offset = cursorPosition - centerCoordinates;
+
+	static float yaw = 0.0f;
+	static float pitch = 0.0f;
+	static bool initialized = false;
+
+	if (!initialized)
+	{
+		const fvec3 forwardDirection = normalize(this->transform.target - this->transform.position);
+		yaw = degrees(atan2(forwardDirection.z, forwardDirection.x));
+		pitch = degrees(asin(forwardDirection.y));
+		initialized = true;
+	}
+
+	yaw += offset.x * this->rotationSpeed;
+	pitch -= offset.y * this->rotationSpeed;
+
+	pitch = clamp(pitch, -89.0f, 89.0f);
+
+	fvec3 front = fvec3(0);
+	front.x = cos(radians(yaw)) * cos(radians(pitch));
+	front.y = sin(radians(pitch));
+	front.z = sin(radians(yaw)) * cos(radians(pitch));
+
+	this->transform.direction = normalize(front);
+	this->transform.target = this->transform.position + this->transform.direction;
+
+	Window::I()->disableAndCenterCursor();
 }
 
 fmat4 Camera::makeProjectionMatrix() const

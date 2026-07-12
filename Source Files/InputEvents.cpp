@@ -70,6 +70,10 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 		else if (action == GLFW_RELEASE)
 			buttonStates->at(InputEventsType::DOWN) = false;
 		break;
+	case GLFW_KEY_TAB:
+		if (action == GLFW_PRESS)		
+			buttonStates->at(InputEventsType::FREE_CURSOR) = !buttonStates->at(InputEventsType::FREE_CURSOR);		
+		break;
 	default:
 		break;
 	}

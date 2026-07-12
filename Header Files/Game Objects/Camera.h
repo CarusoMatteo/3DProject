@@ -27,6 +27,7 @@ private:
 	static unique_ptr<Camera> instance;
 
 	const float speed = 2.5f;
+	const float rotationSpeed = 0.05f;
 	Camera();
 
 	CameraTransform transform;
@@ -34,8 +35,9 @@ private:
 
 	unique_ptr<BoundingBox> boundingBox;
 
-	void moveAlongAxes(float deltaTime);
+	// void moveAlongAxes(float deltaTime);
 	void moveFirstPerson(float deltaTime);
+	void panFirstPerson(float deltaTime);
 	void setTransform();
 	void setProjectionData();
 };

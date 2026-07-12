@@ -8,5 +8,6 @@ enum InputEventsType
 	RIGHT,
 	UP,
 	DOWN,
+	FREE_CURSOR,
 	COUNT
 };

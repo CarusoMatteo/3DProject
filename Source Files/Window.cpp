@@ -63,6 +63,18 @@ ivec2 Window::getSize()
 	return ivec2(width, height);
 }
 
+void Window::disableAndCenterCursor()
+{
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	const ivec2 windowSize = this->getSize();
+	glfwSetCursorPos(window, windowSize.x / 2.0, windowSize.y / 2.0);
+}
+
+void Window::freeCursor()
+{
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
 void Window::initializeWindow()
 {
 	// If glfwInit fails, throw an exception.

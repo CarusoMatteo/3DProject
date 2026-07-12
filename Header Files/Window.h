@@ -20,6 +20,9 @@ public:
 	void pollEvents();
 	ivec2 getSize();
 
+	void disableAndCenterCursor();
+	void freeCursor();
+
 private:
 	static unique_ptr<Window> instance;
 
