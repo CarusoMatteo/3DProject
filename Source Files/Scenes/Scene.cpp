@@ -1,3 +1,4 @@
+#include "../../Header Files/Scenes/Scene.h"
 #include "../../Header Files/Game Objects/Camera.h"
 #include "../../Header Files/Game Objects/Cube.h"
 #include "../../Header Files/Game Objects/Plane.h"
@@ -6,7 +7,6 @@
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Random.h"
-#include "../../Header Files/Scenes/Scene.h"
 #include <glm/glm.hpp>
 #include <memory>
 

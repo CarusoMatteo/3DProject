@@ -1,7 +1,7 @@
+#include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Game Objects/Material.h"
 #include "../../Header Files/Game Objects/Texture.h"
 #include "../../Header Files/Model/Buffers.h"
-#include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/Transform.h"
 #include <memory>

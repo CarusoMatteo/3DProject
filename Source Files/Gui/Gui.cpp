@@ -1,28 +1,30 @@
+#include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Game Objects/PointLight.h"
-#include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Gui/IGui.h"
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/InputEventsType.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Shader.h"
-#include <cstdio>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
+#include <cstdio>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 using namespace glm;
 using namespace std;
 
-static char* c_str_array(vector<string> array) {
+static char *c_str_array(vector<string> array)
+{
 	static vector<char> buffer;
 	buffer.clear();
-	for (const auto& str : array) {
+	for (const auto &str : array)
+	{
 		buffer.insert(buffer.end(), str.begin(), str.end());
 		buffer.push_back('\0');
 	}
@@ -101,7 +103,7 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 	for (int i = 0; i < objects.size(); ++i)
 	{
 		char label[64];
-		sprintf_s(label, sizeof(label), "%d. %s", i+1, objects.at(i)->getName().c_str());
+		sprintf_s(label, sizeof(label), "%d. %s", i + 1, objects.at(i)->getName().c_str());
 		ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
 
 		bool nodeOpen = ImGui::TreeNodeEx(label, nodeFlags);
@@ -119,7 +121,7 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 			{
 				shared_ptr<Mesh> mesh = objects.at(i)->getMeshes().at(j);
 				char meshLabel[128];
-				sprintf_s(meshLabel, sizeof(meshLabel), "%d.%d. %s", i+1, j+1, mesh->getName().empty() ? "Mesh" : mesh->getName().c_str());
+				sprintf_s(meshLabel, sizeof(meshLabel), "%d.%d. %s", i + 1, j + 1, mesh->getName().empty() ? "Mesh" : mesh->getName().c_str());
 
 				bool isSelected = this->selectedObjectIndex == i && this->selectedMeshIndex == j;
 				if (ImGui::Selectable(meshLabel, isSelected))

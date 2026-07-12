@@ -1,5 +1,5 @@
-#include "../Header Files/Scenes/Scene.h"
 #include "../Header Files/Stage.h"
+#include "../Header Files/Scenes/Scene.h"
 #include "../Header Files/Window.h"
 #include <glm/glm.hpp>
 #include <memory>

@@ -1,5 +1,5 @@
-#include "../Header Files/Model/ShaderFiles.h"
 #include "../Header Files/ShaderBuilder.h"
+#include "../Header Files/Model/ShaderFiles.h"
 #include <cstdio>
 #include <glad/glad.h>
 #include <iostream>

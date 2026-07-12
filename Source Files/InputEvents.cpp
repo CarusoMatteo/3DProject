@@ -1,9 +1,9 @@
-#include "../Header Files/ButtonStates.h"
 #include "../Header Files/InputEvents.h"
+#include "../Header Files/ButtonStates.h"
 #include "../Header Files/InputEventsType.h"
 #include "../Header Files/Window.h"
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <memory>
 
@@ -71,8 +71,8 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 			buttonStates->at(InputEventsType::DOWN) = false;
 		break;
 	case GLFW_KEY_TAB:
-		if (action == GLFW_PRESS)		
-			buttonStates->at(InputEventsType::FREE_CURSOR) = !buttonStates->at(InputEventsType::FREE_CURSOR);		
+		if (action == GLFW_PRESS)
+			buttonStates->at(InputEventsType::FREE_CURSOR) = !buttonStates->at(InputEventsType::FREE_CURSOR);
 		break;
 	default:
 		break;

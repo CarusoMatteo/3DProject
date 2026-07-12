@@ -1,15 +1,15 @@
+#include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Game Objects/Camera.h"
 #include "../../Header Files/Game Objects/Material.h"
 #include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Model/Buffers.h"
-#include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/ShaderFiles.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/ShaderBuilder.h"
 #include "../../Header Files/Window.h"
+#include <GLFW/glfw3.h>
 #include <gl/GL.h>
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
