@@ -63,14 +63,24 @@ ivec2 Window::getSize()
 	return ivec2(width, height);
 }
 
-void Window::disableAndCenterCursor()
+fvec2 Window::getWindowCenterCoordinates()
 {
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	const ivec2 windowSize = this->getSize();
-	glfwSetCursorPos(window, windowSize.x / 2.0, windowSize.y / 2.0);
+	return fvec2(windowSize.x / 2.0f, windowSize.y / 2.0f);
 }
 
-void Window::freeCursor()
+void Window::centerCursor()
+{
+	const fvec2 centerCoordinates = this->getWindowCenterCoordinates();
+	glfwSetCursorPos(window, centerCoordinates.x, centerCoordinates.y);
+}
+
+void Window::hideAndConfineCursor()
+{
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void Window::showCursor()
 {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }

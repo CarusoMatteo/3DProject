@@ -19,9 +19,11 @@ public:
 	void swapBuffers();
 	void pollEvents();
 	ivec2 getSize();
+	fvec2 getWindowCenterCoordinates();
 
-	void disableAndCenterCursor();
-	void freeCursor();
+	void centerCursor();
+	void hideAndConfineCursor();
+	void showCursor();
 
 private:
 	static unique_ptr<Window> instance;

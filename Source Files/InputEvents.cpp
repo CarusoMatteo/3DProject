@@ -72,7 +72,15 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 		break;
 	case GLFW_KEY_TAB:
 		if (action == GLFW_PRESS)
+		{
 			buttonStates->at(InputEventsType::FREE_CURSOR) = !buttonStates->at(InputEventsType::FREE_CURSOR);
+			Window::I()->centerCursor();
+
+			if (buttonStates->at(InputEventsType::FREE_CURSOR))
+				Window::I()->showCursor();
+			else
+				Window::I()->hideAndConfineCursor();
+		}
 		break;
 	default:
 		break;

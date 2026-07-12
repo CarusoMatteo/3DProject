@@ -31,9 +31,10 @@ void Camera::update(float deltaTime)
 {
 	moveFirstPerson(deltaTime);
 	if (!InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR))
+	{
 		panFirstPerson(deltaTime);
-	else
-		Window::I()->freeCursor();
+		Window::I()->centerCursor();
+	}
 }
 
 /*
@@ -107,26 +108,20 @@ void Camera::moveFirstPerson(float deltaTime)
 	}
 }
 
+#include <iostream>
+#include <iomanip>
+
 void Camera::panFirstPerson(float deltaTime)
 {
-	const fvec2 centerCoordinates = fvec2(Window::I()->getSize().x / 2.0f, Window::I()->getSize().y / 2.0f);
+	const fvec2 centerCoordinates = Window::I()->getWindowCenterCoordinates();
 	const fvec2 cursorPosition = InputEvents::getCursorPosition();
 	const fvec2 offset = cursorPosition - centerCoordinates;
 
 	static float yaw = 0.0f;
 	static float pitch = 0.0f;
-	static bool initialized = false;
-
-	if (!initialized)
-	{
-		const fvec3 forwardDirection = normalize(this->transform.target - this->transform.position);
-		yaw = degrees(atan2(forwardDirection.z, forwardDirection.x));
-		pitch = degrees(asin(forwardDirection.y));
-		initialized = true;
-	}
 
 	yaw += offset.x * this->rotationSpeed;
-	pitch -= offset.y * this->rotationSpeed;
+	pitch += offset.y * this->rotationSpeed;
 
 	pitch = clamp(pitch, -89.0f, 89.0f);
 
@@ -138,7 +133,7 @@ void Camera::panFirstPerson(float deltaTime)
 	this->transform.direction = normalize(front);
 	this->transform.target = this->transform.position + this->transform.direction;
 
-	Window::I()->disableAndCenterCursor();
+	cout << fixed << setprecision(3) << "Yaw: " << yaw << "\t Pitch: " << pitch << "\t X Offset: " << offset.x << "\t Y Offset: " << offset.y << endl;
 }
 
 fmat4 Camera::makeProjectionMatrix() const
