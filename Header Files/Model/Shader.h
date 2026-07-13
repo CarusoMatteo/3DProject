@@ -45,6 +45,7 @@ protected:
 	ShaderType shaderType;
 
 	void initVao();
+	void initGBuffer();
 	void initVbos(const BufferValues bufferValues);
 	void initUniformReferences();
 
