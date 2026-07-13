@@ -25,6 +25,10 @@ Camera::Camera()
 {
 	this->setTransform();
 	this->setProjectionData();
+
+	// Choose cursor mode, and its initial position
+	Window::I()->centerCursor();
+	Window::I()->disableCursor();
 }
 
 void Camera::update(float deltaTime)
@@ -33,33 +37,8 @@ void Camera::update(float deltaTime)
 	if (!InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR))
 	{
 		panFirstPerson(deltaTime);
-		Window::I()->centerCursor();
 	}
 }
-
-/*
-void Camera::moveAlongAxes(float deltaTime)
-{
-	fvec3 movementDirection = fvec3(0);
-	if (InputEvents::getButtonStates().at(InputEventsType::FORWARD))
-		movementDirection.z -= 1.0f;
-	if (InputEvents::getButtonStates().at(InputEventsType::BACKWARD))
-		movementDirection.z += 1.0f;
-	if (InputEvents::getButtonStates().at(InputEventsType::LEFT))
-		movementDirection.x -= 1.0f;
-	if (InputEvents::getButtonStates().at(InputEventsType::RIGHT))
-		movementDirection.x += 1.0f;
-	if (InputEvents::getButtonStates().at(InputEventsType::UP))
-		movementDirection.y += 1.0f;
-	if (InputEvents::getButtonStates().at(InputEventsType::DOWN))
-		movementDirection.y -= 1.0f;
-
-	if (movementDirection != fvec3(0.0f))
-		movementDirection = normalize(movementDirection);
-
-	this->transform.position += movementDirection * speed * deltaTime;
-}
-*/
 
 void Camera::moveFirstPerson(float deltaTime)
 {
@@ -108,14 +87,11 @@ void Camera::moveFirstPerson(float deltaTime)
 	}
 }
 
-#include <iostream>
-#include <iomanip>
-
 void Camera::panFirstPerson(float deltaTime)
 {
-	const fvec2 centerCoordinates = Window::I()->getWindowCenterCoordinates();
 	const fvec2 cursorPosition = InputEvents::getCursorPosition();
-	const fvec2 offset = cursorPosition - centerCoordinates;
+	static fvec2 previousPosition = cursorPosition;
+	const fvec2 offset = cursorPosition - previousPosition;
 
 	static float yaw = 0.0f;
 	static float pitch = 0.0f;
@@ -133,7 +109,7 @@ void Camera::panFirstPerson(float deltaTime)
 	this->transform.direction = normalize(front);
 	this->transform.target = this->transform.position + this->transform.direction;
 
-	cout << fixed << setprecision(3) << "Yaw: " << yaw << "\t Pitch: " << pitch << "\t X Offset: " << offset.x << "\t Y Offset: " << offset.y << endl;
+	previousPosition = cursorPosition;
 }
 
 fmat4 Camera::makeProjectionMatrix() const

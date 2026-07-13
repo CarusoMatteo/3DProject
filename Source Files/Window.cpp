@@ -75,7 +75,7 @@ void Window::centerCursor()
 	glfwSetCursorPos(window, centerCoordinates.x, centerCoordinates.y);
 }
 
-void Window::hideAndConfineCursor()
+void Window::disableCursor()
 {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
@@ -131,10 +131,6 @@ void Window::initializeWindow()
 		glfwTerminate();
 		throw new runtime_error("Failed to load OpenGL function pointers");
 	}
-
-	// Choose cursor mode (normal, hidden, disabled, infinte), and its initial position
-	// glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	// glfwSetCursorPos(window, 0, 0);
 
 	// Resize window to fraction of monitor size
 	const int newWidth = static_cast<int>(mode->width * this->monitorPercentageSize.x);

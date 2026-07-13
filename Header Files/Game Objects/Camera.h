@@ -35,7 +35,6 @@ private:
 
 	unique_ptr<BoundingBox> boundingBox;
 
-	// void moveAlongAxes(float deltaTime);
 	void moveFirstPerson(float deltaTime);
 	void panFirstPerson(float deltaTime);
 	void setTransform();

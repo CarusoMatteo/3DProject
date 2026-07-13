@@ -32,24 +32,28 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 			glfwSetWindowShouldClose(window, true);
 		break;
 	case GLFW_KEY_W:
+	case GLFW_KEY_UP:
 		if (action == GLFW_PRESS)
 			buttonStates->at(InputEventsType::FORWARD) = true;
 		else if (action == GLFW_RELEASE)
 			buttonStates->at(InputEventsType::FORWARD) = false;
 		break;
 	case GLFW_KEY_S:
+	case GLFW_KEY_DOWN:
 		if (action == GLFW_PRESS)
 			buttonStates->at(InputEventsType::BACKWARD) = true;
 		else if (action == GLFW_RELEASE)
 			buttonStates->at(InputEventsType::BACKWARD) = false;
 		break;
 	case GLFW_KEY_A:
+	case GLFW_KEY_LEFT:
 		if (action == GLFW_PRESS)
 			buttonStates->at(InputEventsType::LEFT) = true;
 		else if (action == GLFW_RELEASE)
 			buttonStates->at(InputEventsType::LEFT) = false;
 		break;
 	case GLFW_KEY_D:
+	case GLFW_KEY_RIGHT:
 		if (action == GLFW_PRESS)
 			buttonStates->at(InputEventsType::RIGHT) = true;
 		else if (action == GLFW_RELEASE)
@@ -79,7 +83,7 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 			if (buttonStates->at(InputEventsType::FREE_CURSOR))
 				Window::I()->showCursor();
 			else
-				Window::I()->hideAndConfineCursor();
+				Window::I()->disableCursor();
 		}
 		break;
 	default:

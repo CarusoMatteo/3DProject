@@ -22,7 +22,7 @@ public:
 	fvec2 getWindowCenterCoordinates();
 
 	void centerCursor();
-	void hideAndConfineCursor();
+	void disableCursor();
 	void showCursor();
 
 private:
