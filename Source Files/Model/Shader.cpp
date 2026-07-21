@@ -267,6 +267,14 @@ ReflectionShader::ReflectionShader()
 }
 
 #pragma endregion
+#pragma region CubeMapShader
+
+CubeMapShader::CubeMapShader()
+	: Shader({"Shaders/CubeMap/CubeMap.vert", "Shaders/CubeMap/CubeMap.frag"}, ShaderType::REFLECTION)
+{
+}
+
+#pragma endregion
 #pragma region ShaderFactory
 
 const vector<string> ShaderFactory::shaderNames = {
@@ -293,6 +301,11 @@ shared_ptr<Shader> ShaderFactory::createBlinnPhongShader()
 shared_ptr<Shader> ShaderFactory::createReflectionShader()
 {
 	return shared_ptr<Shader>(new ReflectionShader());
+}
+
+shared_ptr<Shader> ShaderFactory::createCubeMapShader()
+{
+	return shared_ptr<Shader>(new CubeMapShader());
 }
 
 #pragma endregion

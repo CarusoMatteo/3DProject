@@ -1,6 +1,7 @@
 #include "../../Header Files/Scenes/Scene.h"
 #include "../../Header Files/Game Objects/Camera.h"
 #include "../../Header Files/Game Objects/Cube.h"
+#include "../../Header Files/Game Objects/CubeMap.h"
 #include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Game Objects/Sphere.h"
@@ -13,6 +14,7 @@
 Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I();
+	// CubeMap::I();
 	this->gameObjects = {
 		shared_ptr<Plane>(new Plane()),
 		shared_ptr<Cube>(new Cube()),
@@ -31,6 +33,7 @@ void Scene::updateGameObjects(float deltaTime)
 {
 	PointLight::I()->update(deltaTime);
 	Camera::I()->update(deltaTime);
+	// CubeMap::I()->update(deltaTime);
 
 	for (auto &&object : this->gameObjects)
 	{
@@ -40,6 +43,8 @@ void Scene::updateGameObjects(float deltaTime)
 
 void Scene::renderScene()
 {
+	// CubeMap::I()->render();
+
 	for (auto &&object : this->gameObjects)
 	{
 		object->render();

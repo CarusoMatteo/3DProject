@@ -2,7 +2,6 @@
 
 #include "../Game Objects/Material.h"
 #include "Buffers.h"
-#include "Shader.h"
 #include "Texture.h"
 #include "Transform.h"
 #include <memory>
@@ -13,11 +12,11 @@ using namespace std;
 
 class Shader;
 
-class Mesh
+class CubeMapMesh
 {
 public:
-	Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const MaterialType material, const Texture texture);
-	~Mesh() = default;
+	CubeMapMesh(const string name, const shared_ptr<Shader> shader, const Transform transform, const Texture texture);
+	~CubeMapMesh() = default;
 
 	void render(Transform modelTransform) const;
 	string getName() const;
@@ -33,8 +32,6 @@ public:
 
 	Transform getTransform() const;
 	void setTransform(const Transform transform);
-
-	ShaderType getShaderType() const;
 
 private:
 	string name;

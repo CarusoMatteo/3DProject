@@ -7,6 +7,7 @@ using namespace std;
 
 struct Texture
 {
+	unsigned int id;
 };
 
 enum TextureType
@@ -24,4 +25,7 @@ class TextureFactory
 {
 public:
 	static const vector<string> names;
+
+	static Texture loadTexture(const string path, bool shouldFlip);
+	static Texture loadCubeMap(const vector<string> paths, bool shouldFlip);
 };

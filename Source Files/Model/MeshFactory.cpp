@@ -1,9 +1,10 @@
 #include "../../Header Files/Model/MeshFactory.h"
 #include "../../Header Files/Game Objects/Material.h"
-#include "../../Header Files/Game Objects/Texture.h"
 #include "../../Header Files/Model/Buffers.h"
+#include "../../Header Files/Model/CubeMapMesh.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include <cmath>
 #include <glm/glm.hpp>
@@ -18,7 +19,7 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 {
 	const fvec2 halfSize = size / 2.0f;
 	const MaterialType material = MaterialType::SNOW_WHITE;
-	const TextureType texture = TextureType::NO_TEXTURE;
+	const Texture texture = Texture();
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -63,7 +64,7 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 {
 	const float halfLength = length / 2.0f;
 	const MaterialType material = MaterialType::RED_PLASTIC;
-	const TextureType texture = TextureType::NO_TEXTURE;
+	const Texture texture = Texture();
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -141,7 +142,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	const int slices = 100;
 	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0);
 	const MaterialType material = MaterialType::EMERALD;
-	const TextureType texture = TextureType::NO_TEXTURE;
+	const Texture texture = Texture();
 
 	transform.anchorPoint = fvec3(0);
 	vector<fvec3> vertices;
@@ -197,6 +198,13 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	shader->setBufferValues(bufferValues);
 
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
+}
+
+shared_ptr<CubeMapMesh> MeshFactory::cubeMap(const string name, const float length, const shared_ptr<Shader> shader, Transform transform)
+{
+	const Texture texture = Texture();
+
+	return shared_ptr<CubeMapMesh>(new CubeMapMesh(name, shader, transform, texture));
 }
 
 // Consider adding anchor to the vertex and index vector

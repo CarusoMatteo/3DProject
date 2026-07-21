@@ -1,13 +1,13 @@
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Game Objects/Material.h"
-#include "../../Header Files/Game Objects/Texture.h"
 #include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include <memory>
 #include <string>
 
-Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const MaterialType material, const TextureType texture)
+Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const MaterialType material, const Texture texture)
 {
 	this->name = name;
 	this->values = values;
@@ -50,12 +50,12 @@ shared_ptr<Material> Mesh::getCustomMaterial() const
 	return this->customMaterial;
 }
 
-void Mesh::setTextureType(const TextureType texture)
+void Mesh::setTexture(const Texture texture)
 {
 	this->texture = texture;
 }
 
-TextureType Mesh::getTextureType() const
+Texture Mesh::getTexture() const
 {
 	return this->texture;
 }

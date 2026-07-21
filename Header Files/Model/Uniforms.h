@@ -14,6 +14,11 @@ struct Uniform
 	T value;
 };
 
+struct SamplerCube
+{
+	unsigned int id;
+};
+
 #ifdef USE_UBOs
 struct UniformValues
 {
@@ -49,8 +54,8 @@ struct Uniforms
 	Uniform<ivec2> screenSize = {"screenSize"};
 	Uniform<bool> isVisible = {"isVisible"};
 
-	// Uniform<SamplerCube> skybox = {"skybox"};
-	// Uniform<SampplerCube> cubeMap = {"cubeMap"};
+	Uniform<SamplerCube> skybox = {"skybox"};
+	// Uniform<SamplerCube> cubeMap = {"cubeMap"};
 	// Uniform<Sampler2D> texture = {"textureSampler"};
 	Uniform<bool> useTexture = {"useTexture"};
 

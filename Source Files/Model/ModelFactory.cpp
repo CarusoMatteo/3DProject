@@ -1,4 +1,6 @@
 #include "../../Header Files/Model/ModelFactory.h"
+#include "../../Header Files/Model/CubeMapMesh.h"
+#include "../../Header Files/Model/CubeMapModel.h"
 #include "../../Header Files/Model/MeshFactory.h"
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/Shader.h"
@@ -61,4 +63,22 @@ shared_ptr<Model> ModelFactory::sphere(const string name, const fvec3 radius, co
 	shared_ptr<Mesh> sphereMesh = MeshFactory::sphere(name, radius, shader, sphereTransform);
 
 	return shared_ptr<Model>(new Model(modelTransform, {sphereMesh}));
+}
+
+shared_ptr<CubeMapModel> ModelFactory::cubeMap(const string name, const float length, const shared_ptr<Shader> shader, Transform modelTransform)
+{
+	const fvec3 cubePosition(0.0f);
+	const float cubeRotation = 0.0f;
+	const fvec3 cubeRotationAxis(0.0f);
+	const fvec3 cubeScale(1.0f);
+
+	Transform cubeTransform = {
+		cubePosition,
+		cubeRotation,
+		cubeRotationAxis,
+		cubeScale};
+
+	shared_ptr<CubeMapMesh> cubeMapMesh = MeshFactory::cubeMap(name, length, shader, cubeTransform);
+
+	return shared_ptr<CubeMapModel>(new CubeMapModel(modelTransform, cubeMapMesh));
 }

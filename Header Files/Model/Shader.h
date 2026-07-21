@@ -78,6 +78,12 @@ public:
 	ReflectionShader();
 };
 
+class CubeMapShader : public Shader
+{
+public:
+	CubeMapShader();
+};
+
 class ShaderFactory
 {
 public:
@@ -85,6 +91,7 @@ public:
 	static shared_ptr<Shader> createPhongShader();
 	static shared_ptr<Shader> createBlinnPhongShader();
 	static shared_ptr<Shader> createReflectionShader();
+	static shared_ptr<Shader> createCubeMapShader();
 
 	static const vector<string> shaderNames;
 };
