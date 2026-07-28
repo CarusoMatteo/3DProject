@@ -140,7 +140,6 @@
     <ClCompile Include="..\.common\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source Files\Game Objects\Camera.cpp" />
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
-    <ClCompile Include="Source Files\Game Objects\CubeMap.cpp" />
     <ClCompile Include="Source Files\Game Objects\Material.cpp" />
     <ClCompile Include="Source Files\Game Objects\Plane.cpp" />
     <ClCompile Include="Source Files\Game Objects\PointLight.cpp" />
@@ -149,8 +148,6 @@
     <ClCompile Include="Source Files\Gui\Gui.cpp" />
     <ClCompile Include="Source Files\InputEvents.cpp" />
     <ClCompile Include="Source Files\Main.cpp" />
-    <ClCompile Include="Source Files\Model\CubeMapMesh.cpp" />
-    <ClCompile Include="Source Files\Model\CubeMapModel.cpp" />
     <ClCompile Include="Source Files\Model\Mesh.cpp" />
     <ClCompile Include="Source Files\Model\MeshFactory.cpp" />
     <ClCompile Include="Source Files\Model\Model.cpp" />
@@ -176,7 +173,6 @@
     <ClInclude Include="Header Files\ButtonStates.h" />
     <ClInclude Include="Header Files\Game Objects\Camera.h" />
     <ClInclude Include="Header Files\Game Objects\Cube.h" />
-    <ClInclude Include="Header Files\Game Objects\CubeMap.h" />
     <ClInclude Include="Header Files\Game Objects\IGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
@@ -191,8 +187,6 @@
     <ClInclude Include="Header Files\Mesh.h" />
     <ClInclude Include="Header Files\Model\BoundingBox.h" />
     <ClInclude Include="Header Files\Model\Buffers.h" />
-    <ClInclude Include="Header Files\Model\CubeMapMesh.h" />
-    <ClInclude Include="Header Files\Model\CubeMapModel.h" />
     <ClInclude Include="Header Files\Model\Mesh.h" />
     <ClInclude Include="Header Files\Model\MeshFactory.h" />
     <ClInclude Include="Header Files\Model\Model.h" />

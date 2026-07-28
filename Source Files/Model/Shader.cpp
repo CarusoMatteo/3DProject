@@ -4,6 +4,7 @@
 #include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/ShaderFiles.h"
+#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/ShaderBuilder.h"
 #include "../../Header Files/Window.h"
@@ -23,7 +24,71 @@
 using namespace std;
 using namespace glm;
 
-#pragma region Shader
+#pragma region Singleton instances of shaders
+
+// Paths to the shader files
+
+const string ShaderFactory::SHADER_PATH = "Shaders/";
+const ShaderFiles ShaderFactory::UNLIT_PATH = {
+	ShaderFactory::SHADER_PATH + "Unlit/Unlit.vert",
+	ShaderFactory::SHADER_PATH + "Unlit/Unlit.frag"};
+const ShaderFiles ShaderFactory::PHONG_PATH = {
+	ShaderFactory::SHADER_PATH + "Phong/Phong.vert",
+	ShaderFactory::SHADER_PATH + "Phong/Phong.frag"};
+const ShaderFiles ShaderFactory::BLINN_PHONG_PATH = {
+	ShaderFactory::SHADER_PATH + "BlinnPhong/BlinnPhong.vert",
+	ShaderFactory::SHADER_PATH + "BlinnPhong/BlinnPhong.frag"};
+const ShaderFiles ShaderFactory::REFLECTION_PATH = {
+	ShaderFactory::SHADER_PATH + "Reflection/Reflection.vert",
+	ShaderFactory::SHADER_PATH + "Reflection/Reflection.frag"};
+const ShaderFiles ShaderFactory::CUBE_MAP_PATH = {
+	ShaderFactory::SHADER_PATH + "CubeMap/CubeMap.vert",
+	ShaderFactory::SHADER_PATH + "CubeMap/CubeMap.frag"};
+
+// Shader singletons
+
+optional<shared_ptr<Shader>> ShaderFactory::unlitShader = nullopt;
+optional<shared_ptr<Shader>> ShaderFactory::phongShader = nullopt;
+optional<shared_ptr<Shader>> ShaderFactory::blinnPhongShader = nullopt;
+optional<shared_ptr<Shader>> ShaderFactory::reflectionShader = nullopt;
+optional<shared_ptr<Shader>> ShaderFactory::cubeMapShader = nullopt;
+
+shared_ptr<Shader> ShaderFactory::unlit()
+{
+	if (!unlitShader.has_value())
+		unlitShader = make_shared<Shader>(UNLIT_PATH);
+	return unlitShader.value();
+}
+
+shared_ptr<Shader> ShaderFactory::phong()
+{
+	if (!phongShader.has_value())
+		phongShader = make_shared<Shader>(PHONG_PATH);
+	return phongShader.value();
+}
+
+shared_ptr<Shader> ShaderFactory::blinnPhong()
+{
+	if (!blinnPhongShader.has_value())
+		blinnPhongShader = make_shared<Shader>(BLINN_PHONG_PATH);
+	return blinnPhongShader.value();
+}
+
+shared_ptr<Shader> ShaderFactory::reflection()
+{
+	if (!reflectionShader.has_value())
+		reflectionShader = make_shared<Shader>(REFLECTION_PATH);
+	return reflectionShader.value();
+}
+
+shared_ptr<Shader> ShaderFactory::cubeMap()
+{
+	if (!cubeMapShader.has_value())
+		cubeMapShader = make_shared<Shader>(CUBE_MAP_PATH);
+	return cubeMapShader.value();
+}
+
+#pragma endregion
 
 shared_ptr<bool> Shader::drawWireframe = make_shared<bool>(false);
 shared_ptr<bool> Shader::drawAnchor = make_shared<bool>(false);
@@ -38,7 +103,7 @@ shared_ptr<bool> Shader::getDrawAnchorFlag()
 	return Shader::drawAnchor;
 }
 
-Shader::Shader(const ShaderFiles files, const ShaderType shaderType)
+Shader::Shader(const ShaderFiles files)
 {
 	this->programId = ShaderBuilder::buildShader(files);
 	this->initVao();
@@ -47,7 +112,6 @@ Shader::Shader(const ShaderFiles files, const ShaderType shaderType)
 	this->uniforms.creationTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.isVisible.value = true;
 	this->uniforms.useTexture.value = false;
-	this->shaderType = shaderType;
 }
 
 Shader::~Shader()
@@ -67,11 +131,15 @@ void Shader::setBufferValues(const BufferValues bufferValues)
 	this->checkGLErrors();
 }
 
-void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material)
+void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const Texture texture)
 {
 	glUseProgram(this->programId);
 	this->updateUniformValues(modelTransform, meshTransform, material);
+	this->checkGLErrors();
 	this->passUniforms();
+	this->checkGLErrors();
+	this->bindTexture(texture);
+	this->checkGLErrors();
 	this->draw(values);
 	this->checkGLErrors();
 }
@@ -141,7 +209,7 @@ void Shader::initUniformReferences()
 
 	// this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
 	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
-	// this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
+	this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
 }
 
@@ -163,7 +231,10 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
-	this->uniforms.useTexture.value = false;
+
+	// Set once and kept like that.
+	// If it can be changed dinamically, it should be updated here.
+	// this->uniforms.useTexture.value = false;
 
 	// this->uniforms.skybox.value = ???;
 	// this->uniforms.cubeMap.value = ???;
@@ -190,6 +261,21 @@ void Shader::passUniforms()
 	glUniform1f(this->uniforms.currentTime.location, this->uniforms.currentTime.value);
 	glUniform2iv(this->uniforms.screenSize.location, 1, value_ptr(this->uniforms.screenSize.value));
 	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
+}
+
+void Shader::bindTexture(const Texture texture) const
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture.id);
+	glUniform1i(this->uniforms.texture.location, texture.id);
+	// The shader must read the texture from texture unit 0.
+	glUniform1i(this->uniforms.texture.location, 0); // sampler2D -> texture unit 0
+}
+
+void Shader::bindNoTexture() const
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Shader::draw(const BufferValues values) const
@@ -228,84 +314,3 @@ void Shader::checkGLErrors()
 		throw runtime_error("OpenGL encountered an error.");
 	}
 }
-
-ShaderType Shader::getShaderType() const
-{
-	return this->shaderType;
-}
-
-#pragma endregion
-#pragma region UnlitShader
-
-UnlitShader::UnlitShader()
-	: Shader({"Shaders/Unlit/Unlit.vert", "Shaders/Unlit/Unlit.frag"}, ShaderType::UNLIT)
-{
-}
-
-#pragma endregion
-#pragma region PhongShader
-
-PhongShader::PhongShader()
-	: Shader({"Shaders/Phong/Phong.vert", "Shaders/Phong/Phong.frag"}, ShaderType::PHONG)
-{
-}
-
-#pragma endregion
-#pragma region BlinnPhongShader
-
-BlinnPhongShader::BlinnPhongShader()
-	: Shader({"Shaders/BlinnPhong/BlinnPhong.vert", "Shaders/BlinnPhong/BlinnPhong.frag"}, ShaderType::BLINN_PHONG)
-{
-}
-
-#pragma endregion
-#pragma region ReflectionShader
-
-ReflectionShader::ReflectionShader()
-	: Shader({"Shaders/Reflection/Reflection.vert", "Shaders/Reflection/Reflection.frag"}, ShaderType::REFLECTION)
-{
-}
-
-#pragma endregion
-#pragma region CubeMapShader
-
-CubeMapShader::CubeMapShader()
-	: Shader({"Shaders/CubeMap/CubeMap.vert", "Shaders/CubeMap/CubeMap.frag"}, ShaderType::REFLECTION)
-{
-}
-
-#pragma endregion
-#pragma region ShaderFactory
-
-const vector<string> ShaderFactory::shaderNames = {
-	"Unlit",
-	"Phong",
-	"Blinn-Phong",
-	"Reflection"};
-
-shared_ptr<Shader> ShaderFactory::createUnlitShader()
-{
-	return shared_ptr<Shader>(new UnlitShader());
-}
-
-shared_ptr<Shader> ShaderFactory::createPhongShader()
-{
-	return shared_ptr<Shader>(new PhongShader());
-}
-
-shared_ptr<Shader> ShaderFactory::createBlinnPhongShader()
-{
-	return shared_ptr<Shader>(new BlinnPhongShader());
-}
-
-shared_ptr<Shader> ShaderFactory::createReflectionShader()
-{
-	return shared_ptr<Shader>(new ReflectionShader());
-}
-
-shared_ptr<Shader> ShaderFactory::createCubeMapShader()
-{
-	return shared_ptr<Shader>(new CubeMapShader());
-}
-
-#pragma endregion

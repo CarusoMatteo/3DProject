@@ -2,6 +2,7 @@
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include <glm/glm.hpp>
 #include <memory>
@@ -21,7 +22,7 @@ Plane::Plane()
 		Rotation(),
 		fvec3(5000, 0, 5000)};
 
-	this->model = ModelFactory::plane(name, size, ShaderFactory::createUnlitShader(), planeTransform);
+	this->model = ModelFactory::plane(name, size, ShaderFactory::unlit(), planeTransform, TextureFactory::brick());
 }
 
 void Plane::update(float deltaTime)

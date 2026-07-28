@@ -7,7 +7,7 @@
 #include <memory>
 #include <string>
 
-Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const MaterialType material, const Texture texture)
+Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const shared_ptr<Texture> texture)
 {
 	this->name = name;
 	this->values = values;
@@ -19,10 +19,7 @@ Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader
 
 void Mesh::render(Transform modelTransform) const
 {
-	if (this->material != MaterialType::CUSTOM_MATERIAL)
-		this->shader->render(modelTransform, this->transform, this->values, MaterialsFactory::makeMaterial(this->material));
-	else
-		this->shader->render(modelTransform, this->transform, this->values, *this->customMaterial);
+	this->shader->render(modelTransform, this->transform, this->values, this->material, *this->texture);
 }
 
 string Mesh::getName() const
@@ -35,27 +32,22 @@ void Mesh::setShader(const shared_ptr<Shader> shader)
 	this->shader = shader;
 }
 
-MaterialType Mesh::getMaterialType() const
+Material Mesh::getMaterial() const
 {
 	return this->material;
 }
 
-void Mesh::setMaterialType(const MaterialType material)
+void Mesh::setMaterial(const Material material)
 {
 	this->material = material;
 }
 
-shared_ptr<Material> Mesh::getCustomMaterial() const
-{
-	return this->customMaterial;
-}
-
-void Mesh::setTexture(const Texture texture)
+void Mesh::setTexture(const shared_ptr<Texture> texture)
 {
 	this->texture = texture;
 }
 
-Texture Mesh::getTexture() const
+shared_ptr<Texture> Mesh::getTexture() const
 {
 	return this->texture;
 }
@@ -68,9 +60,4 @@ Transform Mesh::getTransform() const
 void Mesh::setTransform(const Transform transform)
 {
 	this->transform = transform;
-}
-
-ShaderType Mesh::getShaderType() const
-{
-	return this->shader->getShaderType();
 }

@@ -2,6 +2,7 @@
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include <glm/glm.hpp>
 #include <memory>
@@ -16,7 +17,7 @@ Sphere::Sphere()
 	const string name = "Sphere";
 	const fvec3 radius = fvec3(1.0f);
 
-	this->model = ModelFactory::sphere(name, radius, ShaderFactory::createPhongShader(), Transform());
+	this->model = ModelFactory::sphere(name, radius, ShaderFactory::phong(), Transform(), TextureFactory::brick());
 }
 
 void Sphere::update(float deltaTime)

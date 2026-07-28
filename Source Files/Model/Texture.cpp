@@ -3,19 +3,85 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../lib/stb_image/stb_image.h"
 #include <glad/glad.h>
+#include <optional>
 #include <stdexcept>
 #include <string>
-#include <vector>
 
 using namespace std;
 
-const vector<string> TextureFactory::names = {
-	"Cement",
-	"Sea",
-	"Italian flag",
-	"Brick wall",
-	"Mickey Mouse",
-	"No texture"};
+#pragma region Singleton instances of textures
+
+// Paths to the texture files
+
+const string TextureFactory::TEXTURE_PATH = "assets/textures/";
+const string TextureFactory::BRICK_PATH = TEXTURE_PATH + "brick.jpg";
+const string TextureFactory::CEMENT_PATH = TEXTURE_PATH + "cement.jpg";
+const string TextureFactory::FLAG_PATH = TEXTURE_PATH + "flag.jpg";
+const string TextureFactory::MICKEY_PATH = TEXTURE_PATH + "mickey.jpg";
+const string TextureFactory::POIS_PATH = TEXTURE_PATH + "pois.jpg";
+const string TextureFactory::SEA_PATH = TEXTURE_PATH + "sea.jpg";
+const string TextureFactory::STEVE_PATH = TEXTURE_PATH + "steve.jpg";
+
+// Texture singletons
+
+optional<shared_ptr<Texture>> TextureFactory::brickTexture = nullopt;
+optional<shared_ptr<Texture>> TextureFactory::cementTexture = nullopt;
+optional<shared_ptr<Texture>> TextureFactory::flagTexture = nullopt;
+optional<shared_ptr<Texture>> TextureFactory::mickeyTexture = nullopt;
+optional<shared_ptr<Texture>> TextureFactory::poisTexture = nullopt;
+optional<shared_ptr<Texture>> TextureFactory::seaTexture = nullopt;
+optional<shared_ptr<Texture>> TextureFactory::steveTexture = nullopt;
+
+shared_ptr<Texture> TextureFactory::brick()
+{
+	if (!brickTexture.has_value())
+		brickTexture = make_shared<Texture>(loadTexture(BRICK_PATH, true));
+	return brickTexture.value();
+}
+
+shared_ptr<Texture> TextureFactory::cement()
+{
+	if (!cementTexture.has_value())
+		cementTexture = make_shared<Texture>(loadTexture(CEMENT_PATH, true));
+	return cementTexture.value();
+}
+
+shared_ptr<Texture> TextureFactory::flag()
+{
+	if (!flagTexture.has_value())
+		flagTexture = make_shared<Texture>(loadTexture(FLAG_PATH, true));
+	return flagTexture.value();
+}
+
+shared_ptr<Texture> TextureFactory::mickey()
+{
+	if (!mickeyTexture.has_value())
+		mickeyTexture = make_shared<Texture>(loadTexture(MICKEY_PATH, true));
+	return mickeyTexture.value();
+}
+
+shared_ptr<Texture> TextureFactory::pois()
+{
+	if (!poisTexture.has_value())
+		poisTexture = make_shared<Texture>(loadTexture(POIS_PATH, true));
+	return poisTexture.value();
+}
+
+shared_ptr<Texture> TextureFactory::sea()
+{
+	if (!seaTexture.has_value())
+		seaTexture = make_shared<Texture>(loadTexture(SEA_PATH, true));
+	return seaTexture.value();
+}
+
+shared_ptr<Texture> TextureFactory::steve()
+{
+	if (!steveTexture.has_value())
+		steveTexture = make_shared<Texture>(loadTexture(STEVE_PATH, true));
+	return steveTexture.value();
+}
+
+#pragma endregion
 
 Texture TextureFactory::loadTexture(const string path, bool shouldFlip)
 {
@@ -52,39 +118,6 @@ Texture TextureFactory::loadTexture(const string path, bool shouldFlip)
 		throw runtime_error("Texture failed to load at path: " + path);
 		stbi_image_free(data);
 	}
-
-	return texture;
-}
-
-Texture TextureFactory::loadCubeMap(const vector<string> facesPaths, bool shouldFlip)
-{
-	Texture texture = {0};
-	glGenTextures(1, &texture.id);
-
-	glBindTexture(GL_TEXTURE_CUBE_MAP, texture.id);
-
-	int width, height, nrChannels;
-	for (unsigned int i = 0; i < facesPaths.size(); i++)
-	{
-		stbi_set_flip_vertically_on_load(shouldFlip);
-		unsigned char *data = stbi_load(facesPaths.at(i).c_str(), &width, &height, &nrChannels, 0);
-		if (data)
-		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-						 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			stbi_image_free(data);
-		}
-		else
-		{
-			throw runtime_error("Cubemap texture failed to load at path: " + facesPaths.at(i));
-			stbi_image_free(data);
-		}
-	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	return texture;
 }

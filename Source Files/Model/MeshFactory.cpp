@@ -1,7 +1,6 @@
 #include "../../Header Files/Model/MeshFactory.h"
 #include "../../Header Files/Game Objects/Material.h"
 #include "../../Header Files/Model/Buffers.h"
-#include "../../Header Files/Model/CubeMapMesh.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/Texture.h"
@@ -15,11 +14,10 @@
 using namespace std;
 using namespace glm;
 
-shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Shader> shader, Transform transform)
+shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Shader> shader, Transform transform, const shared_ptr<Texture> texture)
 {
 	const fvec2 halfSize = size / 2.0f;
-	const MaterialType material = MaterialType::SNOW_WHITE;
-	const Texture texture = Texture();
+	const Material material = MaterialsFactory::makeMaterial(MaterialType::SNOW_WHITE);
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -60,11 +58,10 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
-shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform)
+shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform, const shared_ptr<Texture> texture)
 {
 	const float halfLength = length / 2.0f;
-	const MaterialType material = MaterialType::RED_PLASTIC;
-	const Texture texture = Texture();
+	const Material material = MaterialsFactory::makeMaterial(MaterialType::RED_PLASTIC);
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -134,15 +131,14 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
-shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Shader> shader, Transform transform)
+shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Shader> shader, Transform transform, const shared_ptr<Texture> texture)
 {
 	// Number of subdivisions along the y axis
 	const int stacks = 100;
 	// Number of subdivisions along the x axis
 	const int slices = 100;
 	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0);
-	const MaterialType material = MaterialType::EMERALD;
-	const Texture texture = Texture();
+	const Material material = MaterialsFactory::makeMaterial(MaterialType::EMERALD);
 
 	transform.anchorPoint = fvec3(0);
 	vector<fvec3> vertices;
@@ -198,13 +194,6 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	shader->setBufferValues(bufferValues);
 
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
-}
-
-shared_ptr<CubeMapMesh> MeshFactory::cubeMap(const string name, const float length, const shared_ptr<Shader> shader, Transform transform)
-{
-	const Texture texture = Texture();
-
-	return shared_ptr<CubeMapMesh>(new CubeMapMesh(name, shader, transform, texture));
 }
 
 // Consider adding anchor to the vertex and index vector

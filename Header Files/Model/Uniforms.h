@@ -14,11 +14,6 @@ struct Uniform
 	T value;
 };
 
-struct SamplerCube
-{
-	unsigned int id;
-};
-
 #ifdef USE_UBOs
 struct UniformValues
 {
@@ -33,6 +28,7 @@ struct UniformValues
 };
 #endif
 
+// void * uniforms are those that do not possess a unique value, such as textures or samplers.
 struct Uniforms
 {
 	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
@@ -54,9 +50,9 @@ struct Uniforms
 	Uniform<ivec2> screenSize = {"screenSize"};
 	Uniform<bool> isVisible = {"isVisible"};
 
-	Uniform<SamplerCube> skybox = {"skybox"};
-	// Uniform<SamplerCube> cubeMap = {"cubeMap"};
-	// Uniform<Sampler2D> texture = {"textureSampler"};
+	// Uniform<void *> skybox = {"skybox"};
+	// Uniform<void *> cubeMap = {"cubeMap"};
+	Uniform<void *> texture = {"textureSampler"};
 	Uniform<bool> useTexture = {"useTexture"};
 
 #ifdef USE_UBOs
