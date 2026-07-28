@@ -7,7 +7,7 @@
 #include <memory>
 #include <string>
 
-Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const shared_ptr<Texture> texture)
+Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	this->name = name;
 	this->values = values;
@@ -19,7 +19,7 @@ Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader
 
 void Mesh::render(Transform modelTransform) const
 {
-	this->shader->render(modelTransform, this->transform, this->values, this->material, *this->texture);
+	this->shader->render(modelTransform, this->transform, this->values, this->material, this->texture);
 }
 
 string Mesh::getName() const
@@ -47,7 +47,7 @@ void Mesh::setTexture(const shared_ptr<Texture> texture)
 	this->texture = texture;
 }
 
-shared_ptr<Texture> Mesh::getTexture() const
+optional<shared_ptr<Texture>> Mesh::getTexture() const
 {
 	return this->texture;
 }

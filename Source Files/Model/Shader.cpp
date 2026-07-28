@@ -111,7 +111,6 @@ Shader::Shader(const ShaderFiles files)
 
 	this->uniforms.creationTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.isVisible.value = true;
-	this->uniforms.useTexture.value = false;
 }
 
 Shader::~Shader()
@@ -131,15 +130,22 @@ void Shader::setBufferValues(const BufferValues bufferValues)
 	this->checkGLErrors();
 }
 
-void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const Texture texture)
+void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	glUseProgram(this->programId);
 	this->updateUniformValues(modelTransform, meshTransform, material);
 	this->checkGLErrors();
+
 	this->passUniforms();
 	this->checkGLErrors();
-	this->bindTexture(texture);
+
+	this->uniforms.useTexture.value = texture.has_value();
+	if (this->uniforms.useTexture.value)
+		this->bindTexture(*texture.value());
+	else
+		this->bindNoTexture();
 	this->checkGLErrors();
+
 	this->draw(values);
 	this->checkGLErrors();
 }

@@ -21,7 +21,7 @@ public:
 	~Shader();
 
 	void setBufferValues(const BufferValues bufferValues);
-	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const Texture texture);
+	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture);
 
 	static shared_ptr<bool> getDrawWireframeFlag();
 	static shared_ptr<bool> getDrawAnchorFlag();

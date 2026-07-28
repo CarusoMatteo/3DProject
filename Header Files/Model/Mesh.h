@@ -15,7 +15,7 @@ class Shader;
 class Mesh
 {
 public:
-	Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const shared_ptr<Texture> texture);
+	Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture);
 	~Mesh() = default;
 
 	void render(Transform modelTransform) const;
@@ -27,7 +27,7 @@ public:
 	void setMaterial(const Material material);
 
 	void setTexture(const shared_ptr<Texture> texture);
-	shared_ptr<Texture> getTexture() const;
+	optional<shared_ptr<Texture>> getTexture() const;
 
 	Transform getTransform() const;
 	void setTransform(const Transform transform);
@@ -38,5 +38,6 @@ private:
 	BufferValues values;
 	Transform transform;
 	Material material;
-	shared_ptr<Texture> texture;
+	// A mesh may or may not have a texture.
+	optional<shared_ptr<Texture>> texture;
 };
