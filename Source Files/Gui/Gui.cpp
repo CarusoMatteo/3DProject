@@ -17,8 +17,6 @@
 #include <string>
 #include <vector>
 
-#include <iostream>
-
 using namespace glm;
 using namespace std;
 
@@ -106,8 +104,6 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 		{
 			this->selectedObjectIndex = i;
 			this->selectedMeshIndex = nullopt;
-
-			cout << "Selected object: " << objects.at(i)->getName() << endl;
 		}
 
 		if (nodeOpen)
@@ -121,7 +117,6 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 				bool isSelected = this->selectedObjectIndex == i && this->selectedMeshIndex == j;
 				if (ImGui::Selectable(meshLabel, isSelected))
 				{
-					cout << "Selected mesh: " << mesh->getName() << " of object " << objects.at(i)->getName() << endl;
 					this->selectedObjectIndex = i;
 					this->selectedMeshIndex = j;
 				}
