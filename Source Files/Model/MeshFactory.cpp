@@ -44,14 +44,13 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 		fvec3(0, 1, 0),
 		fvec3(0, 1, 0),
 		fvec3(0, 1, 0)};
-	const vector<fvec2> textures; // Not set
+	const vector<fvec2> textureCoordinates = {
+		fvec2(0, 1),
+		fvec2(1, 1),
+		fvec2(1, 0),
+		fvec2(0, 0)};
 
-	const BufferValues bufferValues = {
-		vertices,
-		colors,
-		normals,
-		indices,
-		textures};
+	const BufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 
@@ -117,14 +116,22 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		normalize(vec3(0, 0, -1)),
 		normalize(vec3(0, 0, -1)),
 		normalize(vec3(0, 0, -1))};
-	const vector<fvec2> textures; // Not set
+	const vector<fvec2> textureCoordinates = {
+		fvec2(0, 0),
+		fvec2(1, 0),
+		fvec2(1, 1),
+		fvec2(0, 1),
+		fvec2(0, 0),
+		fvec2(1, 0),
+		fvec2(1, 1),
+		fvec2(0, 1)};
 
 	const BufferValues bufferValues = {
 		vertices,
 		colors,
 		normals,
 		indices,
-		textures};
+		textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 
@@ -145,7 +152,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	vector<fvec4> colors;
 	vector<fvec3> normals;
 	vector<unsigned int> indices;
-	vector<fvec2> textures; // Not set
+	vector<fvec2> textureCoordinates;
 
 	for (int i = 0; i <= stacks; i++)
 	{
@@ -166,6 +173,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 			vertices.push_back(fvec3(x, y, z));
 			colors.push_back(color);
 			normals.push_back(fvec3(x, y, z));
+			textureCoordinates.push_back(fvec2(U, V));
 		}
 	}
 
@@ -189,7 +197,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 		colors,
 		normals,
 		indices,
-		textures};
+		textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 

@@ -16,7 +16,7 @@ shared_ptr<Model> ModelFactory::plane(const string name, const fvec2 size, const
 	const fvec3 planePosition(0.0f);
 	const float planeRotation = 0.0f;
 	const fvec3 planeRotationAxis(0.0f);
-	const fvec3 planeScale(50.0f);
+	const fvec3 planeScale(1.0f);
 
 	Transform planeTransform = {
 		planePosition,

@@ -131,7 +131,7 @@ Shader::~Shader()
 	glDeleteBuffers(1, &this->addresses.colors);
 	glDeleteBuffers(1, &this->addresses.normals);
 	glDeleteBuffers(1, &this->addresses.indices);
-	glDeleteBuffers(1, &this->addresses.textures);
+	glDeleteBuffers(1, &this->addresses.textureCoordinates);
 	glDeleteVertexArrays(1, &this->addresses.vao);
 }
 
@@ -191,9 +191,9 @@ void Shader::initVbos(const BufferValues values)
 	glEnableVertexAttribArray(2);
 
 	// Generates and makes active the VBO for the texture coordinates
-	glGenBuffers(1, &this->addresses.textures);
-	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textures);
-	glBufferData(GL_ARRAY_BUFFER, values.textures.size() * sizeof(fvec2), values.textures.data(), GL_STATIC_DRAW);
+	glGenBuffers(1, &this->addresses.textureCoordinates);
+	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textureCoordinates);
+	glBufferData(GL_ARRAY_BUFFER, values.textureCoordinates.size() * sizeof(fvec2), values.textureCoordinates.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
 	glEnableVertexAttribArray(3);
 

@@ -20,9 +20,9 @@ Plane::Plane()
 	Transform planeTransform = {
 		fvec3(0, -1.5f, 0),
 		Rotation(),
-		fvec3(5000, 0, 5000)};
+		fvec3(5, 1, 5)};
 
-	this->model = ModelFactory::plane(name, size, ShaderFactory::unlit(), planeTransform, TextureFactory::brick());
+	this->model = ModelFactory::plane(name, size, ShaderFactory::phong(), planeTransform, TextureFactory::brick());
 }
 
 void Plane::update(float deltaTime)
