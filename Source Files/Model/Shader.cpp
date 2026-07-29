@@ -36,7 +36,7 @@ const ShaderFiles ShaderFactory::PHONG_PATH = {
 	ShaderFactory::SHADER_PATH + "Phong/Phong.vert",
 	ShaderFactory::SHADER_PATH + "Phong/Phong.frag"};
 const ShaderFiles ShaderFactory::BLINN_PHONG_PATH = {
-	ShaderFactory::SHADER_PATH + "BlinnPhong/BlinnPhong.vert",
+	ShaderFactory::SHADER_PATH + "BlinnPhong/Blinn.vert",
 	ShaderFactory::SHADER_PATH + "BlinnPhong/BlinnPhong.frag"};
 const ShaderFiles ShaderFactory::REFLECTION_PATH = {
 	ShaderFactory::SHADER_PATH + "Reflection/Reflection.vert",
@@ -44,6 +44,9 @@ const ShaderFiles ShaderFactory::REFLECTION_PATH = {
 const ShaderFiles ShaderFactory::CUBE_MAP_PATH = {
 	ShaderFactory::SHADER_PATH + "CubeMap/CubeMap.vert",
 	ShaderFactory::SHADER_PATH + "CubeMap/CubeMap.frag"};
+const ShaderFiles ShaderFactory::INTERPOLATIVE_PATH = {
+	ShaderFactory::SHADER_PATH + "Interpolative/Interpolative.vert",
+	ShaderFactory::SHADER_PATH + "Interpolative/Interpolative.frag"};
 
 // Shader singletons
 
@@ -52,6 +55,7 @@ optional<shared_ptr<Shader>> ShaderFactory::phongShader = nullopt;
 optional<shared_ptr<Shader>> ShaderFactory::blinnPhongShader = nullopt;
 optional<shared_ptr<Shader>> ShaderFactory::reflectionShader = nullopt;
 optional<shared_ptr<Shader>> ShaderFactory::cubeMapShader = nullopt;
+optional<shared_ptr<Shader>> ShaderFactory::interpolativeShader = nullopt;
 
 shared_ptr<Shader> ShaderFactory::unlit()
 {
@@ -86,6 +90,13 @@ shared_ptr<Shader> ShaderFactory::cubeMap()
 	if (!cubeMapShader.has_value())
 		cubeMapShader = make_shared<Shader>(CUBE_MAP_PATH);
 	return cubeMapShader.value();
+}
+
+shared_ptr<Shader> ShaderFactory::interpolative()
+{
+	if (!interpolativeShader.has_value())
+		interpolativeShader = make_shared<Shader>(INTERPOLATIVE_PATH);
+	return interpolativeShader.value();
 }
 
 #pragma endregion
