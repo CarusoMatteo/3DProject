@@ -32,6 +32,11 @@ optional<shared_ptr<Texture>> TextureFactory::poisTexture = nullopt;
 optional<shared_ptr<Texture>> TextureFactory::seaTexture = nullopt;
 optional<shared_ptr<Texture>> TextureFactory::steveTexture = nullopt;
 
+optional<shared_ptr<Texture>> TextureFactory::none()
+{
+	return nullopt;
+}
+
 shared_ptr<Texture> TextureFactory::brick()
 {
 	if (!brickTexture.has_value())

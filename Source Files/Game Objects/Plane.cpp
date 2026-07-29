@@ -22,7 +22,7 @@ Plane::Plane()
 		Rotation(),
 		fvec3(5, 1, 5)};
 
-	this->model = ModelFactory::plane(name, size, ShaderFactory::phong(), planeTransform, TextureFactory::brick());
+	this->model = ModelFactory::plane(name, size, ShaderFactory::phong(), planeTransform, TextureFactory::none());
 }
 
 void Plane::update(float deltaTime)

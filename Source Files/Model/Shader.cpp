@@ -150,8 +150,7 @@ void Shader::render(const Transform modelTransform, const Transform meshTransfor
 	this->passUniforms();
 	this->checkGLErrors();
 
-	this->uniforms.useTexture.value = texture.has_value();
-	if (this->uniforms.useTexture.value)
+	if (this->uniforms.useTexture.value = texture.has_value())
 		this->bindTexture(*texture.value());
 	else
 		this->bindNoTexture();
@@ -248,10 +247,6 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
-
-	// Set once and kept like that.
-	// If it can be changed dinamically, it should be updated here.
-	// this->uniforms.useTexture.value = false;
 
 	// this->uniforms.skybox.value = ???;
 	// this->uniforms.cubeMap.value = ???;

@@ -14,6 +14,8 @@ struct Texture
 class TextureFactory
 {
 public:
+	static optional<shared_ptr<Texture>> none();
+
 	static shared_ptr<Texture> brick();
 	static shared_ptr<Texture> cement();
 	static shared_ptr<Texture> flag();
