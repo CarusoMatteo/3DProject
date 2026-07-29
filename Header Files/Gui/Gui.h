@@ -6,12 +6,11 @@
 #include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 #include <memory>
+#include <optional>
 #include <vector>
 
 using namespace glm;
 using namespace std;
-
-constexpr int NONE = -1;
 
 class Mesh;
 
@@ -31,15 +30,20 @@ private:
 	const fvec2 inspectorWindowPosition = fvec2(1000, 10);
 
 	shared_ptr<fvec3> clearColor;
-	int selectedObjectIndex = NONE;
-	int selectedMeshIndex = NONE;
 
+	optional<int> selectedObjectIndex = nullopt;
+	optional<int> selectedMeshIndex = nullopt;
+
+	shared_ptr<IVisibleGameObject> lastObject = nullptr;
 	shared_ptr<Mesh> lastMesh = nullptr;
 
-	Transform activeTransform;
+	Transform activeObjectTransform;
+	Transform activeMeshTransform;
 
 	void settingsWindow();
 	void inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects);
+	void objectInspectorWindow(const shared_ptr<IVisibleGameObject> object);
 	void meshInspectorWindow(const shared_ptr<Mesh> mesh);
-	void transformEditorSection(const shared_ptr<Mesh> mesh);
+	void objectTransformEditorSection(const shared_ptr<IVisibleGameObject> object);
+	void meshTransformEditorSection(const shared_ptr<Mesh> mesh);
 };
