@@ -85,7 +85,8 @@ char *ShaderBuilder::readShaderSource(const string file)
 
 	if (fp == NULL)
 	{
-		throw new std::runtime_error("Failed to open shader file.");
+		cerr << "Failed to open shader file: " << file << endl;
+		throw new std::runtime_error("Failed to open shader file: " + file);
 	}
 
 	fseek(fp, 0L, SEEK_END);
