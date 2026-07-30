@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Buffers.h"
+#include "IShader.h"
 #include "Texture.h"
 #include "Uniforms.h"
 #include <memory>
@@ -13,14 +14,14 @@ struct Material;
 struct ShaderFiles;
 struct Transform;
 
-class Shader
+class Shader : public IShader
 {
 public:
 	Shader(const ShaderFiles files);
 	~Shader();
 
-	void setBufferValues(const BufferValues bufferValues);
-	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture);
+	void setBufferValues(const BufferValues bufferValues) override;
+	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture) override;
 
 	static shared_ptr<bool> getDrawWireframeFlag();
 	static shared_ptr<bool> getDrawAnchorFlag();

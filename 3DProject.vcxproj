@@ -177,6 +177,7 @@
     <ClInclude Include="Header Files\Game Objects\IGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
+    <ClInclude Include="Header Files\Model\IShader.h" />
     <ClInclude Include="Header Files\Model\Material.h" />
     <ClInclude Include="Header Files\Game Objects\Plane.h" />
     <ClInclude Include="Header Files\Game Objects\PointLight.h" />
