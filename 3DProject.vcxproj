@@ -153,6 +153,7 @@
     <ClCompile Include="Source Files\Model\Model.cpp" />
     <ClCompile Include="Source Files\Model\ModelFactory.cpp" />
     <ClCompile Include="Source Files\Model\Shader.cpp" />
+    <ClCompile Include="Source Files\Model\ShaderFactory.cpp" />
     <ClCompile Include="Source Files\Model\Texture.cpp" />
     <ClCompile Include="Source Files\Random.cpp" />
     <ClCompile Include="Source Files\Scenes\Scene.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="Header Files\Model\Model.h" />
     <ClInclude Include="Header Files\Model\ModelFactory.h" />
     <ClInclude Include="Header Files\Model\Shader.h" />
+    <ClInclude Include="Header Files\Model\ShaderFactory.h" />
     <ClInclude Include="Header Files\Model\ShaderFiles.h" />
     <ClInclude Include="Header Files\Model\Texture.h" />
     <ClInclude Include="Header Files\Model\Transform.h" />

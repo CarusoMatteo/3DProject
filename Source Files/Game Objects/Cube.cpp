@@ -1,7 +1,7 @@
 #include "../../Header Files/Game Objects/Cube.h"
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
-#include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Model/ShaderFactory.h"
 #include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include <memory>
