@@ -16,7 +16,7 @@ Cube::Cube()
 	const string name = "Cube";
 	const float length = 2.0f;
 
-	this->model = ModelFactory::cube(name, length, ShaderFactory::interpolative(), Transform(), TextureFactory::brick());
+	this->model = ModelFactory::cube(name, length, ShaderFactory::phong(), Transform(), TextureFactory::cement());
 }
 
 void Cube::update(float deltaTime)

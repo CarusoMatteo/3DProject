@@ -8,6 +8,7 @@
 #include <cmath>
 #include <glm/glm.hpp>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -145,7 +146,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	// Number of subdivisions along the x axis
 	const int slices = 100;
 	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0);
-	const Material material = MaterialsFactory::makeMaterial(MaterialType::EMERALD);
+	const Material material = MaterialsFactory::makeMaterial(MaterialType::SNOW_WHITE);
 
 	transform.anchorPoint = fvec3(0);
 	vector<fvec3> vertices;

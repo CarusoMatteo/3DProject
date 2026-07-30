@@ -15,6 +15,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -144,13 +145,13 @@ void Shader::setBufferValues(const BufferValues bufferValues)
 void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	glUseProgram(this->programId);
-	this->updateUniformValues(modelTransform, meshTransform, material);
+	this->updateUniformValues(modelTransform, meshTransform, material, texture);
 	this->checkGLErrors();
 
 	this->passUniforms();
 	this->checkGLErrors();
 
-	if (this->uniforms.useTexture.value = texture.has_value())
+	if (this->uniforms.useTexture.value)
 		this->bindTexture(*texture.value());
 	else
 		this->bindNoTexture();
@@ -229,7 +230,7 @@ void Shader::initUniformReferences()
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
 }
 
-void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material)
+void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
@@ -248,9 +249,9 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
 
+	this->uniforms.useTexture.value = texture.has_value();
 	// this->uniforms.skybox.value = ???;
 	// this->uniforms.cubeMap.value = ???;
-	// this->uniforms.texture.value = ???;
 }
 
 void Shader::passUniforms()
@@ -273,6 +274,8 @@ void Shader::passUniforms()
 	glUniform1f(this->uniforms.currentTime.location, this->uniforms.currentTime.value);
 	glUniform2iv(this->uniforms.screenSize.location, 1, value_ptr(this->uniforms.screenSize.value));
 	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
+
+	glUniform1i(this->uniforms.useTexture.location, this->uniforms.useTexture.value ? 1 : 0);
 }
 
 void Shader::bindTexture(const Texture texture) const

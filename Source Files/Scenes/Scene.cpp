@@ -15,17 +15,17 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 	Camera::I();
 	this->gameObjects = {
 		shared_ptr<Plane>(new Plane()),
-		shared_ptr<Cube>(new Cube()),
 		// shared_ptr<Cube>(new Cube()),
 		// shared_ptr<Cube>(new Cube()),
-		// shared_ptr<Sphere>(new Sphere()),
+		// shared_ptr<Cube>(new Cube()),
+		shared_ptr<Sphere>(new Sphere()),
 		// shared_ptr<Sphere>(new Sphere()),
 		// shared_ptr<Sphere>(new Sphere())
 	};
 	PointLight::I();
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 
-	this->scatterObjects();
+	// this->scatterObjects();
 }
 
 void Scene::updateGameObjects(float deltaTime)

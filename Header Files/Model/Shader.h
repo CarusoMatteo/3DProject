@@ -38,7 +38,7 @@ protected:
 	void initVbos(const BufferValues bufferValues);
 	void initUniformReferences();
 
-	void updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material);
+	void updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture);
 	void passUniforms();
 	void bindTexture(const Texture texture) const;
 	// Unbinds a texture from the shader. Used when the mesh has no texture.
