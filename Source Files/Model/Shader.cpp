@@ -29,7 +29,7 @@ using namespace glm;
 
 // Paths to the shader files
 
-const string ShaderFactory::SHADER_PATH = "Shaders/";
+const string ShaderFactory::SHADER_PATH = "assets/shaders/";
 const ShaderFiles ShaderFactory::UNLIT_PATH = {
 	ShaderFactory::SHADER_PATH + "Unlit/Unlit.vert",
 	ShaderFactory::SHADER_PATH + "Unlit/Unlit.frag"};
