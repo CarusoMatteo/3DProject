@@ -10,7 +10,7 @@ uniform mat4 viewMatrix;
 uniform vec3 viewPosition;
 
 out vec4 color;
-out vec2 textureCoordinate;
+out vec2 fragmentTextureCoordinate;
 
 struct PointLight
 {
@@ -51,5 +51,5 @@ void main()
 
 	color = vec4(ambient + diffuse + specular, 1.0);
 
-	textureCoordinate = vertexTextureCoordinate;
+	fragmentTextureCoordinate = vertexTextureCoordinate;
 }

@@ -4,7 +4,7 @@ uniform sampler2D textureSampler;
 uniform bool useTexture;
 
 in vec3 N, L, R, V;
-in vec2 textureCoordinate;
+in vec2 fragmentTextureCoordinate;
 
 out vec4 fragColor;
 
@@ -36,7 +36,7 @@ void main()
 
 	if (useTexture)
 	{
-		baseColor *= texture(textureSampler, textureCoordinate);
+		baseColor *= texture(textureSampler, fragmentTextureCoordinate);
 	}
 
 	fragColor = baseColor;

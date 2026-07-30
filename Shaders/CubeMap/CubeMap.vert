@@ -5,11 +5,11 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 // Doesn't have a model matrix, so we don't pass it as a uniform.
 
-out vec3 textureCoordinate;
+out vec3 fragmentTextureCoordinate;
 
 void main()
 {
-	textureCoordinate = vertexPosition;
+	fragmentTextureCoordinate = vertexPosition;
 
 	// View Matrix without the translation component
 	mat4 staticView = mat4(mat3(viewMatrix));

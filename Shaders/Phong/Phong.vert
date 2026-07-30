@@ -10,7 +10,7 @@ uniform mat4 viewMatrix;
 uniform vec3 viewPosition;
 
 out vec3 L, N, R, V;
-out vec2 textureCoordinate;
+out vec2 fragmentTextureCoordinate;
 
 struct PointLight
 {
@@ -42,5 +42,5 @@ void main()
 	V = normalize(viewPosition - eyePosition.xyz);
 	L = normalize((eyeLightPos - eyePosition).xyz);
 	R = reflect(-L, N);
-	textureCoordinate = vertexTextureCoordinate;
+	fragmentTextureCoordinate = vertexTextureCoordinate;
 }

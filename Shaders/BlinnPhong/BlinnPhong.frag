@@ -1,7 +1,7 @@
 #version 330 core
 
 in vec3 N, L, R, V;
-in vec2 textureCoordinate;
+in vec2 fragmentTextureCoordinate;
 
 uniform sampler2D textureSampler;
 uniform bool useTexture;
@@ -35,7 +35,7 @@ void main()
 	vec4 baseColor = vec4(ambient + diffuse + specular, 1.0);
 	if (useTexture)
 	{
-		baseColor *= texture(textureSampler, textureCoordinate);
+		baseColor *= texture(textureSampler, fragmentTextureCoordinate);
 	}
 
 	fragColor = baseColor;
