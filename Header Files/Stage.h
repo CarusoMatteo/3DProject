@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Scenes/Scene.h"
+#include "Scenes/IScene.h"
 #include <glm/glm.hpp>
 #include <memory>
 #include <string>
@@ -8,7 +8,6 @@
 using namespace glm;
 using namespace std;
 
-class Scene;
 class Window;
 
 class Stage
@@ -26,6 +25,6 @@ public:
 	void pollEvents() const;
 
 private:
-	unique_ptr<Scene> scene;
+	unique_ptr<IScene> scene;
 	shared_ptr<fvec3> clearColor;
 };

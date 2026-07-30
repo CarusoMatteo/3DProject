@@ -3,6 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../lib/stb_image/stb_image.h"
 #include <glad/glad.h>
+#include <memory>
 #include <optional>
 #include <stdexcept>
 #include <string>

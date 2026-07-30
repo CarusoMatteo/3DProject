@@ -1,6 +1,5 @@
 #include "../../Header Files/Scenes/Scene.h"
 #include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/Game Objects/Cube.h"
 #include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Game Objects/Sphere.h"

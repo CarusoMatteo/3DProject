@@ -1,10 +1,11 @@
 #include "../../Header Files/Model/Mesh.h"
-#include "../../Header Files/Game Objects/Material.h"
 #include "../../Header Files/Model/Buffers.h"
+#include "../../Header Files/Model/Material.h"
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include <memory>
+#include <optional>
 #include <string>
 
 Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture)

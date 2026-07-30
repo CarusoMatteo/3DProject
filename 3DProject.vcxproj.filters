@@ -102,7 +102,7 @@
     <ClCompile Include="Source Files\Game Objects\Sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Game Objects\Material.cpp">
+    <ClCompile Include="Source Files\Model\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source Files\Model\Texture.cpp">
@@ -212,7 +212,7 @@
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Game Objects\Material.h">
+    <ClInclude Include="Header Files\Model\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Game Objects\Plane.h">

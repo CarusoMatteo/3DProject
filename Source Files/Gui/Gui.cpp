@@ -5,7 +5,6 @@
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/InputEventsType.h"
 #include "../../Header Files/Model/Mesh.h"
-#include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/Shader.h"
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
@@ -16,6 +15,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <optional>
 
 using namespace glm;
 using namespace std;

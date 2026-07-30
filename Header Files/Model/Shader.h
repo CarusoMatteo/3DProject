@@ -5,7 +5,6 @@
 #include "Uniforms.h"
 #include <memory>
 #include <optional>
-#include <string>
 
 using namespace std;
 using namespace glm;

@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../Game Objects/Material.h"
 #include "Buffers.h"
+#include "Material.h"
 #include "Texture.h"
 #include "Transform.h"
 #include <memory>
+#include <optional>
 #include <string>
 
 using namespace glm;

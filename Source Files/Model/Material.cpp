@@ -1,4 +1,4 @@
-#include "../../Header Files/Game Objects/Material.h"
+#include "../../Header Files/Model/Material.h"
 #include <string>
 #include <vector>
 
