@@ -20,13 +20,7 @@ void Skybox::update(const float deltaTime)
 
 void Skybox::render()
 {
-	// Disable writing to depth buffer
-	glDepthMask(false);
-
 	this->model->render();
-	
-	// Reenable writing to depth buffer
-	glDepthMask(true);
 }
 
 Transform Skybox::getTransform() const

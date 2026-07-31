@@ -14,7 +14,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I();
 	this->gameObjects = {
-		shared_ptr<Skybox>(new Skybox()),
+		// shared_ptr<Skybox>(new Skybox()),
 		shared_ptr<Plane>(new Plane()),
 		// shared_ptr<Cube>(new Cube()),
 		// shared_ptr<Cube>(new Cube()),

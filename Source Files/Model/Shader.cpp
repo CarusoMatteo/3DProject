@@ -67,6 +67,12 @@ void Shader::setBufferValues(const BufferValues bufferValues)
 
 void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
 {
+	if (texture.has_value() && texture.value()->isCubemap)
+	{
+		// Disable writing to depth buffer
+		glDepthMask(false);
+	}
+
 	glUseProgram(this->programId);
 	this->updateUniformValues(modelTransform, meshTransform, material, texture);
 	this->checkGLErrors();
@@ -82,6 +88,12 @@ void Shader::render(const Transform modelTransform, const Transform meshTransfor
 
 	this->draw(values);
 	this->checkGLErrors();
+
+	if (texture.has_value() && texture.value()->isCubemap)
+	{
+		// Re-enable writing to depth buffer
+		glDepthMask(true);
+	}
 }
 
 void Shader::initVao()
@@ -150,7 +162,7 @@ void Shader::initUniformReferences()
 	this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
 
-	this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
+	// this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
 	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
 }
 
@@ -198,16 +210,22 @@ void Shader::passUniforms()
 	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
 
 	glUniform1i(this->uniforms.useTexture.location, this->uniforms.useTexture.value ? 1 : 0);
-	// glUniform1i(this->uniforms.skybox.location, 0); // Assegna la unit texture 0 per campionare la cubemap
 }
 
 void Shader::bindTexture(const Texture texture) const
 {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture.id);
-	glUniform1i(this->uniforms.texture.location, texture.id);
 	// The shader must read the texture from texture unit 0.
-	glUniform1i(this->uniforms.texture.location, 0); // sampler2D -> texture unit 0
+	glActiveTexture(GL_TEXTURE0);
+	if (texture.isCubemap)
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture.id);
+		glUniform1i(this->uniforms.skybox.location, texture.id);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, texture.id);
+		glUniform1i(this->uniforms.texture.location, texture.id);
+	}
 }
 
 void Shader::bindNoTexture() const

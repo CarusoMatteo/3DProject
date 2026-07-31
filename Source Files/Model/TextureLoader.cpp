@@ -13,7 +13,7 @@ using namespace std;
 
 Texture loadTexture(const string path, bool shouldFlip)
 {
-	Texture texture = {0};
+	Texture texture = {0, false};
 	glGenTextures(1, &texture.id);
 
 	int width, height, numberOfComponents;
@@ -53,7 +53,7 @@ Texture loadTexture(const string path, bool shouldFlip)
 
 Texture loadCubemap(vector<string> faces, bool shouldFlip)
 {
-	Texture texture = {0};
+	Texture texture = {0, true};
 	glGenTextures(1, &texture.id);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texture.id);
