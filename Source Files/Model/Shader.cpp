@@ -162,7 +162,7 @@ void Shader::initUniformReferences()
 	this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
 
-	// this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
+	this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
 	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
 }
 
@@ -214,17 +214,18 @@ void Shader::passUniforms()
 
 void Shader::bindTexture(const Texture texture) const
 {
-	// The shader must read the texture from texture unit 0.
-	glActiveTexture(GL_TEXTURE0);
 	if (texture.isCubemap)
 	{
 		glBindTexture(GL_TEXTURE_CUBE_MAP, texture.id);
-		glUniform1i(this->uniforms.skybox.location, texture.id);
+		glUniform1i(this->uniforms.skybox.location, 0);
 	}
 	else
 	{
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture.id);
 		glUniform1i(this->uniforms.texture.location, texture.id);
+		// The shader must read the texture from texture unit 0.
+		glUniform1i(this->uniforms.texture.location, 0); // sampler2D -> texture unit 0
 	}
 }
 
