@@ -55,7 +55,7 @@ struct Uniforms
 	Uniform<none> texture = {"textureSampler"};
 	Uniform<bool> useTexture = {"useTexture"};
 
-	Uniform<none> skybox = {"skybox"};
+	Uniform<none> skybox = {"skyboxSampler"};
 	// Uniform<none> cubeMap = {"cubeMap"};
 
 #ifdef USE_UBOs

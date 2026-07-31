@@ -214,16 +214,15 @@ void Shader::passUniforms()
 
 void Shader::bindTexture(const Texture texture) const
 {
+	glActiveTexture(GL_TEXTURE0);
 	if (texture.isCubemap)
 	{
 		glBindTexture(GL_TEXTURE_CUBE_MAP, texture.id);
-		glUniform1i(this->uniforms.skybox.location, 0);
+		glUniform1i(this->uniforms.skybox.location, 0); // samplerCube -> texture unit 0
 	}
 	else
 	{
-		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture.id);
-		glUniform1i(this->uniforms.texture.location, texture.id);
 		// The shader must read the texture from texture unit 0.
 		glUniform1i(this->uniforms.texture.location, 0); // sampler2D -> texture unit 0
 	}
