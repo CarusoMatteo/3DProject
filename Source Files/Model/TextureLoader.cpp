@@ -43,7 +43,7 @@ Texture loadTexture(const string path, bool shouldFlip)
 	}
 	else
 	{
-		cout << "Texture failed to load at path: " << path << endl;
+		cerr << "Texture failed to load at path: " << path << endl;
 		throw runtime_error("Texture failed to load at path: " + path);
 		stbi_image_free(data);
 	}
@@ -70,7 +70,7 @@ Texture loadCubemap(vector<string> faces, bool shouldFlip)
 		}
 		else
 		{
-			cout << "Cubemap texture failed to load at path: " << faces[i] << endl;
+			cerr << "Cubemap texture failed to load at path: " << faces[i] << endl;
 			throw runtime_error("Cubemap texture failed to load at path: " + faces[i]);
 			stbi_image_free(data);
 		}

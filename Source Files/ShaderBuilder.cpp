@@ -18,7 +18,7 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	const char *vertexShader = ShaderBuilder::readShaderSource(files.vertex);
 	if (!vertexShader)
 	{
-		cout << "Failed to load vertex shader source code from file: " << files.vertex << endl;
+		cerr << "Failed to load vertex shader source code from file: " << files.vertex << endl;
 		throw runtime_error("Failed to load vertex shader source code.");
 	}
 	else if (ShaderBuilder::shouldPrintLogs)
@@ -37,7 +37,7 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	if (!success)
 	{
 		glGetShaderInfoLog(vertexShaderId, 512, NULL, infoLog);
-		cout << "Error: Vertex shader compilation failed.\n"
+		cerr << "Error: Vertex shader compilation failed.\n"
 			 << infoLog << endl;
 		throw runtime_error("Vertex shader compilation failed.");
 	}
@@ -46,7 +46,7 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	const GLchar *fragmentShader = ShaderBuilder::readShaderSource(files.fragment);
 	if (!fragmentShader)
 	{
-		cout << "Failed to load fragment shader source code from file: " << files.fragment << endl;
+		cerr << "Failed to load fragment shader source code from file: " << files.fragment << endl;
 		throw runtime_error("Failed to load fragment shader source code.");
 	}
 	else if (ShaderBuilder::shouldPrintLogs)
@@ -64,8 +64,8 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	if (!success)
 	{
 		glGetShaderInfoLog(fragmentShaderId, 512, NULL, infoLog);
-		cout << "Error: Fragment shader compilation failed.\n"
-				  << infoLog << endl;
+		cerr << "Error: Fragment shader compilation failed.\n"
+			 << infoLog << endl;
 		throw runtime_error("Fragment shader compilation failed.");
 	}
 

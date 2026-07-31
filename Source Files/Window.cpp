@@ -93,7 +93,7 @@ void Window::initializeWindow()
 	// If glfwInit fails, throw an exception.
 	if (!glfwInit())
 	{
-		cout << "Failed to initialize GLFW" << endl;
+		cerr << "Failed to initialize GLFW" << endl;
 		throw runtime_error("Failed to initialize GLFW");
 	}
 
@@ -118,7 +118,7 @@ void Window::initializeWindow()
 	if (!window)
 	{
 		glfwTerminate();
-		cout << "Failed to create GLFW window" << endl;
+		cerr << "Failed to create GLFW window" << endl;
 		throw runtime_error("Failed to create GLFW window");
 	}
 
@@ -134,7 +134,7 @@ void Window::initializeWindow()
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		glfwTerminate();
-		cout << "Failed to load OpenGL function pointers" << endl;
+		cerr << "Failed to load OpenGL function pointers" << endl;
 		throw runtime_error("Failed to load OpenGL function pointers");
 	}
 
