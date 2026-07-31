@@ -1,10 +1,13 @@
 #include "../../Header Files/Game Objects/Skybox.h"
+#include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Model/CubeMapTextureFactory.h"
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/ShaderFactory.h"
 #include "../../Header Files/Model/Transform.h"
-#include <glad/glad.h>
+#include <memory>
+#include <string>
+#include <vector>
 
 Skybox::Skybox()
 {
