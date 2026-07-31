@@ -6,6 +6,8 @@
 using namespace std;
 using namespace glm;
 
+typedef void *none;
+
 template <typename T>
 struct Uniform
 {
@@ -28,7 +30,7 @@ struct UniformValues
 };
 #endif
 
-// void * uniforms are those that do not possess a unique value, such as textures or samplers.
+// none uniforms are those that do not possess a unique value, such as textures or samplers.
 struct Uniforms
 {
 	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
@@ -50,10 +52,11 @@ struct Uniforms
 	Uniform<ivec2> screenSize = {"screenSize"};
 	Uniform<bool> isVisible = {"isVisible"};
 
-	// Uniform<void *> skybox = {"skybox"};
-	// Uniform<void *> cubeMap = {"cubeMap"};
-	Uniform<void *> texture = {"textureSampler"};
+	Uniform<none> texture = {"textureSampler"};
 	Uniform<bool> useTexture = {"useTexture"};
+
+	Uniform<none> skybox = {"skybox"};
+	// Uniform<none> cubeMap = {"cubeMap"};
 
 #ifdef USE_UBOs
 	UniformValues toValues()

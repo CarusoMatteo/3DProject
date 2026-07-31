@@ -6,9 +6,12 @@
 #include <ImGui/imgui_impl_opengl3.h>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>
+
+using namespace std;
 
 unique_ptr<Window> Window::instance = nullptr;
 
@@ -90,6 +93,7 @@ void Window::initializeWindow()
 	// If glfwInit fails, throw an exception.
 	if (!glfwInit())
 	{
+		cout << "Failed to initialize GLFW" << endl;
 		throw runtime_error("Failed to initialize GLFW");
 	}
 
@@ -114,6 +118,7 @@ void Window::initializeWindow()
 	if (!window)
 	{
 		glfwTerminate();
+		cout << "Failed to create GLFW window" << endl;
 		throw runtime_error("Failed to create GLFW window");
 	}
 
@@ -129,7 +134,8 @@ void Window::initializeWindow()
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		glfwTerminate();
-		throw new runtime_error("Failed to load OpenGL function pointers");
+		cout << "Failed to load OpenGL function pointers" << endl;
+		throw runtime_error("Failed to load OpenGL function pointers");
 	}
 
 	// Resize window to fraction of monitor size

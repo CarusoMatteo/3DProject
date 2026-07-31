@@ -147,10 +147,11 @@ void Shader::initUniformReferences()
 	this->uniforms.screenSize.location = glGetUniformLocation(this->programId, this->uniforms.screenSize.name.c_str());
 	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
 
-	// this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
-	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
 	this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
+
+	this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
+	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
 }
 
 void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
@@ -173,8 +174,6 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 	this->uniforms.screenSize.value = Window::I()->getSize();
 
 	this->uniforms.useTexture.value = texture.has_value();
-	// this->uniforms.skybox.value = ???;
-	// this->uniforms.cubeMap.value = ???;
 }
 
 void Shader::passUniforms()
@@ -199,6 +198,7 @@ void Shader::passUniforms()
 	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
 
 	glUniform1i(this->uniforms.useTexture.location, this->uniforms.useTexture.value ? 1 : 0);
+	// glUniform1i(this->uniforms.skybox.location, 0); // Assegna la unit texture 0 per campionare la cubemap
 }
 
 void Shader::bindTexture(const Texture texture) const

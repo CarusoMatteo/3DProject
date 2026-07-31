@@ -140,6 +140,8 @@
     <ClCompile Include="..\.common\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source Files\Game Objects\Camera.cpp" />
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
+    <ClCompile Include="Source Files\Game Objects\Skybox.cpp" />
+    <ClCompile Include="Source Files\Model\CubeMapTextureFactory.cpp" />
     <ClCompile Include="Source Files\Model\Material.cpp" />
     <ClCompile Include="Source Files\Game Objects\Plane.cpp" />
     <ClCompile Include="Source Files\Game Objects\PointLight.cpp" />
@@ -154,7 +156,8 @@
     <ClCompile Include="Source Files\Model\ModelFactory.cpp" />
     <ClCompile Include="Source Files\Model\Shader.cpp" />
     <ClCompile Include="Source Files\Model\ShaderFactory.cpp" />
-    <ClCompile Include="Source Files\Model\Texture.cpp" />
+    <ClCompile Include="Source Files\Model\TextureFactory.cpp" />
+    <ClCompile Include="Source Files\Model\TextureLoader.cpp" />
     <ClCompile Include="Source Files\Random.cpp" />
     <ClCompile Include="Source Files\Scenes\Scene.cpp" />
     <ClCompile Include="Source Files\ShaderBuilder.cpp" />
@@ -177,6 +180,8 @@
     <ClInclude Include="Header Files\Game Objects\IGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
+    <ClInclude Include="Header Files\Game Objects\Skybox.h" />
+    <ClInclude Include="Header Files\Model\CubeMapTextureFactory.h" />
     <ClInclude Include="Header Files\Model\IShader.h" />
     <ClInclude Include="Header Files\Model\Material.h" />
     <ClInclude Include="Header Files\Game Objects\Plane.h" />
@@ -197,6 +202,8 @@
     <ClInclude Include="Header Files\Model\ShaderFactory.h" />
     <ClInclude Include="Header Files\Model\ShaderFiles.h" />
     <ClInclude Include="Header Files\Model\Texture.h" />
+    <ClInclude Include="Header Files\Model\TextureFactory.h" />
+    <ClInclude Include="Header Files\Model\TextureLoader.h" />
     <ClInclude Include="Header Files\Model\Transform.h" />
     <ClInclude Include="Header Files\CameraProjection.h" />
     <ClInclude Include="Header Files\Model\Uniforms.h" />
