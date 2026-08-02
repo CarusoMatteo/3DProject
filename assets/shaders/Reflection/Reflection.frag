@@ -1,7 +1,7 @@
 #version 330 core
 
 uniform vec3 viewPosition;
-uniform samplerCube cubeMap;
+uniform samplerCube skyboxSampler;
 
 in vec3 normal;
 in vec3 position;
@@ -15,5 +15,5 @@ void main()
 	// Calcolo vettore riflesso
 	vec3 R = reflect(E, normalize(normal));
 	// Campionamento della cubemap
-	fragColor = texture(cubeMap, R);
+	fragColor = texture(skyboxSampler, R);
 }

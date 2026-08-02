@@ -80,6 +80,7 @@ void Shader::render(const Transform modelTransform, const Transform meshTransfor
 	this->passUniforms();
 	this->checkGLErrors();
 
+#pragma warning(suppress: 26859)
 	if (this->uniforms.useTexture.value)
 		this->bindTexture(*texture.value());
 	else
