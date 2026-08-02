@@ -1,7 +1,8 @@
 #include "../../Header Files/Game Objects/Cube.h"
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
-#include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Model/ShaderFactory.h"
+#include "../../Header Files/Model/TextureFactory.h"
 #include "../../Header Files/Model/Transform.h"
 #include <memory>
 #include <string>
@@ -15,7 +16,7 @@ Cube::Cube()
 	const string name = "Cube";
 	const float length = 2.0f;
 
-	this->model = ModelFactory::cube(name, length, ShaderFactory::createPhongShader(), Transform());
+	this->model = ModelFactory::cube(name, length, ShaderFactory::phong(), Transform(), TextureFactory::cement());
 }
 
 void Cube::update(float deltaTime)

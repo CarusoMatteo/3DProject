@@ -1,24 +1,24 @@
 #include "../../Header Files/Model/MeshFactory.h"
-#include "../../Header Files/Game Objects/Material.h"
-#include "../../Header Files/Game Objects/Texture.h"
 #include "../../Header Files/Model/Buffers.h"
+#include "../../Header Files/Model/Material.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include <cmath>
 #include <glm/glm.hpp>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
 using namespace std;
 using namespace glm;
 
-shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Shader> shader, Transform transform)
+shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Shader> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
 {
 	const fvec2 halfSize = size / 2.0f;
-	const MaterialType material = MaterialType::SNOW_WHITE;
-	const TextureType texture = TextureType::NO_TEXTURE;
+	const Material material = MaterialsFactory::makeMaterial(MaterialType::SNOW_WHITE);
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -45,25 +45,23 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 		fvec3(0, 1, 0),
 		fvec3(0, 1, 0),
 		fvec3(0, 1, 0)};
-	const vector<fvec2> textures; // Not set
+	const vector<fvec2> textureCoordinates = {
+		fvec2(0, 1),
+		fvec2(1, 1),
+		fvec2(1, 0),
+		fvec2(0, 0)};
 
-	const BufferValues bufferValues = {
-		vertices,
-		colors,
-		normals,
-		indices,
-		textures};
+	const BufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
-shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform)
+shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
 {
 	const float halfLength = length / 2.0f;
-	const MaterialType material = MaterialType::RED_PLASTIC;
-	const TextureType texture = TextureType::NO_TEXTURE;
+	const Material material = MaterialsFactory::makeMaterial(MaterialType::RED_PLASTIC);
 
 	transform.anchorPoint = fvec3(0);
 	const vector<fvec3> vertices = {
@@ -119,36 +117,43 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		normalize(vec3(0, 0, -1)),
 		normalize(vec3(0, 0, -1)),
 		normalize(vec3(0, 0, -1))};
-	const vector<fvec2> textures; // Not set
+	const vector<fvec2> textureCoordinates = {
+		fvec2(0, 0),
+		fvec2(1, 0),
+		fvec2(1, 1),
+		fvec2(0, 1),
+		fvec2(0, 0),
+		fvec2(1, 0),
+		fvec2(1, 1),
+		fvec2(0, 1)};
 
 	const BufferValues bufferValues = {
 		vertices,
 		colors,
 		normals,
 		indices,
-		textures};
+		textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
-shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Shader> shader, Transform transform)
+shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Shader> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
 {
 	// Number of subdivisions along the y axis
 	const int stacks = 100;
 	// Number of subdivisions along the x axis
 	const int slices = 100;
 	const fvec4 color = fvec4(1.0, 0.0, 0.0, 1.0);
-	const MaterialType material = MaterialType::EMERALD;
-	const TextureType texture = TextureType::NO_TEXTURE;
+	const Material material = MaterialsFactory::makeMaterial(MaterialType::SNOW_WHITE);
 
 	transform.anchorPoint = fvec3(0);
 	vector<fvec3> vertices;
 	vector<fvec4> colors;
 	vector<fvec3> normals;
 	vector<unsigned int> indices;
-	vector<fvec2> textures; // Not set
+	vector<fvec2> textureCoordinates;
 
 	for (int i = 0; i <= stacks; i++)
 	{
@@ -169,6 +174,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 			vertices.push_back(fvec3(x, y, z));
 			colors.push_back(color);
 			normals.push_back(fvec3(x, y, z));
+			textureCoordinates.push_back(fvec2(U, V));
 		}
 	}
 
@@ -192,7 +198,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 		colors,
 		normals,
 		indices,
-		textures};
+		textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 

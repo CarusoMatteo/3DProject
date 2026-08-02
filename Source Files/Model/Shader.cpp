@@ -1,9 +1,10 @@
 #include "../../Header Files/Model/Shader.h"
 #include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/Game Objects/Material.h"
 #include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Model/Buffers.h"
+#include "../../Header Files/Model/Material.h"
 #include "../../Header Files/Model/ShaderFiles.h"
+#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/ShaderBuilder.h"
 #include "../../Header Files/Window.h"
@@ -14,6 +15,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -22,8 +24,6 @@
 
 using namespace std;
 using namespace glm;
-
-#pragma region Shader
 
 shared_ptr<bool> Shader::drawWireframe = make_shared<bool>(false);
 shared_ptr<bool> Shader::drawAnchor = make_shared<bool>(false);
@@ -38,7 +38,7 @@ shared_ptr<bool> Shader::getDrawAnchorFlag()
 	return Shader::drawAnchor;
 }
 
-Shader::Shader(const ShaderFiles files, const ShaderType shaderType)
+Shader::Shader(const ShaderFiles files)
 {
 	this->programId = ShaderBuilder::buildShader(files);
 	this->initVao();
@@ -46,8 +46,6 @@ Shader::Shader(const ShaderFiles files, const ShaderType shaderType)
 
 	this->uniforms.creationTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.isVisible.value = true;
-	this->uniforms.useTexture.value = false;
-	this->shaderType = shaderType;
 }
 
 Shader::~Shader()
@@ -57,7 +55,7 @@ Shader::~Shader()
 	glDeleteBuffers(1, &this->addresses.colors);
 	glDeleteBuffers(1, &this->addresses.normals);
 	glDeleteBuffers(1, &this->addresses.indices);
-	glDeleteBuffers(1, &this->addresses.textures);
+	glDeleteBuffers(1, &this->addresses.textureCoordinates);
 	glDeleteVertexArrays(1, &this->addresses.vao);
 }
 
@@ -67,13 +65,36 @@ void Shader::setBufferValues(const BufferValues bufferValues)
 	this->checkGLErrors();
 }
 
-void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material)
+void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
 {
+	if (texture.has_value() && texture.value()->isCubemap)
+	{
+		// Disable writing to depth buffer
+		glDepthMask(false);
+	}
+
 	glUseProgram(this->programId);
-	this->updateUniformValues(modelTransform, meshTransform, material);
+	this->updateUniformValues(modelTransform, meshTransform, material, texture);
+	this->checkGLErrors();
+
 	this->passUniforms();
+	this->checkGLErrors();
+
+#pragma warning(suppress: 26859)
+	if (this->uniforms.useTexture.value)
+		this->bindTexture(*texture.value());
+	else
+		this->bindNoTexture();
+	this->checkGLErrors();
+
 	this->draw(values);
 	this->checkGLErrors();
+
+	if (texture.has_value() && texture.value()->isCubemap)
+	{
+		// Re-enable writing to depth buffer
+		glDepthMask(true);
+	}
 }
 
 void Shader::initGBuffer()
@@ -155,9 +176,9 @@ void Shader::initVbos(const BufferValues values)
 	glEnableVertexAttribArray(2);
 
 	// Generates and makes active the VBO for the texture coordinates
-	glGenBuffers(1, &this->addresses.textures);
-	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textures);
-	glBufferData(GL_ARRAY_BUFFER, values.textures.size() * sizeof(fvec2), values.textures.data(), GL_STATIC_DRAW);
+	glGenBuffers(1, &this->addresses.textureCoordinates);
+	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textureCoordinates);
+	glBufferData(GL_ARRAY_BUFFER, values.textureCoordinates.size() * sizeof(fvec2), values.textureCoordinates.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
 	glEnableVertexAttribArray(3);
 
@@ -188,13 +209,14 @@ void Shader::initUniformReferences()
 	this->uniforms.screenSize.location = glGetUniformLocation(this->programId, this->uniforms.screenSize.name.c_str());
 	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
 
-	// this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
-	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
-	// this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
+	this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
+
+	this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
+	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
 }
 
-void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material)
+void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
@@ -212,11 +234,8 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 
 	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
 	this->uniforms.screenSize.value = Window::I()->getSize();
-	this->uniforms.useTexture.value = false;
 
-	// this->uniforms.skybox.value = ???;
-	// this->uniforms.cubeMap.value = ???;
-	// this->uniforms.texture.value = ???;
+	this->uniforms.useTexture.value = texture.has_value();
 }
 
 void Shader::passUniforms()
@@ -239,6 +258,30 @@ void Shader::passUniforms()
 	glUniform1f(this->uniforms.currentTime.location, this->uniforms.currentTime.value);
 	glUniform2iv(this->uniforms.screenSize.location, 1, value_ptr(this->uniforms.screenSize.value));
 	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
+
+	glUniform1i(this->uniforms.useTexture.location, this->uniforms.useTexture.value ? 1 : 0);
+}
+
+void Shader::bindTexture(const Texture texture) const
+{
+	glActiveTexture(GL_TEXTURE0);
+	if (texture.isCubemap)
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texture.id);
+		glUniform1i(this->uniforms.skybox.location, 0); // samplerCube -> texture unit 0
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, texture.id);
+		// The shader must read the texture from texture unit 0.
+		glUniform1i(this->uniforms.texture.location, 0); // sampler2D -> texture unit 0
+	}
+}
+
+void Shader::bindNoTexture() const
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Shader::draw(const BufferValues values) const
@@ -277,71 +320,3 @@ void Shader::checkGLErrors()
 		throw runtime_error("OpenGL encountered an error.");
 	}
 }
-
-ShaderType Shader::getShaderType() const
-{
-	return this->shaderType;
-}
-
-#pragma endregion
-#pragma region UnlitShader
-
-UnlitShader::UnlitShader()
-	: Shader({"Shaders/Unlit/Unlit.vert", "Shaders/Unlit/Unlit.frag"}, ShaderType::UNLIT)
-{
-}
-
-#pragma endregion
-#pragma region PhongShader
-
-PhongShader::PhongShader()
-	: Shader({"Shaders/Phong/Phong.vert", "Shaders/Phong/Phong.frag"}, ShaderType::PHONG)
-{
-}
-
-#pragma endregion
-#pragma region BlinnPhongShader
-
-BlinnPhongShader::BlinnPhongShader()
-	: Shader({"Shaders/BlinnPhong/BlinnPhong.vert", "Shaders/BlinnPhong/BlinnPhong.frag"}, ShaderType::BLINN_PHONG)
-{
-}
-
-#pragma endregion
-#pragma region ReflectionShader
-
-ReflectionShader::ReflectionShader()
-	: Shader({"Shaders/Reflection/Reflection.vert", "Shaders/Reflection/Reflection.frag"}, ShaderType::REFLECTION)
-{
-}
-
-#pragma endregion
-#pragma region ShaderFactory
-
-const vector<string> ShaderFactory::shaderNames = {
-	"Unlit",
-	"Phong",
-	"Blinn-Phong",
-	"Reflection"};
-
-shared_ptr<Shader> ShaderFactory::createUnlitShader()
-{
-	return shared_ptr<Shader>(new UnlitShader());
-}
-
-shared_ptr<Shader> ShaderFactory::createPhongShader()
-{
-	return shared_ptr<Shader>(new PhongShader());
-}
-
-shared_ptr<Shader> ShaderFactory::createBlinnPhongShader()
-{
-	return shared_ptr<Shader>(new BlinnPhongShader());
-}
-
-shared_ptr<Shader> ShaderFactory::createReflectionShader()
-{
-	return shared_ptr<Shader>(new ReflectionShader());
-}
-
-#pragma endregion

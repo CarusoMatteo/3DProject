@@ -1,8 +1,8 @@
 #include "../../Header Files/Scenes/Scene.h"
 #include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/Game Objects/Cube.h"
 #include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/PointLight.h"
+#include "../../Header Files/Game Objects/Skybox.h"
 #include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Model/Transform.h"
@@ -14,17 +14,19 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I();
 	this->gameObjects = {
+		shared_ptr<Skybox>(new Skybox()),
 		shared_ptr<Plane>(new Plane()),
-		shared_ptr<Cube>(new Cube()),
-		shared_ptr<Cube>(new Cube()),
-		shared_ptr<Cube>(new Cube()),
+		// shared_ptr<Cube>(new Cube()),
+		// shared_ptr<Cube>(new Cube()),
+		// shared_ptr<Cube>(new Cube()),
 		shared_ptr<Sphere>(new Sphere()),
-		shared_ptr<Sphere>(new Sphere()),
-		shared_ptr<Sphere>(new Sphere())};
+		// shared_ptr<Sphere>(new Sphere()),
+		// shared_ptr<Sphere>(new Sphere()),
+	};
 	PointLight::I();
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 
-	this->scatterObjects();
+	// this->scatterObjects();
 }
 
 void Scene::updateGameObjects(float deltaTime)

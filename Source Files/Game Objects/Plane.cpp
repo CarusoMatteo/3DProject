@@ -1,7 +1,8 @@
 #include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
-#include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Model/ShaderFactory.h"
+#include "../../Header Files/Model/TextureFactory.h"
 #include "../../Header Files/Model/Transform.h"
 #include <glm/glm.hpp>
 #include <memory>
@@ -19,9 +20,9 @@ Plane::Plane()
 	Transform planeTransform = {
 		fvec3(0, -1.5f, 0),
 		Rotation(),
-		fvec3(5000, 0, 5000)};
+		fvec3(5, 1, 5)};
 
-	this->model = ModelFactory::plane(name, size, ShaderFactory::createUnlitShader(), planeTransform);
+	this->model = ModelFactory::plane(name, size, ShaderFactory::phong(), planeTransform, TextureFactory::none());
 }
 
 void Plane::update(float deltaTime)

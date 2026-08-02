@@ -20,11 +20,6 @@ public:
 	void renderScene() override;
 
 private:
-	// Do not save. Use singleton access instead
-	// unique_ptr<Camera> camera;
-	// Do not save. Use singleton access instead
-	// unique_ptr<PointLight> light;
-
 	vector<shared_ptr<IVisibleGameObject>> gameObjects;
 
 	unique_ptr<Gui> gui;

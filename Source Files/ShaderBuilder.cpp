@@ -18,11 +18,12 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	const char *vertexShader = ShaderBuilder::readShaderSource(files.vertex);
 	if (!vertexShader)
 	{
-		throw new runtime_error("Failed to load vertex shader source code.");
+		cerr << "Failed to load vertex shader source code from file: " << files.vertex << endl;
+		throw runtime_error("Failed to load vertex shader source code.");
 	}
 	else if (ShaderBuilder::shouldPrintLogs)
 	{
-		std::cout << "Vertex shader \'" << files.vertex << "\' loaded succesfully " << std::endl;
+		cout << "Vertex shader \'" << files.vertex << "\' loaded succesfully " << endl;
 	}
 
 	// Generate an identifier for the vertex shader
@@ -36,20 +37,21 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	if (!success)
 	{
 		glGetShaderInfoLog(vertexShaderId, 512, NULL, infoLog);
-		std::cout << "Error: Vertex shader compilation failed.\n"
-				  << infoLog << std::endl;
-		throw new std::runtime_error("Vertex shader compilation failed.");
+		cerr << "Error: Vertex shader compilation failed.\n"
+			 << infoLog << endl;
+		throw runtime_error("Vertex shader compilation failed.");
 	}
 
 	// Read the Fragment Shader code
 	const GLchar *fragmentShader = ShaderBuilder::readShaderSource(files.fragment);
 	if (!fragmentShader)
 	{
-		throw new std::runtime_error("Failed to load fragment shader source code.");
+		cerr << "Failed to load fragment shader source code from file: " << files.fragment << endl;
+		throw runtime_error("Failed to load fragment shader source code.");
 	}
 	else if (ShaderBuilder::shouldPrintLogs)
 	{
-		std::cout << "Fragment shader \'" << files.fragment << "\' loaded succesfully " << std::endl;
+		cout << "Fragment shader \'" << files.fragment << "\' loaded succesfully " << endl;
 	}
 
 	// Generate an identifier for the FRAGMENT shader
@@ -62,9 +64,9 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	if (!success)
 	{
 		glGetShaderInfoLog(fragmentShaderId, 512, NULL, infoLog);
-		std::cout << "Error: Fragment shader compilation failed.\n"
-				  << infoLog << std::endl;
-		throw new std::runtime_error("Fragment shader compilation failed.");
+		cerr << "Error: Fragment shader compilation failed.\n"
+			 << infoLog << endl;
+		throw runtime_error("Fragment shader compilation failed.");
 	}
 
 	// Create an identifier for a program and attach the two compiled shaders to it
@@ -85,7 +87,8 @@ char *ShaderBuilder::readShaderSource(const string file)
 
 	if (fp == NULL)
 	{
-		throw new std::runtime_error("Failed to open shader file.");
+		cerr << "Failed to open shader file: " << file << endl;
+		throw runtime_error("Failed to open shader file: " + file);
 	}
 
 	fseek(fp, 0L, SEEK_END);

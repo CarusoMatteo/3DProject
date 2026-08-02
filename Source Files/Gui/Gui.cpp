@@ -15,21 +15,10 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <optional>
 
 using namespace glm;
 using namespace std;
-
-static char *c_str_array(vector<string> array)
-{
-	static vector<char> buffer;
-	buffer.clear();
-	for (const auto &str : array)
-	{
-		buffer.insert(buffer.end(), str.begin(), str.end());
-		buffer.push_back('\0');
-	}
-	return buffer.data();
-}
 
 Gui::Gui(const shared_ptr<fvec3> clearColor) : IGui()
 {
@@ -49,8 +38,10 @@ void Gui::drawGui(vector<shared_ptr<IVisibleGameObject>> objects)
 
 	settingsWindow();
 	inspectorWindow(objects);
-	if (this->selectedObjectIndex != NONE && this->selectedMeshIndex != NONE)
-		meshInspectorWindow(objects.at(selectedObjectIndex)->getMeshes().at(selectedMeshIndex));
+	if (this->selectedObjectIndex.has_value())
+		objectInspectorWindow(objects.at(*this->selectedObjectIndex));
+	if (this->selectedObjectIndex.has_value() && this->selectedMeshIndex.has_value())
+		meshInspectorWindow(objects.at(*this->selectedObjectIndex)->getMeshes().at(*this->selectedMeshIndex));
 
 	// Ends the ImGui frame declaration.
 	ImGui::End();
@@ -112,7 +103,7 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 		if (ImGui::IsItemClicked())
 		{
 			this->selectedObjectIndex = i;
-			this->selectedMeshIndex = NONE;
+			this->selectedMeshIndex = nullopt;
 		}
 
 		if (nodeOpen)
@@ -135,43 +126,80 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 	}
 }
 
-void Gui::meshInspectorWindow(const shared_ptr<Mesh> mesh)
+void Gui::objectInspectorWindow(const shared_ptr<IVisibleGameObject> object)
 {
-	// Unique ID to avoid conflicts
-	ImGui::PushID(&mesh);
-
-	ImGui::Text("Mesh: %s", mesh->getName().c_str());
 	ImGui::Separator();
+	// Unique ID to avoid conflicts
+	ImGui::PushID(&object);
 
-	transformEditorSection(mesh);
+	ImGui::Text("Object: %s", object->getName().c_str());
+	objectTransformEditorSection(object);
 
 	ImGui::PopID();
 }
 
-void Gui::transformEditorSection(const shared_ptr<Mesh> mesh)
+void Gui::meshInspectorWindow(const shared_ptr<Mesh> mesh)
+{
+	ImGui::Separator();
+	// Unique ID to avoid conflicts
+	ImGui::PushID(&mesh);
+
+	ImGui::Text("Mesh: %s", mesh->getName().c_str());
+	meshTransformEditorSection(mesh);
+
+	ImGui::PopID();
+}
+
+void Gui::objectTransformEditorSection(const shared_ptr<IVisibleGameObject> object)
+{
+	if (this->lastObject != object)
+	{
+		// Load new Transform
+		this->activeObjectTransform = object->getTransform();
+		this->lastObject = object;
+	}
+
+	bool transformChanged = false;
+
+	ImGui::Text("Position");
+	transformChanged |= ImGui::DragFloat3("Position", value_ptr(this->activeObjectTransform.position), 0.1f, -50.0f, 50.0f);
+
+	ImGui::Text("Rotation");
+	transformChanged |= ImGui::DragFloat("Angle", &this->activeObjectTransform.rotation.angle, 0.1f, -360.0f, 360.0f);
+	transformChanged |= ImGui::DragFloat3("Axis", value_ptr(this->activeObjectTransform.rotation.axis), 0.1f, -1.0f, 1.0f);
+
+	ImGui::Text("Scale");
+	transformChanged |= ImGui::DragFloat3("Scale", value_ptr(this->activeObjectTransform.scale), 0.1f, -50.0f, 50.0f);
+
+	if (transformChanged)
+	{
+		object->setTransform(this->activeObjectTransform);
+	}
+}
+
+void Gui::meshTransformEditorSection(const shared_ptr<Mesh> mesh)
 {
 	if (this->lastMesh != mesh)
 	{
 		// Load new Transform
-		this->activeTransform = mesh->getTransform();
+		this->activeMeshTransform = mesh->getTransform();
 		this->lastMesh = mesh;
 	}
 
 	bool transformChanged = false;
 
-	ImGui::Separator();
 	ImGui::Text("Position");
-	transformChanged |= ImGui::DragFloat3("Position", value_ptr(this->activeTransform.position), 0.1f, -50.0f, 50.0f);
+	transformChanged |= ImGui::DragFloat3("Position", value_ptr(this->activeMeshTransform.position), 0.1f, -50.0f, 50.0f);
 
 	ImGui::Text("Rotation");
-	transformChanged |= ImGui::DragFloat("Angle", &this->activeTransform.rotation.angle, 0.1f, -360.0f, 360.0f);
-	transformChanged |= ImGui::DragFloat3("Axis", value_ptr(this->activeTransform.rotation.axis), 0.1f, -1.0f, 1.0f);
+	transformChanged |= ImGui::DragFloat("Angle", &this->activeMeshTransform.rotation.angle, 0.1f, -360.0f, 360.0f);
+	transformChanged |= ImGui::DragFloat3("Axis", value_ptr(this->activeMeshTransform.rotation.axis), 0.1f, -1.0f, 1.0f);
 
 	ImGui::Text("Scale");
-	transformChanged |= ImGui::DragFloat3("Scale", value_ptr(this->activeTransform.scale), 0.1f, -50.0f, 50.0f);
+	transformChanged |= ImGui::DragFloat3("Scale", value_ptr(this->activeMeshTransform.scale), 0.1f, -50.0f, 50.0f);
 
 	if (transformChanged)
 	{
-		mesh->setTransform(this->activeTransform);
+		mesh->setTransform(this->activeMeshTransform);
 	}
 }

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../Game Objects/Material.h"
-#include "../Game Objects/Texture.h"
 #include "Buffers.h"
-#include "Shader.h"
+#include "Material.h"
+#include "Texture.h"
 #include "Transform.h"
 #include <memory>
+#include <optional>
 #include <string>
 
 using namespace glm;
@@ -16,7 +16,7 @@ class Shader;
 class Mesh
 {
 public:
-	Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const MaterialType material, const TextureType texture);
+	Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture);
 	~Mesh() = default;
 
 	void render(Transform modelTransform) const;
@@ -24,24 +24,21 @@ public:
 
 	void setShader(const shared_ptr<Shader> shader);
 
-	MaterialType getMaterialType() const;
-	void setMaterialType(const MaterialType material);
-	shared_ptr<Material> getCustomMaterial() const;
+	Material getMaterial() const;
+	void setMaterial(const Material material);
 
-	void setTextureType(const TextureType texture);
-	TextureType getTextureType() const;
+	void setTexture(const shared_ptr<Texture> texture);
+	optional<shared_ptr<Texture>> getTexture() const;
 
 	Transform getTransform() const;
 	void setTransform(const Transform transform);
-
-	ShaderType getShaderType() const;
 
 private:
 	string name;
 	shared_ptr<Shader> shader;
 	BufferValues values;
 	Transform transform;
-	MaterialType material;
-	shared_ptr<Material> customMaterial;
-	TextureType texture;
+	Material material;
+	// A mesh may or may not have a texture.
+	optional<shared_ptr<Texture>> texture;
 };
