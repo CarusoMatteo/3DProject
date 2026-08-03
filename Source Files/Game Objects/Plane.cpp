@@ -1,4 +1,5 @@
 #include "../../Header Files/Game Objects/Plane.h"
+#include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/ShaderFactory.h"
