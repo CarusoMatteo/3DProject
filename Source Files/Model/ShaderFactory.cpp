@@ -7,7 +7,7 @@
 
 // Paths to the shader files
 
-const string ShaderFactory::SHADER_PATH = "assets/shaders/";
+const string ShaderFactory::SHADER_PATH = "assets/shaders/forward/";
 const ShaderFiles ShaderFactory::UNLIT_PATH = {
 	ShaderFactory::SHADER_PATH + "Unlit/Unlit.vert",
 	ShaderFactory::SHADER_PATH + "Unlit/Unlit.frag"};
