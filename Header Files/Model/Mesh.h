@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Buffers.h"
+#include "../Renderers/Buffers.h"
+#include "../Texture/Texture.h"
 #include "Material.h"
-#include "Texture.h"
 #include "Transform.h"
 #include <memory>
 #include <optional>
@@ -11,18 +11,18 @@
 using namespace glm;
 using namespace std;
 
-class Shader;
+class Renderer;
 
 class Mesh
 {
 public:
-	Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture);
+	Mesh(const string name, const BufferValues values, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture);
 	~Mesh() = default;
 
 	void render(Transform modelTransform) const;
 	string getName() const;
 
-	void setShader(const shared_ptr<Shader> shader);
+	void setShader(const shared_ptr<Renderer> shader);
 
 	Material getMaterial() const;
 	void setMaterial(const Material material);
@@ -35,7 +35,7 @@ public:
 
 private:
 	string name;
-	shared_ptr<Shader> shader;
+	shared_ptr<Renderer> shader;
 	BufferValues values;
 	Transform transform;
 	Material material;

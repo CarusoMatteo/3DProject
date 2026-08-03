@@ -1,12 +1,12 @@
-#include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Renderers/ForwardRenderer.h"
 #include "../../Header Files/Game Objects/Camera.h"
 #include "../../Header Files/Game Objects/PointLight.h"
-#include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Material.h"
-#include "../../Header Files/Model/ShaderFiles.h"
-#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
-#include "../../Header Files/ShaderBuilder.h"
+#include "../../Header Files/Renderers/Buffers.h"
+#include "../../Header Files/Renderers/ShaderBuilder.h"
+#include "../../Header Files/Renderers/ShaderFiles.h"
+#include "../../Header Files/Texture/Texture.h"
 #include "../../Header Files/Window.h"
 #include <GLFW/glfw3.h>
 #include <gl/GL.h>
@@ -25,20 +25,7 @@
 using namespace std;
 using namespace glm;
 
-shared_ptr<bool> Shader::drawWireframe = make_shared<bool>(false);
-shared_ptr<bool> Shader::drawAnchor = make_shared<bool>(false);
-
-shared_ptr<bool> Shader::getDrawWireframeFlag()
-{
-	return Shader::drawWireframe;
-}
-
-shared_ptr<bool> Shader::getDrawAnchorFlag()
-{
-	return Shader::drawAnchor;
-}
-
-Shader::Shader(const ShaderFiles files)
+ForwardRenderer::ForwardRenderer(const ShaderFiles files)
 {
 	this->programId = ShaderBuilder::buildShader(files);
 	this->initVao();
@@ -48,7 +35,7 @@ Shader::Shader(const ShaderFiles files)
 	this->uniforms.isVisible.value = true;
 }
 
-Shader::~Shader()
+ForwardRenderer::~ForwardRenderer()
 {
 	glDeleteProgram(this->programId);
 	glDeleteBuffers(1, &this->addresses.vertices);
@@ -59,13 +46,13 @@ Shader::~Shader()
 	glDeleteVertexArrays(1, &this->addresses.vao);
 }
 
-void Shader::setBufferValues(const BufferValues bufferValues)
+void ForwardRenderer::setBufferValues(const BufferValues bufferValues)
 {
 	this->initVbos(bufferValues);
 	this->checkGLErrors();
 }
 
-void Shader::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
+void ForwardRenderer::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	if (texture.has_value() && texture.value()->isCubemap)
 	{
@@ -97,7 +84,7 @@ void Shader::render(const Transform modelTransform, const Transform meshTransfor
 	}
 }
 
-void Shader::initGBuffer()
+void ForwardRenderer::initGBuffer()
 {
 	ivec2 screenSize = Window::I()->getSize();
 
@@ -146,13 +133,13 @@ void Shader::initGBuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Shader::initVao()
+void ForwardRenderer::initVao()
 {
 	glGenVertexArrays(1, &this->addresses.vao);
 	glBindVertexArray(this->addresses.vao);
 }
 
-void Shader::initVbos(const BufferValues values)
+void ForwardRenderer::initVbos(const BufferValues values)
 {
 	// Generates and makes active the VBO for the vertices
 	glGenBuffers(1, &this->addresses.vertices);
@@ -188,7 +175,7 @@ void Shader::initVbos(const BufferValues values)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, values.indices.size() * sizeof(unsigned int), values.indices.data(), GL_STATIC_DRAW);
 }
 
-void Shader::initUniformReferences()
+void ForwardRenderer::initUniformReferences()
 {
 	this->uniforms.projectionMatrix.location = glGetUniformLocation(this->programId, this->uniforms.projectionMatrix.name.c_str());
 	this->uniforms.modelMatrix.location = glGetUniformLocation(this->programId, this->uniforms.modelMatrix.name.c_str());
@@ -216,7 +203,7 @@ void Shader::initUniformReferences()
 	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
 }
 
-void Shader::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
+void ForwardRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
@@ -238,7 +225,7 @@ void Shader::updateUniformValues(const Transform modelTransform, const Transform
 	this->uniforms.useTexture.value = texture.has_value();
 }
 
-void Shader::passUniforms()
+void ForwardRenderer::passUniforms()
 {
 	glUniformMatrix4fv(this->uniforms.projectionMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.projectionMatrix.value));
 	glUniformMatrix4fv(this->uniforms.modelMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.modelMatrix.value));
@@ -262,7 +249,7 @@ void Shader::passUniforms()
 	glUniform1i(this->uniforms.useTexture.location, this->uniforms.useTexture.value ? 1 : 0);
 }
 
-void Shader::bindTexture(const Texture texture) const
+void ForwardRenderer::bindTexture(const Texture texture) const
 {
 	glActiveTexture(GL_TEXTURE0);
 	if (texture.isCubemap)
@@ -278,15 +265,15 @@ void Shader::bindTexture(const Texture texture) const
 	}
 }
 
-void Shader::bindNoTexture() const
+void ForwardRenderer::bindNoTexture() const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Shader::draw(const BufferValues values) const
+void ForwardRenderer::draw(const BufferValues values) const
 {
-	if (*Shader::drawWireframe)
+	if (*ForwardRenderer::drawWireframe)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
@@ -301,7 +288,7 @@ void Shader::draw(const BufferValues values) const
 	// Draw the vertices of the shape as specified by renderMode, starting from the first vertex (0), for vertexCount vertices in total
 	glDrawElements(GL_TRIANGLES, static_cast<int>(values.indices.size() - 1), GL_UNSIGNED_INT, 0);
 
-	if (*Shader::drawAnchor)
+	if (*ForwardRenderer::drawAnchor)
 	{
 		glPointSize(15.0f);
 		const unsigned int anchorIndex = values.indices.back();
@@ -311,7 +298,7 @@ void Shader::draw(const BufferValues values) const
 	glBindVertexArray(0);
 }
 
-void Shader::checkGLErrors()
+void ForwardRenderer::checkGLErrors()
 {
 	const unsigned int error = glGetError();
 	if (error != GL_NO_ERROR)

@@ -1,10 +1,10 @@
 #include "../../Header Files/Model/MeshFactory.h"
-#include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Material.h"
 #include "../../Header Files/Model/Mesh.h"
-#include "../../Header Files/Model/Shader.h"
-#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
+#include "../../Header Files/Renderers/Buffers.h"
+#include "../../Header Files/Renderers/Renderer.h"
+#include "../../Header Files/Texture/Texture.h"
 #include <cmath>
 #include <glm/glm.hpp>
 #include <memory>
@@ -15,7 +15,7 @@
 using namespace std;
 using namespace glm;
 
-shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Shader> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
+shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Renderer> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
 {
 	const fvec2 halfSize = size / 2.0f;
 	const Material material = MaterialsFactory::makeMaterial(MaterialType::SNOW_WHITE);
@@ -58,7 +58,7 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
-shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Shader> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
+shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Renderer> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
 {
 	const float halfLength = length / 2.0f;
 	const Material material = MaterialsFactory::makeMaterial(MaterialType::RED_PLASTIC);
@@ -139,7 +139,7 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
 }
 
-shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Shader> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
+shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Renderer> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
 {
 	// Number of subdivisions along the y axis
 	const int stacks = 100;

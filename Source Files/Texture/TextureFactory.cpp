@@ -1,6 +1,6 @@
-#include "../../Header Files/Model/TextureFactory.h"
-#include "../../Header Files/Model/TextureLoader.h"
-#include "../../Header Files/Model/Texture.h"
+#include "../../Header Files/Texture/TextureFactory.h"
+#include "../../Header Files/Texture/Texture.h"
+#include "../../Header Files/Texture/TextureLoader.h"
 #include <glad/glad.h>
 #include <memory>
 #include <optional>

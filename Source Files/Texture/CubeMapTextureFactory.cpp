@@ -1,6 +1,6 @@
-#include "../../Header Files/Model/CubeMapTextureFactory.h"
-#include "../../Header Files/Model/Texture.h"
-#include "../../Header Files/Model/TextureLoader.h"
+#include "../../Header Files/Texture/CubeMapTextureFactory.h"
+#include "../../Header Files/Texture/Texture.h"
+#include "../../Header Files/Texture/TextureLoader.h"
 #include <cassert>
 #include <memory>
 #include <optional>

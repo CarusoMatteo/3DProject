@@ -1,5 +1,5 @@
-#include "../../Header Files/Model/TextureLoader.h"
-#include "../../Header Files/Model/Texture.h"
+#include "../../Header Files/Texture/TextureLoader.h"
+#include "../../Header Files/Texture/Texture.h"
 #include <glad/glad.h>
 #include <iostream>
 #include <stdexcept>

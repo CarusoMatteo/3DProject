@@ -1,6 +1,6 @@
-#include "../../Header Files/Model/ShaderFactory.h"
-#include "../../Header Files/Model/Shader.h"
-#include "../../Header Files/Model/ShaderFiles.h"
+#include "../../Header Files/Renderers/ShaderFactory.h"
+#include "../../Header Files/Renderers/ForwardRenderer.h"
+#include "../../Header Files/Renderers/ShaderFiles.h"
 #include <memory>
 #include <optional>
 #include <string>
@@ -29,51 +29,51 @@ const ShaderFiles ShaderFactory::INTERPOLATIVE_PATH = {
 
 // Shader singletons
 
-optional<shared_ptr<Shader>> ShaderFactory::unlitShader = nullopt;
-optional<shared_ptr<Shader>> ShaderFactory::phongShader = nullopt;
-optional<shared_ptr<Shader>> ShaderFactory::blinnPhongShader = nullopt;
-optional<shared_ptr<Shader>> ShaderFactory::reflectionShader = nullopt;
-optional<shared_ptr<Shader>> ShaderFactory::cubeMapShader = nullopt;
-optional<shared_ptr<Shader>> ShaderFactory::interpolativeShader = nullopt;
+optional<shared_ptr<ForwardRenderer>> ShaderFactory::unlitShader = nullopt;
+optional<shared_ptr<ForwardRenderer>> ShaderFactory::phongShader = nullopt;
+optional<shared_ptr<ForwardRenderer>> ShaderFactory::blinnPhongShader = nullopt;
+optional<shared_ptr<ForwardRenderer>> ShaderFactory::reflectionShader = nullopt;
+optional<shared_ptr<ForwardRenderer>> ShaderFactory::cubeMapShader = nullopt;
+optional<shared_ptr<ForwardRenderer>> ShaderFactory::interpolativeShader = nullopt;
 
-shared_ptr<Shader> ShaderFactory::unlit()
+shared_ptr<ForwardRenderer> ShaderFactory::unlit()
 {
 	if (!unlitShader.has_value())
-		unlitShader = make_shared<Shader>(UNLIT_PATH);
+		unlitShader = make_shared<ForwardRenderer>(UNLIT_PATH);
 	return unlitShader.value();
 }
 
-shared_ptr<Shader> ShaderFactory::phong()
+shared_ptr<ForwardRenderer> ShaderFactory::phong()
 {
 	if (!phongShader.has_value())
-		phongShader = make_shared<Shader>(PHONG_PATH);
+		phongShader = make_shared<ForwardRenderer>(PHONG_PATH);
 	return phongShader.value();
 }
 
-shared_ptr<Shader> ShaderFactory::blinnPhong()
+shared_ptr<ForwardRenderer> ShaderFactory::blinnPhong()
 {
 	if (!blinnPhongShader.has_value())
-		blinnPhongShader = make_shared<Shader>(BLINN_PHONG_PATH);
+		blinnPhongShader = make_shared<ForwardRenderer>(BLINN_PHONG_PATH);
 	return blinnPhongShader.value();
 }
 
-shared_ptr<Shader> ShaderFactory::reflection()
+shared_ptr<ForwardRenderer> ShaderFactory::reflection()
 {
 	if (!reflectionShader.has_value())
-		reflectionShader = make_shared<Shader>(REFLECTION_PATH);
+		reflectionShader = make_shared<ForwardRenderer>(REFLECTION_PATH);
 	return reflectionShader.value();
 }
 
-shared_ptr<Shader> ShaderFactory::cubeMap()
+shared_ptr<ForwardRenderer> ShaderFactory::cubeMap()
 {
 	if (!cubeMapShader.has_value())
-		cubeMapShader = make_shared<Shader>(CUBE_MAP_PATH);
+		cubeMapShader = make_shared<ForwardRenderer>(CUBE_MAP_PATH);
 	return cubeMapShader.value();
 }
 
-shared_ptr<Shader> ShaderFactory::interpolative()
+shared_ptr<ForwardRenderer> ShaderFactory::interpolative()
 {
 	if (!interpolativeShader.has_value())
-		interpolativeShader = make_shared<Shader>(INTERPOLATIVE_PATH);
+		interpolativeShader = make_shared<ForwardRenderer>(INTERPOLATIVE_PATH);
 	return interpolativeShader.value();
 }

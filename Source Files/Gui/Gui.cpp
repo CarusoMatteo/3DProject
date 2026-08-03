@@ -5,7 +5,7 @@
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/InputEventsType.h"
 #include "../../Header Files/Model/Mesh.h"
-#include "../../Header Files/Model/Shader.h"
+#include "../../Header Files/Renderers/Renderer.h"
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
@@ -13,9 +13,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
-#include <optional>
 
 using namespace glm;
 using namespace std;
@@ -67,8 +67,8 @@ void Gui::settingsWindow()
 	fvec2 mousePosition = InputEvents::getCursorPosition();
 
 	ImGui::Text("Mouse Coordinates relative to GLFW Window: (%.1f, %.1f)", mousePosition.x, mousePosition.y);
-	ImGui::Checkbox("Wireframe", Shader::getDrawWireframeFlag().get());
-	ImGui::Checkbox("Anchor", Shader::getDrawAnchorFlag().get());
+	ImGui::Checkbox("Wireframe", Renderer::getDrawWireframeFlag().get());
+	ImGui::Checkbox("Anchor", Renderer::getDrawAnchorFlag().get());
 	// ImGui::Checkbox("Bounding Box", MeshBB::shouldDrawBoundingBoxRef());
 
 	fvec3 *lightPositionPtr = PointLight::I()->getPositionPtr();

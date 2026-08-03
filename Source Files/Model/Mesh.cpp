@@ -1,14 +1,14 @@
 #include "../../Header Files/Model/Mesh.h"
-#include "../../Header Files/Model/Buffers.h"
 #include "../../Header Files/Model/Material.h"
-#include "../../Header Files/Model/Shader.h"
-#include "../../Header Files/Model/Texture.h"
 #include "../../Header Files/Model/Transform.h"
+#include "../../Header Files/Renderers/Buffers.h"
+#include "../../Header Files/Renderers/Renderer.h"
+#include "../../Header Files/Texture/Texture.h"
 #include <memory>
 #include <optional>
 #include <string>
 
-Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Shader> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture)
+Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	this->name = name;
 	this->values = values;
@@ -28,7 +28,7 @@ string Mesh::getName() const
 	return this->name;
 }
 
-void Mesh::setShader(const shared_ptr<Shader> shader)
+void Mesh::setShader(const shared_ptr<Renderer> shader)
 {
 	this->shader = shader;
 }

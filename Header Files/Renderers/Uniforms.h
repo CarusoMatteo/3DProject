@@ -16,21 +16,7 @@ struct Uniform
 	T value;
 };
 
-#ifdef USE_UBOs
-struct UniformValues
-{
-	fmat4 projectionMatrix;
-	fmat4 modelMatrix;
-	fmat4 viewMatrix;
-	fvec3 cameraPosition;
-	float creationTime;
-	float currentTime;
-	ivec2 screenSize;
-	int isVisible;
-};
-#endif
-
-// none uniforms are those that do not possess a unique value, such as textures or samplers.
+// none uniforms are those that do not possess a unique value, such as textures samplers.
 struct Uniforms
 {
 	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
@@ -56,20 +42,4 @@ struct Uniforms
 	Uniform<bool> useTexture = {"useTexture"};
 
 	Uniform<none> skybox = {"skyboxSampler"};
-	// Uniform<none> cubeMap = {"cubeMap"};
-
-#ifdef USE_UBOs
-	UniformValues toValues()
-	{
-		return {
-			projectionMatrix.value,
-			modelMatrix.value,
-			viewMatrix.value,
-			cameraPosition.value,
-			creationTime.value,
-			currentTime.value,
-			screenSize.value,
-			isVisible.value};
-	}
-#endif
 };

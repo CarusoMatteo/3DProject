@@ -1,10 +1,10 @@
 #include "../../Header Files/Game Objects/Skybox.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
-#include "../../Header Files/Model/CubeMapTextureFactory.h"
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
-#include "../../Header Files/Model/ShaderFactory.h"
 #include "../../Header Files/Model/Transform.h"
+#include "../../Header Files/Renderers/ShaderFactory.h"
+#include "../../Header Files/Texture/CubeMapTextureFactory.h"
 #include <memory>
 #include <string>
 #include <vector>

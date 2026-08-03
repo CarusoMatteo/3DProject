@@ -9,9 +9,8 @@ using namespace glm;
 struct BuffersAddresses
 {
 	unsigned int vao = -1;
-	
+
 	// VBOs:
-	
 	unsigned int vertices = -1;
 	unsigned int colors = -1;
 	unsigned int normals = -1;
@@ -19,7 +18,6 @@ struct BuffersAddresses
 	unsigned int textureCoordinates = -1;
 
 	// GBuffer:
-	
 	unsigned int gBuffer = -1;
 	unsigned int gPosition = -1;
 	unsigned int gNormal = -1;
