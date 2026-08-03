@@ -6,6 +6,7 @@
 #include "IGameObject.h"
 #include <glm/glm.hpp>
 #include <memory>
+#include <optional>
 
 using namespace glm;
 using namespace std;
@@ -24,7 +25,7 @@ public:
 	fvec3 getPosition() const;
 
 private:
-	static unique_ptr<Camera> instance;
+	static optional<unique_ptr<Camera>> instance;
 
 	const float speed = 2.5f;
 	const float rotationSpeed = 0.05f;

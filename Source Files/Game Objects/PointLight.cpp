@@ -1,19 +1,20 @@
 #include "../../Header Files/Game Objects/PointLight.h"
 #include <glm/glm.hpp>
 #include <memory>
+#include <optional>
 
 using namespace glm;
 using namespace std;
 
-unique_ptr<PointLight> PointLight::instance = nullptr;
+optional<unique_ptr<PointLight>> PointLight::instance = nullopt;
 
 PointLight *PointLight::I()
 {
-	if (PointLight::instance == nullptr)
+	if (!PointLight::instance.has_value())
 	{
 		PointLight::instance = unique_ptr<PointLight>(new PointLight());
 	}
-	return PointLight::instance.get();
+	return PointLight::instance.value().get();
 }
 
 PointLight::PointLight()

@@ -3,23 +3,24 @@
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/InputEventsType.h"
 #include "../../Header Files/Window.h"
+#include <cmath>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <memory>
-#include <cmath>
+#include <optional>
 
 using namespace glm;
 using namespace std;
 
-unique_ptr<Camera> Camera::instance = nullptr;
+optional<unique_ptr<Camera>> Camera::instance = nullopt;
 
 Camera *Camera::I()
 {
-	if (Camera::instance == nullptr)
+	if (!Camera::instance.has_value())
 	{
 		Camera::instance = unique_ptr<Camera>(new Camera());
 	}
-	return Camera::instance.get();
+	return Camera::instance.value().get();
 }
 
 Camera::Camera()

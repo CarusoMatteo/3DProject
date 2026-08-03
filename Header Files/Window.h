@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <memory>
+#include <optional>
 #include <string>
 
 using namespace glm;
@@ -26,7 +27,7 @@ public:
 	void showCursor();
 
 private:
-	static unique_ptr<Window> instance;
+	static optional<unique_ptr<Window>> instance;
 
 	const string windowTitle = "Progetto 3D";
 	const fvec2 monitorPercentageSize = fvec2(0.8f);

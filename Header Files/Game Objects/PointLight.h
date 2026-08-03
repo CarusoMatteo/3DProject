@@ -3,6 +3,7 @@
 #include "IGameObject.h"
 #include <glm/glm.hpp>
 #include <memory>
+#include <optional>
 
 using namespace std;
 using namespace glm;
@@ -25,7 +26,7 @@ public:
 	float getPower() const;
 
 private:
-	static unique_ptr<PointLight> instance;
+	static optional<unique_ptr<PointLight>> instance;
 
 	PointLight();
 

@@ -8,20 +8,21 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <memory>
+#include <optional>
 #include <stdexcept>
 #include <string>
 
 using namespace std;
 
-unique_ptr<Window> Window::instance = nullptr;
+optional<unique_ptr<Window>> Window::instance = nullopt;
 
 Window *Window::I()
 {
-	if (Window::instance == nullptr)
+	if (!Window::instance.has_value())
 	{
 		Window::instance = unique_ptr<Window>(new Window());
 	}
-	return Window::instance.get();
+	return Window::instance.value().get();
 }
 
 Window::Window()
