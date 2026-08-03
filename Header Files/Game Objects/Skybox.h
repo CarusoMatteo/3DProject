@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Model/Transform.h"
+#include "../Renderers/ShaderFactory.h"
 #include "IVisibleGameObject.h"
 #include <memory>
 #include <string>
@@ -9,12 +11,12 @@ using namespace std;
 
 class Mesh;
 class Model;
-struct Transform;
+class Renderer;
 
 class Skybox : public IVisibleGameObject
 {
 public:
-	Skybox(const RendererMode rendererMode);
+	Skybox(const Transform transform = Transform(), const shared_ptr<Renderer> renderer = ShaderFactory::cubeMap());
 	~Skybox() = default;
 
 	void update(const float deltaTime) override;
@@ -24,8 +26,6 @@ public:
 	void setTransform(const Transform transform) override;
 	vector<shared_ptr<Mesh>> getMeshes() const override;
 	string getName() const override;
-	
-	RendererMode getRendererMode() const override;
 
 private:
 	shared_ptr<Model> model;

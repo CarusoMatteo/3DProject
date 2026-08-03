@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Model/Model.h"
 #include "IVisibleGameObject.h"
 #include <memory>
 #include <string>
@@ -9,12 +8,15 @@
 using namespace std;
 
 class Mesh;
+class Model;
+class Renderer;
 struct Transform;
 
 class Cube : public IVisibleGameObject
 {
 public:
-	Cube(const RendererMode rendererMode);
+	Cube(const shared_ptr<Renderer> renderer);
+	Cube(const Transform transform, const shared_ptr<Renderer> renderer);
 	~Cube() = default;
 
 	void update(const float deltaTime) override;
@@ -24,8 +26,6 @@ public:
 	void setTransform(const Transform transform) override;
 	vector<shared_ptr<Mesh>> getMeshes() const override;
 	string getName() const override;
-
-	RendererMode getRendererMode() const override;
 
 private:
 	shared_ptr<Model> model;

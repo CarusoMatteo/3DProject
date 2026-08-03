@@ -3,6 +3,7 @@
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Transform.h"
+#include "../../Header Files/Renderers/Renderer.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
 #include "../../Header Files/Texture/TextureFactory.h"
 #include <glm/glm.hpp>
@@ -13,18 +14,16 @@
 using namespace glm;
 using namespace std;
 
-Plane::Plane(const RendererMode rendererMode)
+Plane::Plane(const shared_ptr<Renderer> renderer) : Plane({fvec3(0, -1.5f, 0), Rotation(), fvec3(5, 1, 5)}, renderer)
+{
+}
+
+Plane::Plane(const Transform transform, const shared_ptr<Renderer> renderer)
 {
 	const string name = "Plane";
 	const fvec2 size = fvec2(1);
-	this->rendererMode = rendererMode;
 
-	Transform planeTransform = {
-		fvec3(0, -1.5f, 0),
-		Rotation(),
-		fvec3(5, 1, 5)};
-
-	this->model = ModelFactory::plane(name, size, ShaderFactory::phong(), planeTransform, TextureFactory::none());
+	this->model = ModelFactory::plane(name, size, renderer, transform, TextureFactory::none());
 }
 
 void Plane::update(float deltaTime)
@@ -55,9 +54,4 @@ vector<shared_ptr<Mesh>> Plane::getMeshes() const
 string Plane::getName() const
 {
 	return "Plane";
-}
-
-RendererMode Plane::getRendererMode() const
-{
-	return this->rendererMode;
 }

@@ -8,17 +8,23 @@
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Random.h"
+#include "../../Header Files/Renderers/ShaderFactory.h"
 #include <glm/glm.hpp>
 #include <memory>
 
 Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I();
+
+	Transform planeTransform = {fvec3(0, -1.001f, 0), Rotation(), fvec3(5, 1, 5)};
+	Transform cubeTransform = {fvec3(-1, 0, 0), Rotation(), fvec3(1)};
+	Transform sphereTransform = {fvec3(1, 0, 0), Rotation(), fvec3(1)};
+
 	this->gameObjects = {
-		shared_ptr<Skybox>(new Skybox(RendererMode::FORWARD)),
-		shared_ptr<Plane>(new Plane(RendererMode::FORWARD)),
-		shared_ptr<Cube>(new Cube(RendererMode::FORWARD)),
-		shared_ptr<Sphere>(new Sphere(RendererMode::FORWARD))};
+		shared_ptr<Skybox>(new Skybox()),
+		shared_ptr<Plane>(new Plane(planeTransform, ShaderFactory::blinnPhong())),
+		shared_ptr<Cube>(new Cube(cubeTransform, ShaderFactory::interpolative())),
+		shared_ptr<Sphere>(new Sphere(sphereTransform, ShaderFactory::reflection()))};
 	PointLight::I();
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 

@@ -12,13 +12,16 @@
 using namespace std;
 using namespace glm;
 
-Cube::Cube(const RendererMode rendererMode)
+Cube::Cube(const shared_ptr<Renderer> renderer) : Cube(Transform(), renderer)
+{
+}
+
+Cube::Cube(const Transform transform, const shared_ptr<Renderer> renderer)
 {
 	const string name = "Cube";
 	const float length = 2.0f;
-	this->rendererMode = rendererMode;
 
-	this->model = ModelFactory::cube(name, length, ShaderFactory::phong(), Transform(), TextureFactory::cement());
+	this->model = ModelFactory::cube(name, length, renderer, transform, TextureFactory::cement());
 }
 
 void Cube::update(float deltaTime)
@@ -48,9 +51,4 @@ vector<shared_ptr<Mesh>> Cube::getMeshes() const
 string Cube::getName() const
 {
 	return "Cube";
-}
-
-RendererMode Cube::getRendererMode() const
-{
-	return this->rendererMode;
 }
