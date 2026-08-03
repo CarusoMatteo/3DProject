@@ -12,10 +12,11 @@
 using namespace glm;
 using namespace std;
 
-Plane::Plane()
+Plane::Plane(const RendererMode rendererMode)
 {
 	const string name = "Plane";
 	const fvec2 size = fvec2(1);
+	this->rendererMode = rendererMode;
 
 	Transform planeTransform = {
 		fvec3(0, -1.5f, 0),
@@ -53,4 +54,9 @@ vector<shared_ptr<Mesh>> Plane::getMeshes() const
 string Plane::getName() const
 {
 	return "Plane";
+}
+
+RendererMode Plane::getRendererMode() const
+{
+	return this->rendererMode;
 }

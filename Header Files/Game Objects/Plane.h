@@ -14,7 +14,7 @@ class Mesh;
 class Plane : public IVisibleGameObject
 {
 public:
-	Plane();
+	Plane(const RendererMode rendererMode);
 	~Plane() = default;
 
 	void update(const float deltaTime) override;
@@ -25,6 +25,8 @@ public:
 
 	vector<shared_ptr<Mesh>> getMeshes() const override;
 	string getName() const override;
+
+	RendererMode getRendererMode() const override;
 
 private:
 	shared_ptr<Model> model;

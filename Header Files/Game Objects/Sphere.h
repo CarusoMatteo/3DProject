@@ -14,7 +14,7 @@ class Mesh;
 class Sphere : public IVisibleGameObject
 {
 public:
-	Sphere();
+	Sphere(const RendererMode rendererMode);
 	~Sphere() = default;
 
 	void update(const float deltaTime) override;
@@ -25,6 +25,8 @@ public:
 
 	vector<shared_ptr<Mesh>> getMeshes() const override;
 	string getName() const override;
+
+	RendererMode getRendererMode() const override;
 
 private:
 	shared_ptr<Model> model;

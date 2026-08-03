@@ -12,10 +12,11 @@
 using namespace std;
 using namespace glm;
 
-Sphere::Sphere()
+Sphere::Sphere(const RendererMode rendererMode)
 {
 	const string name = "Sphere";
 	const fvec3 radius = fvec3(1.0f);
+	this->rendererMode = rendererMode;
 
 	this->model = ModelFactory::sphere(name, radius, ShaderFactory::reflection(), Transform(), TextureFactory::brick());
 }
@@ -47,4 +48,9 @@ vector<shared_ptr<Mesh>> Sphere::getMeshes() const
 string Sphere::getName() const
 {
 	return "Sphere";
+}
+
+RendererMode Sphere::getRendererMode() const
+{
+	return this->rendererMode;
 }

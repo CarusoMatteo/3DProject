@@ -10,6 +10,12 @@ using namespace std;
 class Mesh;
 struct Transform;
 
+enum class RendererMode
+{
+	FORWARD,
+	DEFERRED
+};
+
 class IVisibleGameObject : public IGameObject
 {
 public:
@@ -19,4 +25,8 @@ public:
 	virtual void setTransform(const Transform transform) = 0;
 	virtual vector<shared_ptr<Mesh>> getMeshes() const = 0;
 	virtual string getName() const = 0;
+	virtual RendererMode getRendererMode() const = 0;
+
+protected:
+	RendererMode rendererMode = RendererMode::FORWARD;
 };

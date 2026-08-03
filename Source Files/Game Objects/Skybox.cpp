@@ -9,10 +9,11 @@
 #include <string>
 #include <vector>
 
-Skybox::Skybox()
+Skybox::Skybox(const RendererMode rendererMode)
 {
 	const string name = "Skybox";
 	const float length = 1.0f;
+	this->rendererMode = rendererMode;
 
 	this->model = ModelFactory::cube(name, length, ShaderFactory::cubeMap(), Transform(), CubeMapTextureFactory::clouds());
 }
@@ -44,4 +45,9 @@ vector<shared_ptr<Mesh>> Skybox::getMeshes() const
 string Skybox::getName() const
 {
 	return "Skybox";
+}
+
+RendererMode Skybox::getRendererMode() const
+{
+	return this->rendererMode;
 }

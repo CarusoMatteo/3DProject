@@ -11,10 +11,11 @@
 using namespace std;
 using namespace glm;
 
-Cube::Cube()
+Cube::Cube(const RendererMode rendererMode)
 {
 	const string name = "Cube";
 	const float length = 2.0f;
+	this->rendererMode = rendererMode;
 
 	this->model = ModelFactory::cube(name, length, ShaderFactory::phong(), Transform(), TextureFactory::cement());
 }
@@ -46,4 +47,9 @@ vector<shared_ptr<Mesh>> Cube::getMeshes() const
 string Cube::getName() const
 {
 	return "Cube";
+}
+
+RendererMode Cube::getRendererMode() const
+{
+	return this->rendererMode;
 }

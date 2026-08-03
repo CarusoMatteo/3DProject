@@ -14,7 +14,7 @@ struct Transform;
 class Cube : public IVisibleGameObject
 {
 public:
-	Cube();
+	Cube(const RendererMode rendererMode);
 	~Cube() = default;
 
 	void update(const float deltaTime) override;
@@ -24,6 +24,8 @@ public:
 	void setTransform(const Transform transform) override;
 	vector<shared_ptr<Mesh>> getMeshes() const override;
 	string getName() const override;
+
+	RendererMode getRendererMode() const override;
 
 private:
 	shared_ptr<Model> model;
