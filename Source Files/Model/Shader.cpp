@@ -80,7 +80,7 @@ void Shader::render(const Transform modelTransform, const Transform meshTransfor
 	this->passUniforms();
 	this->checkGLErrors();
 
-#pragma warning(suppress: 26859)
+#pragma warning(suppress : 26859)
 	if (this->uniforms.useTexture.value)
 		this->bindTexture(*texture.value());
 	else
@@ -99,7 +99,7 @@ void Shader::render(const Transform modelTransform, const Transform meshTransfor
 
 void Shader::initGBuffer()
 {
-	fvec2 screenSize = Window::I()->getSize();
+	ivec2 screenSize = Window::I()->getSize();
 
 	glGenFramebuffers(1, &this->addresses.gBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->addresses.gBuffer);
@@ -107,7 +107,7 @@ void Shader::initGBuffer()
 	// Position color buffer
 	glGenTextures(1, &this->addresses.gPosition);
 	glBindTexture(GL_TEXTURE_2D, this->addresses.gPosition);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, screenSize.x, screenSize.y, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, (GLsizei)screenSize.x, (GLsizei)screenSize.y, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->addresses.gPosition, 0);
