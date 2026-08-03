@@ -9,7 +9,8 @@
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
-			"console": "internalConsole"
+			"console": "internalConsole",
+			"preLaunchTask": "MSBuild"
 		}
 	]
 }
