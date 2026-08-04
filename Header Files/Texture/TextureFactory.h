@@ -18,7 +18,7 @@ public:
 	static shared_ptr<Texture> cement();
 	static shared_ptr<Texture> flag();
 	static shared_ptr<Texture> mickey();
-	static shared_ptr<Texture> pois();
+	static shared_ptr<Texture> polkaDot();
 	static shared_ptr<Texture> sea();
 	static shared_ptr<Texture> steve();
 
@@ -28,7 +28,7 @@ private:
 	static optional<shared_ptr<Texture>> cementTexture;
 	static optional<shared_ptr<Texture>> flagTexture;
 	static optional<shared_ptr<Texture>> mickeyTexture;
-	static optional<shared_ptr<Texture>> poisTexture;
+	static optional<shared_ptr<Texture>> polkaDotTexture;
 	static optional<shared_ptr<Texture>> seaTexture;
 	static optional<shared_ptr<Texture>> steveTexture;
 
@@ -38,7 +38,7 @@ private:
 	static const string CEMENT_PATH;
 	static const string FLAG_PATH;
 	static const string MICKEY_PATH;
-	static const string POIS_PATH;
+	static const string POLKA_DOT_PATH;
 	static const string SEA_PATH;
 	static const string STEVE_PATH;
 };

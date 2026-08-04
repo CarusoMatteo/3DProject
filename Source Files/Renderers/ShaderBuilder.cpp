@@ -23,7 +23,7 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	}
 	else if (ShaderBuilder::shouldPrintLogs)
 	{
-		cout << "Vertex shader \'" << files.vertex << "\' loaded succesfully " << endl;
+		cout << "Vertex shader \'" << files.vertex << "\' loaded successfully " << endl;
 	}
 
 	// Generate an identifier for the vertex shader
@@ -51,7 +51,7 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	}
 	else if (ShaderBuilder::shouldPrintLogs)
 	{
-		cout << "Fragment shader \'" << files.fragment << "\' loaded succesfully " << endl;
+		cout << "Fragment shader \'" << files.fragment << "\' loaded successfully " << endl;
 	}
 
 	// Generate an identifier for the FRAGMENT shader

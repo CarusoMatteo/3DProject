@@ -79,7 +79,7 @@ void Gui::settingsWindow()
 	ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
 
 	ImGui::SeparatorText("Controls");
-	ImGui::Text("WASD: Move camera horizontallly");
+	ImGui::Text("WASD: Move camera horizontally");
 	ImGui::Text("QE: Move camera up/down");
 	ImGui::Text("TAB: %s", InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR) ? "Enable camera movement" : "Free cursor");
 	ImGui::End();

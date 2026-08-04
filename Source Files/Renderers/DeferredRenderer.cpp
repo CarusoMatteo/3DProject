@@ -50,12 +50,12 @@ void DeferredRenderer::initGBuffer()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, this->addresses.normals, 0);
 
 	// Color + specular color buffer
-	glGenTextures(1, &this->addresses.albedosSpeculars);
-	glBindTexture(GL_TEXTURE_2D, this->addresses.albedosSpeculars);
+	glGenTextures(1, &this->addresses.albedosSpecular);
+	glBindTexture(GL_TEXTURE_2D, this->addresses.albedosSpecular);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenSize.x, screenSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, this->addresses.albedosSpeculars, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, this->addresses.albedosSpecular, 0);
 
 	unsigned int attachments[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
 	glDrawBuffers(3, attachments);

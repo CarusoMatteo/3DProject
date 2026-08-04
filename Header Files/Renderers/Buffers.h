@@ -26,7 +26,7 @@ struct DeferredBuffersAddresses
 	unsigned int gBuffer = -1;
 
 	unsigned int positions = -1;
-	unsigned int albedosSpeculars = -1;
+	unsigned int albedosSpecular = -1;
 	unsigned int normals = -1;
 	unsigned int depths = -1;
 };
@@ -45,7 +45,7 @@ struct DeferredBufferValues
 	// 3D World spaceposition to interpolate the fragment position.
 	vector<fvec3> positions;
 	// RGB diffuse color vector and the specular intensity in the alpha channel.
-	vector<fvec4> albedosSpeculars;
+	vector<fvec4> albedosSpecular;
 	// 3D normal vector to determine the slope of the surface.
 	vector<fvec3> normals;
 	vector<float> depths;

@@ -52,5 +52,26 @@
 		"typeinfo": "cpp",
 		"any": "cpp",
 		"fstream": "cpp"
-	}
+	},
+	"cSpell.words": [
+		"blinn",
+		"fmat",
+		"glfw",
+		"maskonaive",
+		"negx",
+		"negy",
+		"negz",
+		"parameteri",
+		"phong",
+		"posx",
+		"posz",
+		"renderbuffer",
+		"renderbuffers",
+		"shaderiv",
+		"skybox",
+		"skyboxes",
+		"stbi",
+		"vbos",
+		"wasd"
+	]
 }

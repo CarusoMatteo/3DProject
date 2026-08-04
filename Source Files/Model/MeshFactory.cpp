@@ -196,7 +196,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 }
 
 // Consider adding anchor to the vertex and index vector
-// mesh->vertices.push_back(anchor); // Memorizzo come ultimo vertice l'ancora per poterla visualizzare
+// mesh->vertices.push_back(anchor); // Save it as the lsat vertex to show it
 // mesh->colors.push_back(anchorColor);
-// mesh->ancora_obj = vec4(anchor, 1.0); // memorizzo l'ancora nel campo ancora_obj
+// mesh->anchor_obj = vec4(anchor, 1.0); // Save the anchor in the anchor_obj field
 // mesh->indices.push_back(nv - 1);

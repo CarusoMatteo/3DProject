@@ -16,7 +16,7 @@ const string TextureFactory::BRICK_PATH = TEXTURE_PATH + "brick.jpg";
 const string TextureFactory::CEMENT_PATH = TEXTURE_PATH + "cement.jpg";
 const string TextureFactory::FLAG_PATH = TEXTURE_PATH + "flag.jpg";
 const string TextureFactory::MICKEY_PATH = TEXTURE_PATH + "mickey.jpg";
-const string TextureFactory::POIS_PATH = TEXTURE_PATH + "pois.jpg";
+const string TextureFactory::POLKA_DOT_PATH = TEXTURE_PATH + "polka_dot.jpg";
 const string TextureFactory::SEA_PATH = TEXTURE_PATH + "sea.jpg";
 const string TextureFactory::STEVE_PATH = TEXTURE_PATH + "steve.jpg";
 
@@ -26,7 +26,7 @@ optional<shared_ptr<Texture>> TextureFactory::brickTexture = nullopt;
 optional<shared_ptr<Texture>> TextureFactory::cementTexture = nullopt;
 optional<shared_ptr<Texture>> TextureFactory::flagTexture = nullopt;
 optional<shared_ptr<Texture>> TextureFactory::mickeyTexture = nullopt;
-optional<shared_ptr<Texture>> TextureFactory::poisTexture = nullopt;
+optional<shared_ptr<Texture>> TextureFactory::polkaDotTexture = nullopt;
 optional<shared_ptr<Texture>> TextureFactory::seaTexture = nullopt;
 optional<shared_ptr<Texture>> TextureFactory::steveTexture = nullopt;
 
@@ -63,11 +63,11 @@ shared_ptr<Texture> TextureFactory::mickey()
 	return mickeyTexture.value();
 }
 
-shared_ptr<Texture> TextureFactory::pois()
+shared_ptr<Texture> TextureFactory::polkaDot()
 {
-	if (!poisTexture.has_value())
-		poisTexture = make_shared<Texture>(loadTexture(POIS_PATH, true));
-	return poisTexture.value();
+	if (!polkaDotTexture.has_value())
+		polkaDotTexture = make_shared<Texture>(loadTexture(POLKA_DOT_PATH, true));
+	return polkaDotTexture.value();
 }
 
 shared_ptr<Texture> TextureFactory::sea()
