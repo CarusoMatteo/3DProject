@@ -8,7 +8,7 @@
 #include <optional>
 #include <string>
 
-Mesh::Mesh(const string name, const BufferValues values, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture)
+Mesh::Mesh(const string name, const ForwardBufferValues values, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	this->name = name;
 	this->values = values;

@@ -141,6 +141,8 @@
     <ClCompile Include="Source Files\Game Objects\Camera.cpp" />
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
     <ClCompile Include="Source Files\Game Objects\Skybox.cpp" />
+    <ClCompile Include="Source Files\Renderers\DeferredRenderer.cpp" />
+    <ClCompile Include="Source Files\Renderers\IRenderer.cpp" />
     <ClCompile Include="Source Files\Renderers\Renderer.cpp" />
     <ClCompile Include="Source Files\Texture\CubeMapTextureFactory.cpp" />
     <ClCompile Include="Source Files\Model\Material.cpp" />
@@ -182,6 +184,7 @@
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\Skybox.h" />
+    <ClInclude Include="Header Files\Renderers\DeferredRenderer.h" />
     <ClInclude Include="Header Files\Texture\CubeMapTextureFactory.h" />
     <ClInclude Include="Header Files\Model\Material.h" />
     <ClInclude Include="Header Files\Game Objects\Plane.h" />

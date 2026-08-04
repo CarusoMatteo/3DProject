@@ -51,7 +51,7 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 		fvec2(1, 0),
 		fvec2(0, 0)};
 
-	const BufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
+	const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 
@@ -127,12 +127,7 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		fvec2(1, 1),
 		fvec2(0, 1)};
 
-	const BufferValues bufferValues = {
-		vertices,
-		colors,
-		normals,
-		indices,
-		textureCoordinates};
+	const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 
@@ -193,12 +188,7 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	colors.push_back(fvec4(1));
 	indices.push_back(static_cast<unsigned int>(vertices.size() - 1));
 
-	const BufferValues bufferValues = {
-		vertices,
-		colors,
-		normals,
-		indices,
-		textureCoordinates};
+	const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 
 	shader->setBufferValues(bufferValues);
 

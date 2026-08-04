@@ -46,13 +46,13 @@ ForwardRenderer::~ForwardRenderer()
 	glDeleteVertexArrays(1, &this->addresses.vao);
 }
 
-void ForwardRenderer::setBufferValues(const BufferValues bufferValues)
+void ForwardRenderer::setBufferValues(const ForwardBufferValues bufferValues)
 {
 	this->initVbos(bufferValues);
 	this->checkGLErrors();
 }
 
-void ForwardRenderer::render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
+void ForwardRenderer::render(const Transform modelTransform, const Transform meshTransform, const ForwardBufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	if (texture.has_value() && texture.value()->isCubemap)
 	{
@@ -84,62 +84,13 @@ void ForwardRenderer::render(const Transform modelTransform, const Transform mes
 	}
 }
 
-void ForwardRenderer::initGBuffer()
-{
-	ivec2 screenSize = Window::I()->getSize();
-
-	glGenFramebuffers(1, &this->addresses.gBuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, this->addresses.gBuffer);
-
-	// Position color buffer
-	glGenTextures(1, &this->addresses.gPosition);
-	glBindTexture(GL_TEXTURE_2D, this->addresses.gPosition);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, (GLsizei)screenSize.x, (GLsizei)screenSize.y, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->addresses.gPosition, 0);
-
-	// Normal color buffer
-	glGenTextures(1, &this->addresses.gNormal);
-	glBindTexture(GL_TEXTURE_2D, this->addresses.gNormal);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, screenSize.x, screenSize.y, 0, GL_RGBA, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, this->addresses.gNormal, 0);
-
-	// Color + specular color buffer
-	glGenTextures(1, &this->addresses.gAlbedoSpec);
-	glBindTexture(GL_TEXTURE_2D, this->addresses.gAlbedoSpec);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, screenSize.x, screenSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, this->addresses.gAlbedoSpec, 0);
-
-	unsigned int attachments[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
-	glDrawBuffers(3, attachments);
-
-	// Depth buffer
-	glGenRenderbuffers(1, &this->addresses.gDepth);
-	glBindRenderbuffer(GL_RENDERBUFFER, this->addresses.gDepth);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, screenSize.x, screenSize.y);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, this->addresses.gDepth);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-	{
-		cerr << "Framebuffer not complete!" << endl;
-		throw runtime_error("Framebuffer not complete!");
-	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
 void ForwardRenderer::initVao()
 {
 	glGenVertexArrays(1, &this->addresses.vao);
 	glBindVertexArray(this->addresses.vao);
 }
 
-void ForwardRenderer::initVbos(const BufferValues values)
+void ForwardRenderer::initVbos(const ForwardBufferValues values)
 {
 	// Generates and makes active the VBO for the vertices
 	glGenBuffers(1, &this->addresses.vertices);
@@ -200,7 +151,6 @@ void ForwardRenderer::initUniformReferences()
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
 
 	this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
-	// this->uniforms.cubeMap.location = glGetUniformLocation(this->programId, this->uniforms.cubeMap.name.c_str());
 }
 
 void ForwardRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
@@ -271,7 +221,7 @@ void ForwardRenderer::bindNoTexture() const
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void ForwardRenderer::draw(const BufferValues values) const
+void ForwardRenderer::draw(const ForwardBufferValues values) const
 {
 	if (*ForwardRenderer::drawWireframe)
 	{

@@ -20,17 +20,16 @@ public:
 	ForwardRenderer(const ShaderFiles files);
 	~ForwardRenderer();
 
-	void setBufferValues(const BufferValues bufferValues) override;
-	void render(const Transform modelTransform, const Transform meshTransform, const BufferValues values, const Material material, const optional<shared_ptr<Texture>> texture) override;
+	void setBufferValues(const ForwardBufferValues bufferValues) override;
+	void render(const Transform modelTransform, const Transform meshTransform, const ForwardBufferValues values, const Material material, const optional<shared_ptr<Texture>> texture) override;
 
 protected:
 	unsigned int programId;
-	BuffersAddresses addresses;
+	ForwardBufferAddresses addresses;
 	Uniforms uniforms;
 
 	void initVao();
-	void initGBuffer();
-	void initVbos(const BufferValues bufferValues);
+	void initVbos(const ForwardBufferValues bufferValues);
 	void initUniformReferences();
 
 	void updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture);
@@ -38,6 +37,6 @@ protected:
 	void bindTexture(const Texture texture) const;
 	// Unbinds a texture from the shader. Used when the mesh has no texture.
 	void bindNoTexture() const;
-	void draw(const BufferValues values) const;
+	void draw(const ForwardBufferValues values) const;
 	void checkGLErrors();
 };

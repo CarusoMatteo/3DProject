@@ -16,7 +16,7 @@ class Renderer;
 class Mesh
 {
 public:
-	Mesh(const string name, const BufferValues values, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture);
+	Mesh(const string name, const ForwardBufferValues values, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture);
 	~Mesh() = default;
 
 	void render(Transform modelTransform) const;
@@ -36,7 +36,7 @@ public:
 private:
 	string name;
 	shared_ptr<Renderer> shader;
-	BufferValues values;
+	ForwardBufferValues values;
 	Transform transform;
 	Material material;
 	// A mesh may or may not have a texture.
