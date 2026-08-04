@@ -142,7 +142,6 @@
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
     <ClCompile Include="Source Files\Game Objects\Skybox.cpp" />
     <ClCompile Include="Source Files\Renderers\DeferredRenderer.cpp" />
-    <ClCompile Include="Source Files\Renderers\IRenderer.cpp" />
     <ClCompile Include="Source Files\Renderers\Renderer.cpp" />
     <ClCompile Include="Source Files\Texture\CubeMapTextureFactory.cpp" />
     <ClCompile Include="Source Files\Model\Material.cpp" />
