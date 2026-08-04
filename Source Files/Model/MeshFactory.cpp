@@ -3,17 +3,33 @@
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/Buffers.h"
+#include "../../Header Files/Renderers/DeferredRenderer.h"
+#include "../../Header Files/Renderers/ForwardRenderer.h"
 #include "../../Header Files/Renderers/Renderer.h"
 #include "../../Header Files/Texture/Texture.h"
 #include <cmath>
 #include <glm/glm.hpp>
+#include <iostream>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
 using namespace std;
 using namespace glm;
+
+bool isForwardRenderer(const shared_ptr<Renderer> shader)
+{
+	// Check if the shader is a ForwardRenderer by dynamic casting it.
+	return dynamic_pointer_cast<ForwardRenderer>(shader) != nullptr;
+}
+
+bool isDeferredRenderer(const shared_ptr<Renderer> shader)
+{
+	// Check if the shader is a DeferredRenderer by dynamic casting it.
+	return dynamic_pointer_cast<DeferredRenderer>(shader) != nullptr;
+}
 
 shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Renderer> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
 {
@@ -53,9 +69,23 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 
 	const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 
-	shader->setBufferValues(bufferValues);
+	if (isForwardRenderer(shader))
+	{
+		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
+		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
+	}
+	else if (isDeferredRenderer(shader))
+	{
+		const DeferredBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
+		dynamic_pointer_cast<DeferredRenderer>(shader)->setBufferValues(bufferValues);
+	}
+	else
+	{
+		cerr << "Error: Unknown shader type. Cannot set buffer values." << endl;
+		throw runtime_error("Unknown shader type. Cannot set buffer values.");
+	}
 
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
+	return shared_ptr<Mesh>(new Mesh(name, shader, transform, material, texture));
 }
 
 shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const shared_ptr<Renderer> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
@@ -129,9 +159,23 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 
 	const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 
-	shader->setBufferValues(bufferValues);
+	if (isForwardRenderer(shader))
+	{
+		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
+		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
+	}
+	else if (isDeferredRenderer(shader))
+	{
+		const DeferredBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
+		dynamic_pointer_cast<DeferredRenderer>(shader)->setBufferValues(bufferValues);
+	}
+	else
+	{
+		cerr << "Error: Unknown shader type. Cannot set buffer values." << endl;
+		throw runtime_error("Unknown shader type. Cannot set buffer values.");
+	}
 
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
+	return shared_ptr<Mesh>(new Mesh(name, shader, transform, material, texture));
 }
 
 shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, const shared_ptr<Renderer> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
@@ -188,11 +232,23 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	colors.push_back(fvec4(1));
 	indices.push_back(static_cast<unsigned int>(vertices.size() - 1));
 
-	const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
+	if (isForwardRenderer(shader))
+	{
+		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
+		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
+	}
+	else if (isDeferredRenderer(shader))
+	{
+		const DeferredBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
+		dynamic_pointer_cast<DeferredRenderer>(shader)->setBufferValues(bufferValues);
+	}
+	else
+	{
+		cerr << "Error: Unknown shader type. Cannot set buffer values." << endl;
+		throw runtime_error("Unknown shader type. Cannot set buffer values.");
+	}
 
-	shader->setBufferValues(bufferValues);
-
-	return shared_ptr<Mesh>(new Mesh(name, bufferValues, shader, transform, material, texture));
+	return shared_ptr<Mesh>(new Mesh(name, shader, transform, material, texture));
 }
 
 // Consider adding anchor to the vertex and index vector

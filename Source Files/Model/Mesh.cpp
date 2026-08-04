@@ -8,10 +8,9 @@
 #include <optional>
 #include <string>
 
-Mesh::Mesh(const string name, const ForwardBufferValues values, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture)
+Mesh::Mesh(const string name, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	this->name = name;
-	this->values = values;
 	this->shader = shader;
 	this->transform = transform;
 	this->material = material;
@@ -20,7 +19,7 @@ Mesh::Mesh(const string name, const ForwardBufferValues values, const shared_ptr
 
 void Mesh::render(Transform modelTransform) const
 {
-	this->shader->render(modelTransform, this->transform, this->values, this->material, this->texture);
+	this->shader->render(modelTransform, this->transform, this->material, this->texture);
 }
 
 string Mesh::getName() const

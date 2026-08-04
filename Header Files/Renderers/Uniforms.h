@@ -6,6 +6,7 @@
 using namespace std;
 using namespace glm;
 
+/// @brief `none` uniforms are those that do not possess a unique value, such as textures samplers.
 typedef void *none;
 
 template <typename T>
@@ -16,7 +17,6 @@ struct Uniform
 	T value;
 };
 
-// none uniforms are those that do not possess a unique value, such as textures samplers.
 struct Uniforms
 {
 	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
@@ -42,4 +42,13 @@ struct Uniforms
 	Uniform<bool> useTexture = {"useTexture"};
 
 	Uniform<none> skybox = {"skyboxSampler"};
+};
+
+struct DeferredUniforms
+{
+	Uniform<none> diffuseTexture1 = {"diffuseTextureSampler1"};
+	Uniform<none> specularTexture1 = {"specularTextureSampler1"};
+
+	Uniform<float> creationTime = {"creationTime"};
+	Uniform<bool> isVisible = {"isVisible"};
 };

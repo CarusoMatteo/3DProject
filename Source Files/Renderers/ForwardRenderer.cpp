@@ -48,11 +48,12 @@ ForwardRenderer::~ForwardRenderer()
 
 void ForwardRenderer::setBufferValues(const ForwardBufferValues bufferValues)
 {
-	this->initVbos(bufferValues);
+	this->values = bufferValues;
+	this->initVbos();
 	this->checkGLErrors();
 }
 
-void ForwardRenderer::render(const Transform modelTransform, const Transform meshTransform, const ForwardBufferValues values, const Material material, const optional<shared_ptr<Texture>> texture)
+void ForwardRenderer::render(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	if (texture.has_value() && texture.value()->isCubemap)
 	{
@@ -74,7 +75,7 @@ void ForwardRenderer::render(const Transform modelTransform, const Transform mes
 		this->bindNoTexture();
 	this->checkGLErrors();
 
-	this->draw(values);
+	this->draw();
 	this->checkGLErrors();
 
 	if (texture.has_value() && texture.value()->isCubemap)
@@ -90,40 +91,40 @@ void ForwardRenderer::initVao()
 	glBindVertexArray(this->addresses.vao);
 }
 
-void ForwardRenderer::initVbos(const ForwardBufferValues values)
+void ForwardRenderer::initVbos()
 {
 	// Generates and makes active the VBO for the vertices
 	glGenBuffers(1, &this->addresses.vertices);
 	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.vertices);
-	glBufferData(GL_ARRAY_BUFFER, values.vertices.size() * sizeof(fvec3), values.vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, this->values.vertices.size() * sizeof(fvec3), this->values.vertices.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 	glEnableVertexAttribArray(0);
 
 	// Generates and makes active the VBO for the colors
 	glGenBuffers(1, &this->addresses.colors);
 	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.colors);
-	glBufferData(GL_ARRAY_BUFFER, values.colors.size() * sizeof(fvec4), values.colors.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, this->values.colors.size() * sizeof(fvec4), this->values.colors.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
 	glEnableVertexAttribArray(1);
 
 	// Generates and makes active the VBO for the normals
 	glGenBuffers(1, &this->addresses.normals);
 	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.normals);
-	glBufferData(GL_ARRAY_BUFFER, values.normals.size() * sizeof(fvec3), values.normals.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, this->values.normals.size() * sizeof(fvec3), this->values.normals.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 	glEnableVertexAttribArray(2);
 
 	// Generates and makes active the VBO for the texture coordinates
 	glGenBuffers(1, &this->addresses.textureCoordinates);
 	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textureCoordinates);
-	glBufferData(GL_ARRAY_BUFFER, values.textureCoordinates.size() * sizeof(fvec2), values.textureCoordinates.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, this->values.textureCoordinates.size() * sizeof(fvec2), this->values.textureCoordinates.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
 	glEnableVertexAttribArray(3);
 
 	// Generates and makes active the EBO for the indices
 	glGenBuffers(1, &this->addresses.indices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->addresses.indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, values.indices.size() * sizeof(unsigned int), values.indices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->values.indices.size() * sizeof(unsigned int), this->values.indices.data(), GL_STATIC_DRAW);
 }
 
 void ForwardRenderer::initUniformReferences()
@@ -221,7 +222,7 @@ void ForwardRenderer::bindNoTexture() const
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void ForwardRenderer::draw(const ForwardBufferValues values) const
+void ForwardRenderer::draw() const
 {
 	if (*ForwardRenderer::drawWireframe)
 	{
@@ -236,24 +237,14 @@ void ForwardRenderer::draw(const ForwardBufferValues values) const
 	glBindVertexArray(this->addresses.vao);
 
 	// Draw the vertices of the shape as specified by renderMode, starting from the first vertex (0), for vertexCount vertices in total
-	glDrawElements(GL_TRIANGLES, static_cast<int>(values.indices.size() - 1), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<int>(this->values.indices.size() - 1), GL_UNSIGNED_INT, 0);
 
 	if (*ForwardRenderer::drawAnchor)
 	{
 		glPointSize(15.0f);
-		const unsigned int anchorIndex = values.indices.back();
+		const unsigned int anchorIndex = this->values.indices.back();
 		glDrawElements(GL_TRIANGLES, 1, GL_UNSIGNED_INT, BUFFER_OFFSET(anchorIndex * sizeof(unsigned int)));
 	}
 
 	glBindVertexArray(0);
-}
-
-void ForwardRenderer::checkGLErrors()
-{
-	const unsigned int error = glGetError();
-	if (error != GL_NO_ERROR)
-	{
-		cerr << "OpenGL Error: " << error << endl;
-		throw runtime_error("OpenGL encountered an error.");
-	}
 }
