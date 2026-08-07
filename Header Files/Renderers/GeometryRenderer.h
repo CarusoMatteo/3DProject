@@ -35,7 +35,7 @@ protected:
 	void initDepthRenderBuffer();
 	void initUniformReferences();
 
-	void updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture);
+	void updateUniformValues(const Transform modelTransform, const Transform meshTransform);
 	void passUniforms();
 	void draw() const;
 };

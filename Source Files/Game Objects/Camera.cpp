@@ -38,13 +38,12 @@ void Camera::update(float deltaTime)
 	moveFirstPerson(deltaTime);
 	if (!InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR))
 	{
-		panFirstPerson(deltaTime);
+		panFirstPerson();
 	}
 }
 
 void Camera::moveFirstPerson(float deltaTime)
 {
-	fvec3 movementDirection = fvec3(0);
 	if (InputEvents::getButtonStates().at(InputEventsType::FORWARD))
 	{
 		this->transform.direction = this->transform.target - this->transform.position;
@@ -89,7 +88,7 @@ void Camera::moveFirstPerson(float deltaTime)
 	}
 }
 
-void Camera::panFirstPerson(float deltaTime)
+void Camera::panFirstPerson()
 {
 	const fvec2 cursorPosition = InputEvents::getCursorPosition();
 	static fvec2 previousPosition = cursorPosition;

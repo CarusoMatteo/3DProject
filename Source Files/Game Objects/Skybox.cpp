@@ -19,6 +19,7 @@ Skybox::Skybox(const Transform transform, const shared_ptr<Renderer> renderer)
 
 void Skybox::update(const float deltaTime)
 {
+	return;
 }
 
 void Skybox::render()

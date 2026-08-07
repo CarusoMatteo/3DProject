@@ -23,6 +23,49 @@
 			},
 			// Use the standard MS compiler pattern to detect errors, warnings and infos
 			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "g++",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"g++.exe",
+				"-std=c++20",
+				"-g",
+				"-I",
+				"Header Files",
+				"-I",
+				"..\\.common",
+				"-I",
+				"..\\.common\\dependencies_GL_GLFW\\include",
+				"-I",
+				"..\\.common\\dependencies_GL_GLFW",
+				"-I",
+				"packages\\glm.1.0.1\\build\\native\\include",
+				"-L",
+				"..\\.common\\glfw-3.4.bin.WIN64\\lib-mingw-w64",
+				// "-lglfw3",
+				// "-lopengl32",
+				// "-lgdi32",
+				// "-luser32",
+				// "-lkernel32",
+				// "-lshell32",
+				// "-lwinmm",
+				"-Wall",
+				"-Wextra",
+				"-Wpedantic",
+				"(Get-ChildItem -Recurse -Filter *.cpp | Select-Object -ExpandProperty FullName)",
+				"-o",
+				".\\x64\\Debug\\3DProject.exe",
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"revealProblems": "onProblem"
+			},
+			"problemMatcher": "$gcc"
 		}
 	]
 }

@@ -52,7 +52,7 @@ void GeometryRenderer::render(const Transform modelTransform, const Transform me
 	glBindFramebuffer(GL_FRAMEBUFFER, this->addresses.gBuffer);
 
 	glUseProgram(this->programId);
-	this->updateUniformValues(modelTransform, meshTransform, material, texture);
+	this->updateUniformValues(modelTransform, meshTransform);
 	this->checkGLErrors();
 
 	this->passUniforms();
@@ -139,7 +139,7 @@ void GeometryRenderer::initUniformReferences()
 	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
 }
 
-void GeometryRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
+void GeometryRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform)
 {
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();

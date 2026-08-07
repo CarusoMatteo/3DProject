@@ -27,6 +27,7 @@ Sphere::Sphere(const Transform transform, const shared_ptr<Renderer> renderer)
 
 void Sphere::update(float deltaTime)
 {
+	return;
 }
 
 void Sphere::render()

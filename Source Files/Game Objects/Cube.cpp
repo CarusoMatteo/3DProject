@@ -26,6 +26,7 @@ Cube::Cube(const Transform transform, const shared_ptr<Renderer> renderer)
 
 void Cube::update(float deltaTime)
 {
+	return;
 }
 
 void Cube::render()

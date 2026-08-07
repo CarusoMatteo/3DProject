@@ -91,7 +91,7 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 
 	ImGui::Begin("Inspector", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
 
-	for (int i = 0; i < objects.size(); ++i)
+	for (unsigned int i = 0; i < objects.size(); ++i)
 	{
 		char label[64];
 		sprintf_s(label, sizeof(label), "%d. %s", i + 1, objects.at(i)->getName().c_str());
@@ -108,7 +108,7 @@ void Gui::inspectorWindow(const vector<shared_ptr<IVisibleGameObject>> objects)
 
 		if (nodeOpen)
 		{
-			for (int j = 0; j < objects.at(i)->getMeshes().size(); ++j)
+			for (unsigned int j = 0; j < objects.at(i)->getMeshes().size(); ++j)
 			{
 				shared_ptr<Mesh> mesh = objects.at(i)->getMeshes().at(j);
 				char meshLabel[128];

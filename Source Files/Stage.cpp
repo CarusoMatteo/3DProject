@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-Stage::Stage(const shared_ptr<fvec3> clearColor, const string windowTitle)
+Stage::Stage(const shared_ptr<fvec3> clearColor)
 {
 	this->clearColor = clearColor;
 	Window::I();

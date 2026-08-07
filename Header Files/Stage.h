@@ -13,7 +13,7 @@ class Window;
 class Stage
 {
 public:
-	Stage(const shared_ptr<fvec3> clearColor, const string windowTitle);
+	Stage(const shared_ptr<fvec3> clearColor);
 	~Stage() = default;
 
 	void updateGameObjects(const float deltaTime);

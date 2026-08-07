@@ -37,7 +37,7 @@ private:
 	unique_ptr<BoundingBox> boundingBox;
 
 	void moveFirstPerson(float deltaTime);
-	void panFirstPerson(float deltaTime);
+	void panFirstPerson();
 	void setTransform();
 	void setProjectionData();
 };

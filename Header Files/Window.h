@@ -29,7 +29,7 @@ public:
 private:
 	static optional<unique_ptr<Window>> instance;
 
-	const string windowTitle = "Progetto 3D";
+	const string windowTitle = "3D Project";
 	const fvec2 monitorPercentageSize = fvec2(0.8f);
 
 	Window();
