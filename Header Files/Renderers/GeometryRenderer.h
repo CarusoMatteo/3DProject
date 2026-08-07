@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../Texture/Texture.h"
-#include "Buffers.h"
+#include "BuffersAddresses.h"
+#include "BuffersValues.h"
 #include "Renderer.h"
 #include "Uniforms.h"
 #include <memory>
@@ -10,9 +11,9 @@
 using namespace std;
 using namespace glm;
 
-// struct Material;
+struct Material;
 struct ShaderFiles;
-// struct Transform;
+struct Transform;
 
 class GeometryRenderer : public Renderer
 {

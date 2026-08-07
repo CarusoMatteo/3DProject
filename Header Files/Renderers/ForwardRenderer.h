@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../Texture/Texture.h"
-#include "Buffers.h"
+#include "BuffersAddresses.h"
+#include "BuffersValues.h"
 #include "Renderer.h"
 #include "Uniforms.h"
 #include <memory>

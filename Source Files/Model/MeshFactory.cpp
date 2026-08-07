@@ -2,7 +2,7 @@
 #include "../../Header Files/Model/Material.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Transform.h"
-#include "../../Header Files/Renderers/Buffers.h"
+#include "../../Header Files/Renderers/BuffersValues.h"
 #include "../../Header Files/Renderers/ForwardRenderer.h"
 #include "../../Header Files/Renderers/GeometryRenderer.h"
 #include "../../Header Files/Renderers/Renderer.h"
@@ -19,13 +19,13 @@
 using namespace std;
 using namespace glm;
 
-bool isForwardRenderer(const shared_ptr<Renderer> shader)
+static bool isForwardRenderer(const shared_ptr<Renderer> shader)
 {
 	// Check if the shader is a ForwardRenderer by dynamic casting it.
 	return dynamic_pointer_cast<ForwardRenderer>(shader) != nullptr;
 }
 
-bool isGeometryRenderer(const shared_ptr<Renderer> shader)
+static bool isGeometryRenderer(const shared_ptr<Renderer> shader)
 {
 	// Check if the shader is a DeferredRenderer by dynamic casting it.
 	return dynamic_pointer_cast<GeometryRenderer>(shader) != nullptr;

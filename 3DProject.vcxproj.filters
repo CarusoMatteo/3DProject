@@ -227,9 +227,6 @@
     <ClInclude Include="Header Files\Game Objects\PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Renderers\Buffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Header Files\Model\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -276,6 +273,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Renderers\GeometryRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Renderers\BuffersAddresses.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Renderers\BuffersValues.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

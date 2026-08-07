@@ -183,6 +183,8 @@
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\Skybox.h" />
+    <ClInclude Include="Header Files\Renderers\BuffersAddresses.h" />
+    <ClInclude Include="Header Files\Renderers\BuffersValues.h" />
     <ClInclude Include="Header Files\Renderers\GeometryRenderer.h" />
     <ClInclude Include="Header Files\Texture\CubeMapTextureFactory.h" />
     <ClInclude Include="Header Files\Model\Material.h" />
@@ -195,7 +197,6 @@
     <ClInclude Include="Header Files\InputEventsType.h" />
     <ClInclude Include="Header Files\Mesh.h" />
     <ClInclude Include="Header Files\Model\BoundingBox.h" />
-    <ClInclude Include="Header Files\Renderers\Buffers.h" />
     <ClInclude Include="Header Files\Model\Mesh.h" />
     <ClInclude Include="Header Files\Model\MeshFactory.h" />
     <ClInclude Include="Header Files\Model\Model.h" />
