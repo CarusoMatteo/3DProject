@@ -1,8 +1,10 @@
 #include "../../Header Files/Renderers/Renderer.h"
+#include <any>
 #include <glad/glad.h>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <vector>
 
 using namespace std;
 
@@ -17,6 +19,11 @@ shared_ptr<bool> Renderer::getDrawWireframeFlag()
 shared_ptr<bool> Renderer::getDrawAnchorFlag()
 {
 	return Renderer::drawAnchor;
+}
+
+bool Renderer::bufferIsUsed(const unsigned int address, const size_t size) const
+{
+	return address != -1 && size > 0;
 }
 
 void Renderer::checkGLErrors()
