@@ -17,7 +17,7 @@ struct Uniform
 	T value;
 };
 
-struct Uniforms
+struct ForwardUniforms
 {
 	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
 	Uniform<fmat4> modelMatrix = {"modelMatrix"};
@@ -46,9 +46,16 @@ struct Uniforms
 
 struct DeferredUniforms
 {
-	Uniform<none> diffuseTexture1 = {"diffuseTextureSampler1"};
-	Uniform<none> specularTexture1 = {"specularTextureSampler1"};
+	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
+	Uniform<fmat4> modelMatrix = {"modelMatrix"};
+	Uniform<fmat4> viewMatrix = {"viewMatrix"};
+	Uniform<fvec3> viewPosition = {"viewPosition"};
 
 	Uniform<float> creationTime = {"creationTime"};
+	Uniform<float> currentTime = {"currentTime"};
+	Uniform<ivec2> screenSize = {"screenSize"};
 	Uniform<bool> isVisible = {"isVisible"};
+
+	Uniform<none> diffuseTexture1 = {"diffuseTextureSampler1"};
+	Uniform<none> specularTexture1 = {"specularTextureSampler1"};
 };

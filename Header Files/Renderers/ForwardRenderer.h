@@ -27,7 +27,7 @@ protected:
 	unsigned int programId;
 	ForwardBufferAddresses addresses;
 	ForwardBufferValues values;
-	Uniforms uniforms;
+	ForwardUniforms uniforms;
 
 	void initVao();
 	void initVbos();

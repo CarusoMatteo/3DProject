@@ -55,11 +55,9 @@ void ForwardRenderer::setBufferValues(const ForwardBufferValues bufferValues)
 
 void ForwardRenderer::render(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
+	// Disable writing to depth buffer
 	if (texture.has_value() && texture.value()->isCubemap)
-	{
-		// Disable writing to depth buffer
 		glDepthMask(false);
-	}
 
 	glUseProgram(this->programId);
 	this->updateUniformValues(modelTransform, meshTransform, material, texture);
@@ -78,11 +76,9 @@ void ForwardRenderer::render(const Transform modelTransform, const Transform mes
 	this->draw();
 	this->checkGLErrors();
 
+	// Re-enable writing to depth buffer
 	if (texture.has_value() && texture.value()->isCubemap)
-	{
-		// Re-enable writing to depth buffer
 		glDepthMask(true);
-	}
 }
 
 void ForwardRenderer::initVao()
