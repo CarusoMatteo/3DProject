@@ -34,10 +34,7 @@ protected:
 	void initDepthRenderBuffer();
 	void initUniformReferences();
 
-	// void updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture);
-	// void passUniforms();
-	// void bindTexture(const Texture texture) const;
-	// Unbinds a texture from the shader. Used when the mesh has no texture.
-	// void bindNoTexture() const;
-	// void draw() const;
+	void updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture);
+	void passUniforms();
+	void draw() const;
 };

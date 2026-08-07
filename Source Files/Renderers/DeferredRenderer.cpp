@@ -1,4 +1,6 @@
 #include "../../Header Files/Renderers/DeferredRenderer.h"
+#include "../../Header Files/Game Objects/Camera.h"
+#include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Model/Material.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/Buffers.h"
@@ -8,6 +10,7 @@
 #include "../../Header Files/Window.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -45,6 +48,21 @@ void DeferredRenderer::setBufferValues(const DeferredBufferValues bufferValues)
 
 void DeferredRenderer::render(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
+	// Geometry pass: render scene's geometry/color data into g-buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, this->addresses.gBuffer);
+
+	glUseProgram(this->programId);
+	this->updateUniformValues(modelTransform, meshTransform, material, texture);
+	this->checkGLErrors();
+
+	this->passUniforms();
+	this->checkGLErrors();
+
+	this->draw();
+	this->checkGLErrors();
+
+	// Unbind the framebuffer to render to the default framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void DeferredRenderer::initGBuffer()
@@ -96,9 +114,6 @@ void DeferredRenderer::initSubBuffers()
 		cerr << "Framebuffer not complete!" << endl;
 		throw runtime_error("Framebuffer not complete!");
 	}
-
-	// TODO: Probably move this to render function if it needs to be called every frame?
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void DeferredRenderer::initDepthRenderBuffer()
@@ -113,27 +128,54 @@ void DeferredRenderer::initDepthRenderBuffer()
 
 void DeferredRenderer::initUniformReferences()
 {
-	// this->uniforms.projectionMatrix.location = glGetUniformLocation(this->programId, this->uniforms.projectionMatrix.name.c_str());
-	// this->uniforms.modelMatrix.location = glGetUniformLocation(this->programId, this->uniforms.modelMatrix.name.c_str());
-	// this->uniforms.viewMatrix.location = glGetUniformLocation(this->programId, this->uniforms.viewMatrix.name.c_str());
-	// this->uniforms.viewPosition.location = glGetUniformLocation(this->programId, this->uniforms.viewPosition.name.c_str());
+	this->uniforms.projectionMatrix.location = glGetUniformLocation(this->programId, this->uniforms.projectionMatrix.name.c_str());
+	this->uniforms.modelMatrix.location = glGetUniformLocation(this->programId, this->uniforms.modelMatrix.name.c_str());
+	this->uniforms.viewMatrix.location = glGetUniformLocation(this->programId, this->uniforms.viewMatrix.name.c_str());
+	this->uniforms.viewPosition.location = glGetUniformLocation(this->programId, this->uniforms.viewPosition.name.c_str());
 
-	// this->uniforms.lightPosition.location = glGetUniformLocation(this->programId, this->uniforms.lightPosition.name.c_str());
-	// this->uniforms.lightColor.location = glGetUniformLocation(this->programId, this->uniforms.lightColor.name.c_str());
-	// this->uniforms.lightPower.location = glGetUniformLocation(this->programId, this->uniforms.lightPower.name.c_str());
+	this->uniforms.creationTime.location = glGetUniformLocation(this->programId, this->uniforms.creationTime.name.c_str());
+	this->uniforms.currentTime.location = glGetUniformLocation(this->programId, this->uniforms.currentTime.name.c_str());
+	this->uniforms.screenSize.location = glGetUniformLocation(this->programId, this->uniforms.screenSize.name.c_str());
+	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
+}
 
-	// this->uniforms.materialAmbient.location = glGetUniformLocation(this->programId, this->uniforms.materialAmbient.name.c_str());
-	// this->uniforms.materialDiffuse.location = glGetUniformLocation(this->programId, this->uniforms.materialDiffuse.name.c_str());
-	// this->uniforms.materialSpecular.location = glGetUniformLocation(this->programId, this->uniforms.materialSpecular.name.c_str());
-	// this->uniforms.materialShininess.location = glGetUniformLocation(this->programId, this->uniforms.materialShininess.name.c_str());
+void DeferredRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
+{
+	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
+	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
+	this->uniforms.viewMatrix.value = Camera::I()->makeViewMatrix();
+	this->uniforms.viewPosition.value = Camera::I()->getPosition();
 
-	// this->uniforms.creationTime.location = glGetUniformLocation(this->programId, this->uniforms.creationTime.name.c_str());
-	// this->uniforms.currentTime.location = glGetUniformLocation(this->programId, this->uniforms.currentTime.name.c_str());
-	// this->uniforms.screenSize.location = glGetUniformLocation(this->programId, this->uniforms.screenSize.name.c_str());
-	// this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
+	this->uniforms.currentTime.value = static_cast<float>(glfwGetTime());
+	this->uniforms.screenSize.value = Window::I()->getSize();
+}
 
-	// this->uniforms.texture.location = glGetUniformLocation(this->programId, this->uniforms.texture.name.c_str());
-	// this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
+void DeferredRenderer::passUniforms()
+{
+	glUniformMatrix4fv(this->uniforms.projectionMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.projectionMatrix.value));
+	glUniformMatrix4fv(this->uniforms.modelMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.modelMatrix.value));
+	glUniformMatrix4fv(this->uniforms.viewMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.viewMatrix.value));
+	glUniform3fv(this->uniforms.viewPosition.location, 1, value_ptr(this->uniforms.viewPosition.value));
 
-	// this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
+	glUniform1f(this->uniforms.creationTime.location, this->uniforms.creationTime.value);
+	glUniform1f(this->uniforms.currentTime.location, this->uniforms.currentTime.value);
+	glUniform2iv(this->uniforms.screenSize.location, 1, value_ptr(this->uniforms.screenSize.value));
+	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
+}
+
+void DeferredRenderer::draw() const
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, this->addresses.positions);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, this->addresses.normals);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, this->addresses.albedosSpecular);
+
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->addresses.gBuffer);
+	// write to default framebuffer
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+	glBlitFramebuffer(0, 0, this->uniforms.screenSize.value.x, this->uniforms.screenSize.value.y, 0, 0, this->uniforms.screenSize.value.x, this->uniforms.screenSize.value.y, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
