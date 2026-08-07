@@ -123,6 +123,9 @@
     <ClCompile Include="Source Files\Renderers\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\Renderers\GeometryRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\.common\ImGui\imconfig.h">
@@ -272,7 +275,7 @@
     <ClInclude Include="Header Files\Renderers\ShaderFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Renderers\DeferredRenderer.h">
+    <ClInclude Include="Header Files\Renderers\GeometryRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

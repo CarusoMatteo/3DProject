@@ -14,20 +14,20 @@ using namespace glm;
 struct ShaderFiles;
 // struct Transform;
 
-class DeferredRenderer : public Renderer
+class GeometryRenderer : public Renderer
 {
 public:
-	DeferredRenderer(const ShaderFiles files);
-	~DeferredRenderer();
+	GeometryRenderer(const ShaderFiles files);
+	~GeometryRenderer();
 
-	void setBufferValues(const DeferredBufferValues bufferValues);
+	void setBufferValues(const GeometryBufferValues bufferValues);
 	void render(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture) override;
 
 protected:
 	unsigned int programId;
-	DeferredBuffersAddresses addresses;
-	DeferredBufferValues values;
-	DeferredUniforms uniforms;
+	GeometryBuffersAddresses addresses;
+	GeometryBufferValues values;
+	GeometryUniforms uniforms;
 
 	void initGBuffer();
 	void initSubBuffers();

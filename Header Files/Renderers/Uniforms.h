@@ -44,7 +44,7 @@ struct ForwardUniforms
 	Uniform<none> skybox = {"skyboxSampler"};
 };
 
-struct DeferredUniforms
+struct GeometryUniforms
 {
 	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
 	Uniform<fmat4> modelMatrix = {"modelMatrix"};

@@ -1,4 +1,4 @@
-#include "../../Header Files/Renderers/DeferredRenderer.h"
+#include "../../Header Files/Renderers/GeometryRenderer.h"
 #include "../../Header Files/Game Objects/Camera.h"
 #include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Model/Material.h"
@@ -18,7 +18,7 @@
 
 using namespace std;
 
-DeferredRenderer::DeferredRenderer(const ShaderFiles files)
+GeometryRenderer::GeometryRenderer(const ShaderFiles files)
 {
 	this->programId = ShaderBuilder::buildShader(files);
 	this->initGBuffer();
@@ -28,7 +28,7 @@ DeferredRenderer::DeferredRenderer(const ShaderFiles files)
 	this->uniforms.isVisible.value = true;
 }
 
-DeferredRenderer::~DeferredRenderer()
+GeometryRenderer::~GeometryRenderer()
 {
 	glDeleteProgram(this->programId);
 	glDeleteBuffers(1, &this->addresses.positions);
@@ -39,14 +39,14 @@ DeferredRenderer::~DeferredRenderer()
 	// TODO: DeleteFramebuffers is the correct way to delete gBuffer?
 }
 
-void DeferredRenderer::setBufferValues(const DeferredBufferValues bufferValues)
+void GeometryRenderer::setBufferValues(const GeometryBufferValues bufferValues)
 {
 	this->values = bufferValues;
 	this->initSubBuffers();
 	this->checkGLErrors();
 }
 
-void DeferredRenderer::render(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
+void GeometryRenderer::render(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	// Geometry pass: render scene's geometry/color data into g-buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->addresses.gBuffer);
@@ -65,13 +65,13 @@ void DeferredRenderer::render(const Transform modelTransform, const Transform me
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void DeferredRenderer::initGBuffer()
+void GeometryRenderer::initGBuffer()
 {
 	glGenFramebuffers(1, &this->addresses.gBuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, this->addresses.gBuffer);
 }
 
-void DeferredRenderer::initSubBuffers()
+void GeometryRenderer::initSubBuffers()
 {
 	ivec2 screenSize = Window::I()->getSize();
 
@@ -116,7 +116,7 @@ void DeferredRenderer::initSubBuffers()
 	}
 }
 
-void DeferredRenderer::initDepthRenderBuffer()
+void GeometryRenderer::initDepthRenderBuffer()
 {
 	ivec2 screenSize = Window::I()->getSize();
 
@@ -126,7 +126,7 @@ void DeferredRenderer::initDepthRenderBuffer()
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, this->addresses.depths);
 }
 
-void DeferredRenderer::initUniformReferences()
+void GeometryRenderer::initUniformReferences()
 {
 	this->uniforms.projectionMatrix.location = glGetUniformLocation(this->programId, this->uniforms.projectionMatrix.name.c_str());
 	this->uniforms.modelMatrix.location = glGetUniformLocation(this->programId, this->uniforms.modelMatrix.name.c_str());
@@ -139,7 +139,7 @@ void DeferredRenderer::initUniformReferences()
 	this->uniforms.isVisible.location = glGetUniformLocation(this->programId, this->uniforms.isVisible.name.c_str());
 }
 
-void DeferredRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
+void GeometryRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
@@ -150,7 +150,7 @@ void DeferredRenderer::updateUniformValues(const Transform modelTransform, const
 	this->uniforms.screenSize.value = Window::I()->getSize();
 }
 
-void DeferredRenderer::passUniforms()
+void GeometryRenderer::passUniforms()
 {
 	glUniformMatrix4fv(this->uniforms.projectionMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.projectionMatrix.value));
 	glUniformMatrix4fv(this->uniforms.modelMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.modelMatrix.value));
@@ -163,7 +163,7 @@ void DeferredRenderer::passUniforms()
 	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
 }
 
-void DeferredRenderer::draw() const
+void GeometryRenderer::draw() const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, this->addresses.positions);

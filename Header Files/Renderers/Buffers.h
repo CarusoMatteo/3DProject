@@ -21,7 +21,7 @@ struct ForwardBufferAddresses
 };
 
 // Buffer that contain the geometric information for the geometry pass
-struct DeferredBuffersAddresses
+struct GeometryBuffersAddresses
 {
 	unsigned int gBuffer = -1;
 
@@ -40,7 +40,7 @@ struct ForwardBufferValues
 	vector<fvec2> textureCoordinates;
 };
 
-struct DeferredBufferValues
+struct GeometryBufferValues
 {
 	// 3D World spaceposition to interpolate the fragment position.
 	vector<fvec3> positions;

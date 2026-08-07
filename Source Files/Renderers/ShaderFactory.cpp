@@ -50,9 +50,9 @@ optional<shared_ptr<ForwardRenderer>> ShaderFactory::reflectionShader = nullopt;
 optional<shared_ptr<ForwardRenderer>> ShaderFactory::cubeMapShader = nullopt;
 optional<shared_ptr<ForwardRenderer>> ShaderFactory::interpolativeShader = nullopt;
 
-optional<shared_ptr<DeferredRenderer>> ShaderFactory::fboDebugShader = nullopt;
-optional<shared_ptr<DeferredRenderer>> ShaderFactory::geometryPassShader = nullopt;
-optional<shared_ptr<DeferredRenderer>> ShaderFactory::lightBoxShader = nullopt;
+optional<shared_ptr<GeometryRenderer>> ShaderFactory::fboDebugShader = nullopt;
+optional<shared_ptr<GeometryRenderer>> ShaderFactory::geometryShader = nullopt;
+optional<shared_ptr<GeometryRenderer>> ShaderFactory::lightBoxShader = nullopt;
 optional<shared_ptr<ForwardRenderer>> ShaderFactory::lightingPassShader = nullopt;
 
 shared_ptr<ForwardRenderer> ShaderFactory::unlit()
@@ -97,24 +97,24 @@ shared_ptr<ForwardRenderer> ShaderFactory::interpolative()
 	return interpolativeShader.value();
 }
 
-shared_ptr<DeferredRenderer> ShaderFactory::fboDebug()
+shared_ptr<GeometryRenderer> ShaderFactory::fboDebug()
 {
 	if (!fboDebugShader.has_value())
-		fboDebugShader = make_shared<DeferredRenderer>(FBO_DEBUG_PATH);
+		fboDebugShader = make_shared<GeometryRenderer>(FBO_DEBUG_PATH);
 	return fboDebugShader.value();
 }
 
-shared_ptr<DeferredRenderer> ShaderFactory::geometryPass()
+shared_ptr<GeometryRenderer> ShaderFactory::geometry()
 {
-	if (!geometryPassShader.has_value())
-		geometryPassShader = make_shared<DeferredRenderer>(GEOMETRY_PASS_PATH);
-	return geometryPassShader.value();
+	if (!geometryShader.has_value())
+		geometryShader = make_shared<GeometryRenderer>(GEOMETRY_PASS_PATH);
+	return geometryShader.value();
 }
 
-shared_ptr<DeferredRenderer> ShaderFactory::lightBox()
+shared_ptr<GeometryRenderer> ShaderFactory::lightBox()
 {
 	if (!lightBoxShader.has_value())
-		lightBoxShader = make_shared<DeferredRenderer>(LIGHT_BOX_PATH);
+		lightBoxShader = make_shared<GeometryRenderer>(LIGHT_BOX_PATH);
 	return lightBoxShader.value();
 }
 

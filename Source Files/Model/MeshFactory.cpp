@@ -3,8 +3,8 @@
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/Buffers.h"
-#include "../../Header Files/Renderers/DeferredRenderer.h"
 #include "../../Header Files/Renderers/ForwardRenderer.h"
+#include "../../Header Files/Renderers/GeometryRenderer.h"
 #include "../../Header Files/Renderers/Renderer.h"
 #include "../../Header Files/Texture/Texture.h"
 #include <cmath>
@@ -25,10 +25,10 @@ bool isForwardRenderer(const shared_ptr<Renderer> shader)
 	return dynamic_pointer_cast<ForwardRenderer>(shader) != nullptr;
 }
 
-bool isDeferredRenderer(const shared_ptr<Renderer> shader)
+bool isGeometryRenderer(const shared_ptr<Renderer> shader)
 {
 	// Check if the shader is a DeferredRenderer by dynamic casting it.
-	return dynamic_pointer_cast<DeferredRenderer>(shader) != nullptr;
+	return dynamic_pointer_cast<GeometryRenderer>(shader) != nullptr;
 }
 
 shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const shared_ptr<Renderer> shader, Transform transform, const optional<shared_ptr<Texture>> texture)
@@ -72,10 +72,10 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
 	}
-	else if (isDeferredRenderer(shader))
+	else if (isGeometryRenderer(shader))
 	{
-		const DeferredBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
-		dynamic_pointer_cast<DeferredRenderer>(shader)->setBufferValues(bufferValues);
+		const GeometryBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
+		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(bufferValues);
 	}
 	else
 	{
@@ -160,10 +160,10 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
 	}
-	else if (isDeferredRenderer(shader))
+	else if (isGeometryRenderer(shader))
 	{
-		const DeferredBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
-		dynamic_pointer_cast<DeferredRenderer>(shader)->setBufferValues(bufferValues);
+		const GeometryBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
+		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(bufferValues);
 	}
 	else
 	{
@@ -233,10 +233,10 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
 		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
 	}
-	else if (isDeferredRenderer(shader))
+	else if (isGeometryRenderer(shader))
 	{
-		const DeferredBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
-		dynamic_pointer_cast<DeferredRenderer>(shader)->setBufferValues(bufferValues);
+		const GeometryBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
+		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(bufferValues);
 	}
 	else
 	{
