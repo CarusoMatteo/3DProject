@@ -5,16 +5,6 @@
 using namespace glm;
 using namespace std;
 
-const vector<string> MaterialsFactory::names = {
-	"Red Plastic",
-	"Brass",
-	"Emerald",
-	"Snow White",
-	"Yellow",
-	"Pink",
-	"Brown",
-	"Custom Material"};
-
 const Material MaterialsFactory::redPlastic = {
 	"Red Plastic",
 	fvec3(0.1, 0.0, 0.0),

@@ -33,8 +33,6 @@ enum MaterialType
 class MaterialsFactory
 {
 public:
-	static const vector<string> names;
-
 	static Material makeMaterial(MaterialType type);
 
 private:
