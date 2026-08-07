@@ -1,11 +1,9 @@
 #pragma once
 
+#include "DeferredRenderer.h"
 #include "ForwardRenderer.h"
 #include <memory>
 #include <optional>
-#include <string>
-
-struct ShaderFiles;
 
 class ShaderFactory
 {
@@ -17,6 +15,14 @@ public:
 	static shared_ptr<ForwardRenderer> cubeMap();
 	static shared_ptr<ForwardRenderer> interpolative();
 
+	static shared_ptr<DeferredRenderer> fboDebug();
+	static shared_ptr<DeferredRenderer> geometryPass();
+	static shared_ptr<DeferredRenderer> lightBox();
+
+	// TODO: What type should this return? Maybe its own type, like `LightingPassRenderer`?
+	//  In that case, geometryPassShader's type (DeferredRenderer) should probably be renamed to `GeometryPassRenderer`.
+	static shared_ptr<ForwardRenderer> lightingPass();
+
 private:
 	// Instances of singletons for every shader
 	static optional<shared_ptr<ForwardRenderer>> unlitShader;
@@ -26,12 +32,8 @@ private:
 	static optional<shared_ptr<ForwardRenderer>> cubeMapShader;
 	static optional<shared_ptr<ForwardRenderer>> interpolativeShader;
 
-	// Paths to the shader files
-	static const string SHADER_PATH;
-	static const ShaderFiles UNLIT_PATH;
-	static const ShaderFiles PHONG_PATH;
-	static const ShaderFiles BLINN_PHONG_PATH;
-	static const ShaderFiles REFLECTION_PATH;
-	static const ShaderFiles CUBE_MAP_PATH;
-	static const ShaderFiles INTERPOLATIVE_PATH;
+	static optional<shared_ptr<DeferredRenderer>> fboDebugShader;
+	static optional<shared_ptr<DeferredRenderer>> geometryPassShader;
+	static optional<shared_ptr<DeferredRenderer>> lightBoxShader;
+	static optional<shared_ptr<ForwardRenderer>> lightingPassShader;
 };
