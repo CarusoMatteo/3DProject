@@ -90,52 +90,37 @@ void ForwardRenderer::initVao()
 void ForwardRenderer::initVbos()
 {
 	// Generates and makes active the VBO for the vertices
-	if (this->bufferIsUsed(this->addresses.vertices, this->values.vertices.size()))
-	{
-		glGenBuffers(1, &this->addresses.vertices);
-		glBindBuffer(GL_ARRAY_BUFFER, this->addresses.vertices);
-		glBufferData(GL_ARRAY_BUFFER, this->values.vertices.size() * sizeof(fvec3), this->values.vertices.data(), GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
-		glEnableVertexAttribArray(0);
-	}
+	glGenBuffers(1, &this->addresses.vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.vertices);
+	glBufferData(GL_ARRAY_BUFFER, this->values.vertices.size() * sizeof(fvec3), this->values.vertices.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	glEnableVertexAttribArray(0);
 
 	// Generates and makes active the VBO for the colors
-	if (this->bufferIsUsed(this->addresses.colors, this->values.colors.size()))
-	{
-		glGenBuffers(1, &this->addresses.colors);
-		glBindBuffer(GL_ARRAY_BUFFER, this->addresses.colors);
-		glBufferData(GL_ARRAY_BUFFER, this->values.colors.size() * sizeof(fvec4), this->values.colors.data(), GL_STATIC_DRAW);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
-		glEnableVertexAttribArray(1);
-	}
+	glGenBuffers(1, &this->addresses.colors);
+	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.colors);
+	glBufferData(GL_ARRAY_BUFFER, this->values.colors.size() * sizeof(fvec4), this->values.colors.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	glEnableVertexAttribArray(1);
 
 	// Generates and makes active the VBO for the normals
-	if (this->bufferIsUsed(this->addresses.normals, this->values.normals.size()))
-	{
-		glGenBuffers(1, &this->addresses.normals);
-		glBindBuffer(GL_ARRAY_BUFFER, this->addresses.normals);
-		glBufferData(GL_ARRAY_BUFFER, this->values.normals.size() * sizeof(fvec3), this->values.normals.data(), GL_STATIC_DRAW);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
-		glEnableVertexAttribArray(2);
-	}
+	glGenBuffers(1, &this->addresses.normals);
+	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.normals);
+	glBufferData(GL_ARRAY_BUFFER, this->values.normals.size() * sizeof(fvec3), this->values.normals.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	glEnableVertexAttribArray(2);
 
 	// Generates and makes active the VBO for the texture coordinates
-	if (this->bufferIsUsed(this->addresses.textureCoordinates, this->values.textureCoordinates.size()))
-	{
-		glGenBuffers(1, &this->addresses.textureCoordinates);
-		glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textureCoordinates);
-		glBufferData(GL_ARRAY_BUFFER, this->values.textureCoordinates.size() * sizeof(fvec2), this->values.textureCoordinates.data(), GL_STATIC_DRAW);
-		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
-		glEnableVertexAttribArray(3);
-	}
+	glGenBuffers(1, &this->addresses.textureCoordinates);
+	glBindBuffer(GL_ARRAY_BUFFER, this->addresses.textureCoordinates);
+	glBufferData(GL_ARRAY_BUFFER, this->values.textureCoordinates.size() * sizeof(fvec2), this->values.textureCoordinates.data(), GL_STATIC_DRAW);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 0, (void *)0);
+	glEnableVertexAttribArray(3);
 
 	// Generates and makes active the EBO for the indices
-	if (this->bufferIsUsed(this->addresses.indices, this->values.indices.size()))
-	{
-		glGenBuffers(1, &this->addresses.indices);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->addresses.indices);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->values.indices.size() * sizeof(unsigned int), this->values.indices.data(), GL_STATIC_DRAW);
-	}
+	glGenBuffers(1, &this->addresses.indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->addresses.indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->values.indices.size() * sizeof(unsigned int), this->values.indices.data(), GL_STATIC_DRAW);
 }
 
 void ForwardRenderer::initUniformReferences()
@@ -248,6 +233,7 @@ void ForwardRenderer::draw() const
 	glBindVertexArray(this->addresses.vao);
 
 	// Draw the vertices of the shape as specified by renderMode, starting from the first vertex (0), for vertexCount vertices in total
+	// If this object uses the index buffer, use glDrawElements instead of glDrawArrays
 	if (this->bufferIsUsed(this->addresses.indices, this->values.indices.size()))
 		glDrawElements(GL_TRIANGLES, static_cast<int>(this->values.indices.size() - 1), GL_UNSIGNED_INT, 0);
 	else
