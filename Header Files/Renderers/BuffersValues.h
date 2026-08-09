@@ -25,3 +25,8 @@ struct GeometryBufferValues
 	vector<fvec3> normals;
 	vector<float> depths;
 };
+
+struct SingleBufferValues
+{
+	vector<float> values;
+};

@@ -23,3 +23,10 @@ struct GeometryBuffersAddresses
 	unsigned int normals = -1;
 	unsigned int depths = -1;
 };
+
+// Buffer for an object with only one VBO
+struct SingleBufferAddresses
+{
+	unsigned int vao = -1;
+	unsigned int vbo = -1;
+};
