@@ -3,7 +3,7 @@
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Transform.h"
-#include "../../Header Files/Renderers/ShaderFactory.h"
+#include "../../Header Files/Renderers/Renderer.h"
 #include "../../Header Files/Texture/TextureFactory.h"
 #include <memory>
 #include <string>
@@ -29,9 +29,9 @@ void Cube::update(float deltaTime)
 	return;
 }
 
-void Cube::render()
+void Cube::render(const float currentTime)
 {
-	this->model->render();
+	this->model->render(currentTime);
 }
 
 Transform Cube::getTransform() const

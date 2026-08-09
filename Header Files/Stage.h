@@ -3,7 +3,6 @@
 #include "Scenes/IScene.h"
 #include <glm/glm.hpp>
 #include <memory>
-#include <string>
 
 using namespace glm;
 using namespace std;
@@ -17,7 +16,7 @@ public:
 	~Stage() = default;
 
 	void updateGameObjects(const float deltaTime);
-	void renderScene() const;
+	void renderScene(const float currentTime) const;
 	void drawClearColor() const;
 
 	bool shouldWindowClose() const;

@@ -17,7 +17,7 @@ public:
 	~Scene() = default;
 
 	void updateGameObjects(const float deltaTime) override;
-	void renderScene() override;
+	void renderScene(const float currentTime) override;
 
 private:
 	vector<shared_ptr<IVisibleGameObject>> gameObjects;

@@ -4,7 +4,6 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <memory>
-#include <string>
 
 Stage::Stage(const shared_ptr<fvec3> clearColor)
 {
@@ -18,9 +17,9 @@ void Stage::updateGameObjects(const float deltaTime)
 	this->scene->updateGameObjects(deltaTime);
 }
 
-void Stage::renderScene() const
+void Stage::renderScene(const float currentTime) const
 {
-	this->scene->renderScene();
+	this->scene->renderScene(currentTime);
 }
 
 void Stage::drawClearColor() const

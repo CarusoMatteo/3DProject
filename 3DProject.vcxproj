@@ -141,6 +141,7 @@
     <ClCompile Include="Source Files\Game Objects\Camera.cpp" />
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
     <ClCompile Include="Source Files\Game Objects\Skybox.cpp" />
+    <ClCompile Include="Source Files\Lights\LightManager.cpp" />
     <ClCompile Include="Source Files\Renderers\GeometryRenderer.cpp" />
     <ClCompile Include="Source Files\Renderers\Renderer.cpp" />
     <ClCompile Include="Source Files\Texture\CubeMapTextureFactory.cpp" />
@@ -183,6 +184,8 @@
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\Skybox.h" />
+    <ClInclude Include="Header Files\Lights\LightManager.h" />
+    <ClInclude Include="Header Files\Lights\LightValue.h" />
     <ClInclude Include="Header Files\Renderers\BuffersAddresses.h" />
     <ClInclude Include="Header Files\Renderers\BuffersValues.h" />
     <ClInclude Include="Header Files\Renderers\GeometryRenderer.h" />

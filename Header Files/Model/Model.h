@@ -14,7 +14,7 @@ public:
 	Model(const Transform transform, const vector<shared_ptr<Mesh>> meshes);
 	~Model() = default;
 
-	void render() const;
+	void render(const float currentTime) const;
 
 	Transform getTransform() const;
 	void setTransform(const Transform transform);

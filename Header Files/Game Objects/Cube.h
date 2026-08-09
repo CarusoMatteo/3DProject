@@ -20,7 +20,7 @@ public:
 	~Cube() = default;
 
 	void update(const float deltaTime) override;
-	void render() override;
+	void render(const float currentTime) override;
 
 	Transform getTransform() const override;
 	void setTransform(const Transform transform) override;

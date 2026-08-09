@@ -18,7 +18,7 @@ public:
 	Mesh(const string name, const shared_ptr<Renderer> shader, const Transform transform, const Material material, const optional<shared_ptr<Texture>> texture);
 	~Mesh() = default;
 
-	void render(Transform modelTransform) const;
+	void render(const float currentTime, const Transform modelTransform) const;
 	string getName() const;
 
 	void setShader(const shared_ptr<Renderer> shader);

@@ -4,7 +4,6 @@ using namespace std;
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <memory>
-#include <string>
 
 using namespace glm;
 using namespace std;
@@ -23,7 +22,7 @@ int main(void)
 
 		stage->drawClearColor();
 		stage->updateGameObjects(deltaTime);
-		stage->renderScene();
+		stage->renderScene(currentTime);
 		stage->swapBuffers();
 		stage->pollEvents();
 

@@ -22,7 +22,7 @@ public:
 	~ForwardRenderer();
 
 	void setBufferValues(const ForwardBufferValues bufferValues);
-	void render(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture) override;
+	void render(const float currentTime, const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture) override;
 
 protected:
 	unsigned int programId;

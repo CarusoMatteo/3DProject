@@ -10,11 +10,11 @@ Model::Model(const Transform transform, const vector<shared_ptr<Mesh>> meshes)
 	this->meshes = meshes;
 }
 
-void Model::render() const
+void Model::render(const float currentTime) const
 {
 	for (const auto &mesh : meshes)
 	{
-		mesh->render(this->transform);
+		mesh->render(currentTime, this->transform);
 	}
 }
 

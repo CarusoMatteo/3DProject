@@ -16,9 +16,9 @@ Mesh::Mesh(const string name, const shared_ptr<Renderer> shader, const Transform
 	this->texture = texture;
 }
 
-void Mesh::render(Transform modelTransform) const
+void Mesh::render(const float currentTime, const Transform modelTransform) const
 {
-	this->shader->render(modelTransform, this->transform, this->material, this->texture);
+	this->shader->render(currentTime, modelTransform, this->transform, this->material, this->texture);
 }
 
 string Mesh::getName() const

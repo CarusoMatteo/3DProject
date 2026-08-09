@@ -30,9 +30,9 @@ void Sphere::update(float deltaTime)
 	return;
 }
 
-void Sphere::render()
+void Sphere::render(const float currentTime)
 {
-	this->model->render();
+	this->model->render(currentTime);
 }
 
 Transform Sphere::getTransform() const

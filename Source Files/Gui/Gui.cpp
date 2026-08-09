@@ -1,9 +1,9 @@
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
-#include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Gui/IGui.h"
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/InputEventsType.h"
+#include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Model/Mesh.h"
 #include "../../Header Files/Renderers/Renderer.h"
 #include <ImGui/imgui.h>
@@ -71,7 +71,7 @@ void Gui::settingsWindow()
 	ImGui::Checkbox("Anchor", Renderer::getDrawAnchorFlag().get());
 	// ImGui::Checkbox("Bounding Box", MeshBB::shouldDrawBoundingBoxRef());
 
-	fvec3 *lightPositionPtr = PointLight::I()->getPositionPtr();
+	fvec3 *lightPositionPtr = LightManager::I()->getPositionPtrs()[0];
 	ImGui::SliderFloat("Light position x", &lightPositionPtr->x, -50.0f, 50.0f);
 	ImGui::SliderFloat("Light position y", &lightPositionPtr->y, -50.0f, 50.0f);
 	ImGui::SliderFloat("Light position z", &lightPositionPtr->z, -50.0f, 50.0f);

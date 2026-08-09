@@ -2,10 +2,10 @@
 #include "../../Header Files/Game Objects/Camera.h"
 #include "../../Header Files/Game Objects/Cube.h"
 #include "../../Header Files/Game Objects/Plane.h"
-#include "../../Header Files/Game Objects/PointLight.h"
 #include "../../Header Files/Game Objects/Skybox.h"
 #include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Gui/Gui.h"
+#include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Random.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
@@ -25,7 +25,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 		shared_ptr<Plane>(new Plane(planeTransform, ShaderFactory::blinnPhong())),
 		shared_ptr<Cube>(new Cube(cubeTransform, ShaderFactory::interpolative())),
 		shared_ptr<Sphere>(new Sphere(sphereTransform, ShaderFactory::reflection()))};
-	PointLight::I();
+	LightManager::I();
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 
 	// this->scatterObjects();
@@ -33,7 +33,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 
 void Scene::updateGameObjects(float deltaTime)
 {
-	PointLight::I()->update(deltaTime);
+	LightManager::I()->updateLights(deltaTime);
 	Camera::I()->update(deltaTime);
 
 	for (auto &&object : this->gameObjects)
@@ -42,11 +42,11 @@ void Scene::updateGameObjects(float deltaTime)
 	}
 }
 
-void Scene::renderScene()
+void Scene::renderScene(float currentTime)
 {
 	for (auto &&object : this->gameObjects)
 	{
-		object->render();
+		object->render(currentTime);
 	}
 
 	this->gui->drawGui(this->gameObjects);

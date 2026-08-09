@@ -1,6 +1,7 @@
 #include "../../Header Files/Renderers/ForwardRenderer.h"
 #include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/Game Objects/PointLight.h"
+#include "../../Header Files/Lights/LightManager.h"
+#include "../../Header Files/Lights/LightValue.h"
 #include "../../Header Files/Model/Material.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/BuffersAddresses.h"
@@ -14,10 +15,8 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <iostream>
 #include <memory>
 #include <optional>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -54,7 +53,7 @@ void ForwardRenderer::setBufferValues(const ForwardBufferValues bufferValues)
 	this->checkGLErrors();
 }
 
-void ForwardRenderer::render(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
+void ForwardRenderer::render(const float currentTime, const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
 	// Disable writing to depth buffer
 	if (texture.has_value() && texture.value()->isCubemap)
@@ -158,9 +157,13 @@ void ForwardRenderer::updateUniformValues(const Transform modelTransform, const 
 	this->uniforms.viewMatrix.value = Camera::I()->makeViewMatrix();
 	this->uniforms.viewPosition.value = Camera::I()->getPosition();
 
-	this->uniforms.lightPosition.value = PointLight::I()->getPosition();
-	this->uniforms.lightColor.value = PointLight::I()->getColor();
-	this->uniforms.lightPower.value = PointLight::I()->getPower();
+	// Use only first light in forward rendering
+	const LightValue value = LightManager::I()->getValues()[0];
+	const float power = LightManager::I()->getPowers()[0];
+
+	this->uniforms.lightPosition.value = value.position;
+	this->uniforms.lightColor.value = value.color;
+	this->uniforms.lightPower.value = power;
 
 	this->uniforms.materialAmbient.value = material.ambient;
 	this->uniforms.materialDiffuse.value = material.diffuse;

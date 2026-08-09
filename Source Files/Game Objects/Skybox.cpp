@@ -22,9 +22,9 @@ void Skybox::update(const float deltaTime)
 	return;
 }
 
-void Skybox::render()
+void Skybox::render(const float currentTime)
 {
-	this->model->render();
+	this->model->render(currentTime);
 }
 
 Transform Skybox::getTransform() const

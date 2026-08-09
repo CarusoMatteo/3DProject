@@ -4,7 +4,6 @@
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/Renderer.h"
-#include "../../Header Files/Renderers/ShaderFactory.h"
 #include "../../Header Files/Texture/TextureFactory.h"
 #include <glm/glm.hpp>
 #include <memory>
@@ -31,9 +30,9 @@ void Plane::update(float deltaTime)
 	return;
 }
 
-void Plane::render()
+void Plane::render(const float currentTime)
 {
-	this->model->render();
+	this->model->render(currentTime);
 }
 
 Transform Plane::getTransform() const
