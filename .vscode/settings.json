@@ -54,6 +54,7 @@
 		"fstream": "cpp"
 	},
 	"cSpell.words": [
+		"assimp",
 		"blinn",
 		"blit",
 		"fmat",

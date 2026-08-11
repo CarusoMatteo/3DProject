@@ -111,7 +111,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Tesi\.common\dependencies_GL_GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,6 +142,7 @@
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
     <ClCompile Include="Source Files\Game Objects\Skybox.cpp" />
     <ClCompile Include="Source Files\Lights\LightManager.cpp" />
+    <ClCompile Include="Source Files\Model\ModelLoader.cpp" />
     <ClCompile Include="Source Files\Renderers\GeometryRenderer.cpp" />
     <ClCompile Include="Source Files\Renderers\Renderer.cpp" />
     <ClCompile Include="Source Files\Texture\CubeMapTextureFactory.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Header Files\Game Objects\Skybox.h" />
     <ClInclude Include="Header Files\Lights\LightManager.h" />
     <ClInclude Include="Header Files\Lights\LightValue.h" />
+    <ClInclude Include="Header Files\Model\ModelLoader.h" />
     <ClInclude Include="Header Files\Renderers\BuffersAddresses.h" />
     <ClInclude Include="Header Files\Renderers\BuffersValues.h" />
     <ClInclude Include="Header Files\Renderers\GeometryRenderer.h" />
