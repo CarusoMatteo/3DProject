@@ -1,5 +1,6 @@
 #include "../../Header Files/Renderers/ShaderFactory.h"
 #include "../../Header Files/Renderers/ForwardRenderer.h"
+#include "../../Header Files/Renderers/GeometryRenderer.h"
 #include "../../Header Files/Renderers/ShaderFiles.h"
 #include <memory>
 #include <optional>
@@ -50,10 +51,7 @@ optional<shared_ptr<ForwardRenderer>> ShaderFactory::reflectionShader = nullopt;
 optional<shared_ptr<ForwardRenderer>> ShaderFactory::cubeMapShader = nullopt;
 optional<shared_ptr<ForwardRenderer>> ShaderFactory::interpolativeShader = nullopt;
 
-optional<shared_ptr<GeometryRenderer>> ShaderFactory::fboDebugShader = nullopt;
 optional<shared_ptr<GeometryRenderer>> ShaderFactory::geometryShader = nullopt;
-optional<shared_ptr<GeometryRenderer>> ShaderFactory::lightBoxShader = nullopt;
-optional<shared_ptr<ForwardRenderer>> ShaderFactory::lightingPassShader = nullopt;
 
 shared_ptr<ForwardRenderer> ShaderFactory::unlit()
 {
@@ -97,30 +95,9 @@ shared_ptr<ForwardRenderer> ShaderFactory::interpolative()
 	return interpolativeShader.value();
 }
 
-shared_ptr<GeometryRenderer> ShaderFactory::fboDebug()
-{
-	if (!fboDebugShader.has_value())
-		fboDebugShader = make_shared<GeometryRenderer>(FBO_DEBUG_PATH);
-	return fboDebugShader.value();
-}
-
 shared_ptr<GeometryRenderer> ShaderFactory::geometry()
 {
 	if (!geometryShader.has_value())
-		geometryShader = make_shared<GeometryRenderer>(GEOMETRY_PASS_PATH);
+		geometryShader = make_shared<GeometryRenderer>(GEOMETRY_PASS_PATH, LIGHTING_PASS_PATH);
 	return geometryShader.value();
-}
-
-shared_ptr<GeometryRenderer> ShaderFactory::lightBox()
-{
-	if (!lightBoxShader.has_value())
-		lightBoxShader = make_shared<GeometryRenderer>(LIGHT_BOX_PATH);
-	return lightBoxShader.value();
-}
-
-shared_ptr<ForwardRenderer> ShaderFactory::lightingPass()
-{
-	if (!lightingPassShader.has_value())
-		lightingPassShader = make_shared<ForwardRenderer>(LIGHTING_PASS_PATH);
-	return lightingPassShader.value();
 }

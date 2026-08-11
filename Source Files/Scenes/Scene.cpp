@@ -15,17 +15,14 @@
 Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I();
+	LightManager::I();
 
 	Transform planeTransform = {fvec3(0, -1.001f, 0), Rotation(), fvec3(5, 1, 5)};
 	Transform cubeTransform = {fvec3(-1, 0, 0), Rotation(), fvec3(1)};
 	Transform sphereTransform = {fvec3(1, 0, 0), Rotation(), fvec3(1)};
 
 	this->gameObjects = {
-		shared_ptr<Skybox>(new Skybox()),
-		shared_ptr<Plane>(new Plane(planeTransform, ShaderFactory::blinnPhong())),
-		shared_ptr<Cube>(new Cube(cubeTransform, ShaderFactory::interpolative())),
-		shared_ptr<Sphere>(new Sphere(sphereTransform, ShaderFactory::reflection()))};
-	LightManager::I();
+		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::geometry()))};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 
 	// this->scatterObjects();
@@ -33,8 +30,8 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 
 void Scene::updateGameObjects(float deltaTime)
 {
-	LightManager::I()->updateLights(deltaTime);
 	Camera::I()->update(deltaTime);
+	LightManager::I()->updateLights(deltaTime);
 
 	for (auto &&object : this->gameObjects)
 	{
@@ -48,6 +45,8 @@ void Scene::renderScene(float currentTime)
 	{
 		object->render(currentTime);
 	}
+	ShaderFactory::geometry()->finishGeometryPass();
+	ShaderFactory::geometry()->lightingPass();
 
 	this->gui->drawGui(this->gameObjects);
 }

@@ -15,13 +15,7 @@ public:
 	static shared_ptr<ForwardRenderer> cubeMap();
 	static shared_ptr<ForwardRenderer> interpolative();
 
-	static shared_ptr<GeometryRenderer> fboDebug();
 	static shared_ptr<GeometryRenderer> geometry();
-	static shared_ptr<GeometryRenderer> lightBox();
-
-	// TODO: What type should this return? Maybe its own type, like `LightingPassRenderer`?
-	//  In that case, geometryPassShader's type (DeferredRenderer) should probably be renamed to `GeometryPassRenderer`.
-	static shared_ptr<ForwardRenderer> lightingPass();
 
 private:
 	// Instances of singletons for every shader
@@ -32,8 +26,5 @@ private:
 	static optional<shared_ptr<ForwardRenderer>> cubeMapShader;
 	static optional<shared_ptr<ForwardRenderer>> interpolativeShader;
 
-	static optional<shared_ptr<GeometryRenderer>> fboDebugShader;
 	static optional<shared_ptr<GeometryRenderer>> geometryShader;
-	static optional<shared_ptr<GeometryRenderer>> lightBoxShader;
-	static optional<shared_ptr<ForwardRenderer>> lightingPassShader;
 };

@@ -46,16 +46,23 @@ struct ForwardUniforms
 
 struct GeometryUniforms
 {
-	Uniform<fmat4> projectionMatrix = {"projectionMatrix"};
-	Uniform<fmat4> modelMatrix = {"modelMatrix"};
-	Uniform<fmat4> viewMatrix = {"viewMatrix"};
-	Uniform<fvec3> viewPosition = {"viewPosition"};
+	Uniform<fmat4> projectionMatrix = {"projection"};
+	Uniform<fmat4> modelMatrix = {"model"};
+	Uniform<fmat4> viewMatrix = {"view"};
 
-	Uniform<float> creationTime = {"creationTime"};
-	Uniform<float> currentTime = {"currentTime"};
-	Uniform<ivec2> screenSize = {"screenSize"};
-	Uniform<bool> isVisible = {"isVisible"};
+	Uniform<unsigned int> positions = {"gPosition"};
+	Uniform<unsigned int> normals = {"gNormal"};
+	Uniform<unsigned int> albedosSpecular = {"gAlbedoSpec"};
 
-	Uniform<none> diffuseTexture1 = {"diffuseTextureSampler1"};
-	Uniform<none> specularTexture1 = {"specularTextureSampler1"};
+	Uniform<none> diffuseTexture1 = {"texture_diffuse1"};
+	Uniform<none> specularTexture1 = {"texture_specular1"};
+
+	// Can't create one uniform array because the number of lights is not known at compile time,
+	// so we need to create the string constants needed to create them dynamically.
+	// Example: "lights[0].Position"
+	string lightsStructName = "lights";
+	string lightPositionName = "Position";
+	string lightColorName = "Color";
+	string lightLinearName = "Linear";
+	string lightQuadraticName = "Quadratic";
 };
