@@ -2,7 +2,6 @@
 
 #include <glm/glm.hpp>
 #include <string>
-#include <vector>
 
 using namespace glm;
 using namespace std;
