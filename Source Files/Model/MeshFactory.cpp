@@ -67,15 +67,20 @@ shared_ptr<Mesh> MeshFactory::plane(const string name, const fvec2 size, const s
 		fvec2(1, 0),
 		fvec2(0, 0)};
 
+	const ForwardBufferValues forwardBufferValues = {vertices, colors, normals, indices, textureCoordinates};
 	if (isForwardRenderer(shader))
 	{
-		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
-		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
+		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(forwardBufferValues);
 	}
 	else if (isGeometryRenderer(shader))
 	{
-		const GeometryBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
-		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(bufferValues);
+		const GeometryBufferValues geometryBufferValues = {
+			vertices,					   // positions
+			vector<fvec4>(4, fvec4(1.0f)), // albedo + specular
+			normals,					   // normals
+			vector<float>(4, 0.0f)		   // depths, if required
+		};
+		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(geometryBufferValues, forwardBufferValues);
 	}
 	else
 	{
@@ -155,15 +160,15 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 		fvec2(1, 1),
 		fvec2(0, 1)};
 
+	const ForwardBufferValues forwardBufferValues = {vertices, colors, normals, indices, textureCoordinates};
 	if (isForwardRenderer(shader))
 	{
-		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
-		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
+		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(forwardBufferValues);
 	}
 	else if (isGeometryRenderer(shader))
 	{
-		const GeometryBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
-		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(bufferValues);
+		const GeometryBufferValues geometryBufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
+		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(geometryBufferValues, forwardBufferValues);
 	}
 	else
 	{
@@ -228,15 +233,15 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	colors.push_back(fvec4(1));
 	indices.push_back(static_cast<unsigned int>(vertices.size() - 1));
 
+	const ForwardBufferValues forwardBufferValues = {vertices, colors, normals, indices, textureCoordinates};
 	if (isForwardRenderer(shader))
 	{
-		const ForwardBufferValues bufferValues = {vertices, colors, normals, indices, textureCoordinates};
-		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(bufferValues);
+		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(forwardBufferValues);
 	}
 	else if (isGeometryRenderer(shader))
 	{
-		const GeometryBufferValues bufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
-		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(bufferValues);
+		const GeometryBufferValues geometryBufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
+		dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(geometryBufferValues, forwardBufferValues);
 	}
 	else
 	{
@@ -245,25 +250,6 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	}
 
 	return shared_ptr<Mesh>(new Mesh(name, shader, transform, material, texture));
-}
-
-shared_ptr<Mesh> MeshFactory::screenQuad(shared_ptr<ForwardRenderer> shader)
-{
-	const vector<fvec3> vertices = {
-		fvec3(-1, 1, 0),
-		fvec3(-1, -1, 0),
-		fvec3(1, 1, 0),
-		fvec3(1, -1, 0)};
-	const vector<fvec2> textureCoordinates = {
-		fvec2(0, 1),
-		fvec2(0, 0),
-		fvec2(1, 1),
-		fvec2(1, 0)};
-
-	const ForwardBufferValues bufferValues = {vertices, {}, {}, {}, textureCoordinates};
-	shader->setBufferValues(bufferValues);
-
-	return shared_ptr<Mesh>(new Mesh("ScreenQuad", shader, Transform(), Material(), nullopt));
 }
 
 // Consider adding anchor to the vertex and index vector
