@@ -225,6 +225,8 @@
     <ClInclude Include="lib\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assimp-vc142-mt.dll" />
+    <None Include="assimp-vc142-mtd.dll" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
