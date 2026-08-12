@@ -11,6 +11,9 @@
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Random.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
+#include "../../Header Files/Texture/Texture.h"
+#include "../../Header Files/Texture/TextureFactory.h"
+#include "../../Header Files/Texture/TextureLoader.h"
 #include <glm/glm.hpp>
 #include <memory>
 
@@ -23,11 +26,14 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 	Transform cubeTransform = {fvec3(-1, 0, 0), Rotation(), fvec3(1)};
 	Transform sphereTransform = {fvec3(1, 0, 0), Rotation(), fvec3(1)};
 
+	shared_ptr<Texture> backpackTexture = make_shared<Texture>(loadTexture("./assets/models/backpack/diffuse.jpg", true));
+
 	this->gameObjects = {
 		shared_ptr<IVisibleGameObject>(new Skybox()),
 		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::unlit())),
 		shared_ptr<IVisibleGameObject>(new Cube(cubeTransform, ShaderFactory::unlit())),
 		shared_ptr<IVisibleGameObject>(new Sphere(sphereTransform, ShaderFactory::unlit())),
+		shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::unlit, backpackTexture))
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 

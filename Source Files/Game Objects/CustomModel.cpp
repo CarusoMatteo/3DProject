@@ -15,13 +15,13 @@
 using namespace std;
 using namespace glm;
 
-CustomModel::CustomModel(const string modelName, const function<shared_ptr<Renderer>()> rendererFactoryFunction) : CustomModel(modelName, Transform(), rendererFactoryFunction)
+CustomModel::CustomModel(const string modelName, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const optional<shared_ptr<Texture>> texture) : CustomModel(modelName, Transform(), rendererFactoryFunction, texture)
 {
 }
 
-CustomModel::CustomModel(const string modelName, const Transform transform, const function<shared_ptr<Renderer>()> rendererFactoryFunction) : name(modelName)
+CustomModel::CustomModel(const string modelName, const Transform transform, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const optional<shared_ptr<Texture>> texture) : name(modelName)
 {
-	this->model = ModelFactory::customModel(modelName, rendererFactoryFunction, transform, nullopt);
+	this->model = ModelFactory::customModel(modelName, rendererFactoryFunction, transform, texture);
 }
 
 void CustomModel::update(float deltaTime)

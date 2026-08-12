@@ -9,10 +9,9 @@ out vec4 fragColor;
 
 void main()
 {
-	fragColor = color;
-
+	// Ignore vertex colors and only use texture if it's available
 	if (useTexture)
-	{
-		fragColor *= texture(textureSampler, fragmentTextureCoordinate);
-	}
+		fragColor = texture(textureSampler, fragmentTextureCoordinate);
+	else
+		fragColor = color;
 }

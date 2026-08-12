@@ -119,8 +119,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 	}
 	else
 	{
-		cout << "Error in loading ambient for mesh " << modelPath << " -> " << meshName << ", using default. \n"
-			 << endl;
+		cout << "Error in loading ambient for mesh " << modelPath << " -> " << meshName << ", using default." << endl;
 		ambient = fvec3(0.2, 0.2, 0.2);
 	}
 
@@ -130,8 +129,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 	}
 	else
 	{
-		cout << "Error in loading diffuse for mesh " << modelPath << " -> " << meshName << ", using default. \n"
-			 << endl;
+		cout << "Error in loading diffuse for mesh " << modelPath << " -> " << meshName << ", using default." << endl;
 		diffuse = fvec3(1.0, 0.2, 0.1);
 	}
 
@@ -141,8 +139,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 	}
 	else
 	{
-		cout << "Error in loading specular for mesh " << modelPath << " -> " << meshName << ", using default. \n"
-			 << endl;
+		cout << "Error in loading specular for mesh " << modelPath << " -> " << meshName << ", using default." << endl;
 		specular = fvec3(0.5, 0.5, 0.5);
 	}
 	if (aiReturn_SUCCESS == material->Get(AI_MATKEY_SHININESS_STRENGTH, value))
@@ -151,8 +148,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 	}
 	else
 	{
-		cout << "Error in loading shininess for mesh " << modelPath << " -> " << meshName << ", using default. \n"
-			 << endl;
+		cout << "Error in loading shininess for mesh " << modelPath << " -> " << meshName << ", using default." << endl;
 		shininess = 50.0f;
 	}
 	return {meshName, ambient, diffuse, specular, shininess};
@@ -176,7 +172,19 @@ pair<vector<fvec2>, vector<fvec4>> loadTextureCoordinates(const aiMesh *mesh)
 	vector<fvec4> colors;
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
-		textureCoordinates.push_back(fvec2(0.0, 0.0));
+		// If mesh has texture coordinates:
+		if (mesh->mTextureCoords[0])
+		{
+			// Load them
+			aiVector3D texCoord = mesh->mTextureCoords[0][i];
+			textureCoordinates.push_back(fvec2(texCoord.x, texCoord.y));
+		}
+		else
+		{
+			cout << "Error in loading texture coordinates for mesh " << mesh->mName.C_Str() << ", using default." << endl;
+			textureCoordinates.push_back(fvec2(0.0, 0.0));
+		}
+
 		// Default color assigned to each vertex, used if the mesh has no texture.
 		colors.push_back(fvec4(1.0, 0.0, 1.0, 1.0));
 	}

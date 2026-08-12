@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../Texture/Texture.h"
 #include "IVisibleGameObject.h"
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -16,8 +18,8 @@ struct Transform;
 class CustomModel : public IVisibleGameObject
 {
 public:
-	CustomModel(const string modelName, const function<shared_ptr<Renderer>()> rendererFactoryFunction);
-	CustomModel(const string modelName, const Transform transform, const function<shared_ptr<Renderer>()> rendererFactoryFunction);
+	CustomModel(const string modelName, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const optional<shared_ptr<Texture>> texture);
+	CustomModel(const string modelName, const Transform transform, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const optional<shared_ptr<Texture>> texture);
 	~CustomModel() = default;
 
 	void update(const float deltaTime) override;
