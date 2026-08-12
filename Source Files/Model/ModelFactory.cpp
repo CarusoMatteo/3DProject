@@ -1,9 +1,11 @@
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/MeshFactory.h"
 #include "../../Header Files/Model/Model.h"
+#include "../../Header Files/Model/ModelLoader.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/Renderer.h"
 #include "../../Header Files/Texture/Texture.h"
+#include <functional>
 #include <glm/glm.hpp>
 #include <memory>
 #include <optional>
@@ -63,4 +65,9 @@ shared_ptr<Model> ModelFactory::sphere(const string name, const fvec3 radius, co
 	shared_ptr<Mesh> sphereMesh = MeshFactory::sphere(name, radius, shader, sphereTransform, texture);
 
 	return shared_ptr<Model>(new Model(modelTransform, {sphereMesh}));
+}
+
+shared_ptr<Model> ModelFactory::customModel(const string modelName, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const Transform modelTransform, const optional<shared_ptr<Texture>> texture)
+{
+	return make_shared<Model>(loadModel(modelName, rendererFactoryFunction, modelTransform, texture));
 }

@@ -4,7 +4,9 @@
 #include "../../Header Files/Model/ModelFactory.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/Renderer.h"
+#include "../../Header Files/Texture/Texture.h"
 #include "../../Header Files/Texture/TextureFactory.h"
+#include "../../Header Files/Texture/TextureLoader.h"
 #include <glm/glm.hpp>
 #include <memory>
 #include <string>

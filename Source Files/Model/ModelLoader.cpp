@@ -4,11 +4,15 @@
 #include "../../Header Files/Model/Model.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/BuffersValues.h"
-#include "../../Header Files/Renderers/ShaderFactory.h"
+#include "../../Header Files/Renderers/ForwardRenderer.h"
+#include "../../Header Files/Renderers/GeometryRenderer.h"
+#include "../../Header Files/Renderers/Renderer.h"
+#include "../../Header Files/Texture/Texture.h"
+#include "../../Header Files/Texture/TextureLoader.h"
 #include <assimp/Importer.hpp>	// C++ importer interface
 #include <assimp/postprocess.h> // Post processing flags
 #include <assimp/scene.h>		// Output data structure
-#include <cstdio>
+#include <functional>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <memory>
@@ -27,13 +31,26 @@ pair<vector<fvec2>, vector<fvec4>> loadTextureCoordinates(const aiMesh *mesh);
 vector<fvec3> loadNormals(const aiMesh *mesh);
 vector<unsigned int> loadIndices(const aiMesh *mesh);
 
+static bool isForwardRenderer(const shared_ptr<Renderer> shader)
+{
+	// Check if the shader is a ForwardRenderer by dynamic casting it.
+	return dynamic_pointer_cast<ForwardRenderer>(shader) != nullptr;
+}
+
+static bool isGeometryRenderer(const shared_ptr<Renderer> shader)
+{
+	// Check if the shader is a DeferredRenderer by dynamic casting it.
+	return dynamic_pointer_cast<GeometryRenderer>(shader) != nullptr;
+}
+
 // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-Model loadModel(const Transform transform, const string path)
+Model loadModel(const string modelName, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const Transform modelTransform, const optional<shared_ptr<Texture>> texture)
 {
 	Assimp::Importer importer;
 	vector<shared_ptr<Mesh>> meshes;
+	string modelPath = "./assets/models/" + modelName + "/" + modelName + ".obj";
 
-	const aiScene *scene = importer.ReadFile(path, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs);
+	const aiScene *scene = importer.ReadFile(modelPath, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FlipUVs);
 	if (!scene)
 	{
 		cout << "Error in loadModel:" << importer.GetErrorString() << endl;
@@ -45,7 +62,6 @@ Model loadModel(const Transform transform, const string path)
 	// Number of meshes that make the model
 	unsigned int num_meshes = scene->mNumMeshes;
 	// Resize meshes to the number of meshes that make up the object
-	meshes.resize(num_meshes);
 
 	// For each mesh of the object
 	for (unsigned int nm = 0; nm < num_meshes; nm++)
@@ -57,24 +73,41 @@ Model loadModel(const Transform transform, const string path)
 		float value;
 		string meshName = mesh->mName.C_Str();
 
-		Material mat = loadMaterial(material, color, path, meshName, value);
+		Material mat = loadMaterial(material, color, modelPath, meshName, value);
 		vector<fvec3> vertices = loadVertices(mesh);
 		vector<fvec3> normals = loadNormals(mesh);
 		auto [textureCoordinates, colors] = loadTextureCoordinates(mesh);
 		vector<unsigned int> indices = loadIndices(mesh);
 
-		ForwardBufferValues forwardBufferValues = {vertices, colors, normals, indices, textureCoordinates};
-		GeometryBufferValues geometryBufferValues = {};
-		auto shader = ShaderFactory::geometry();
-		shader->setBufferValues(geometryBufferValues, forwardBufferValues);
+		shared_ptr<Renderer> shader = rendererFactoryFunction();
 
-		meshes.push_back(make_shared<Mesh>(meshName, shader, Transform(), mat, nullopt));
+		const ForwardBufferValues forwardBufferValues = {vertices, colors, normals, indices, textureCoordinates};
+		if (isForwardRenderer(shader))
+		{
+			dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(forwardBufferValues);
+		}
+		else if (isGeometryRenderer(shader))
+		{
+			const GeometryBufferValues geometryBufferValues = {
+				vertices,					   // positions
+				vector<fvec4>(4, fvec4(1.0f)), // albedo + specular
+				normals,					   // normals
+				vector<float>(4, 0.0f)		   // depths, if required
+			};
+			dynamic_pointer_cast<GeometryRenderer>(shader)->setBufferValues(geometryBufferValues, forwardBufferValues);
+		}
+		else
+		{
+			cerr << "Error: Unknown shader type. Cannot set buffer values." << endl;
+			throw runtime_error("Unknown shader type. Cannot set buffer values.");
+		}
+		meshes.push_back(make_shared<Mesh>(meshName, shader, Transform(), mat, texture));
 	}
 
-	return Model(transform, meshes);
+	return Model(modelTransform, meshes);
 }
 
-Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string &path, std::string &meshName, float &value)
+Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string &modelPath, std::string &meshName, float &value)
 {
 	// Read mtl file vertex data
 	fvec3 ambient, diffuse, specular;
@@ -86,7 +119,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 	}
 	else
 	{
-		cout << "Error in loading ambient for mesh " << path << " -> " << meshName << ", using default. \n"
+		cout << "Error in loading ambient for mesh " << modelPath << " -> " << meshName << ", using default. \n"
 			 << endl;
 		ambient = fvec3(0.2, 0.2, 0.2);
 	}
@@ -97,7 +130,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 	}
 	else
 	{
-		cout << "Error in loading diffuse for mesh " << path << " -> " << meshName << ", using default. \n"
+		cout << "Error in loading diffuse for mesh " << modelPath << " -> " << meshName << ", using default. \n"
 			 << endl;
 		diffuse = fvec3(1.0, 0.2, 0.1);
 	}
@@ -108,7 +141,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 	}
 	else
 	{
-		cout << "Error in loading specular for mesh " << path << " -> " << meshName << ", using default. \n"
+		cout << "Error in loading specular for mesh " << modelPath << " -> " << meshName << ", using default. \n"
 			 << endl;
 		specular = fvec3(0.5, 0.5, 0.5);
 	}
@@ -118,7 +151,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 	}
 	else
 	{
-		cout << "Error in loading shininess for mesh " << path << " -> " << meshName << ", using default. \n"
+		cout << "Error in loading shininess for mesh " << modelPath << " -> " << meshName << ", using default. \n"
 			 << endl;
 		shininess = 50.0f;
 	}
@@ -127,7 +160,7 @@ Material loadMaterial(aiMaterial *material, aiColor3D &color, const std::string 
 
 vector<fvec3> loadVertices(const aiMesh *mesh)
 {
-	vector<glm::fvec3> vertices;
+	vector<fvec3> vertices;
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		aiVector3D pos = mesh->mVertices[i];

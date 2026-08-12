@@ -70,9 +70,9 @@ LightManager::LightManager()
 			fvec3(Random::getRandomFloat(-50, 50),
 				  Random::getRandomFloat(20, 50),
 				  Random::getRandomFloat(-50, 50)),
-			fvec3(Random::getRandomFloat(0.5f, 1.0f),
-				  Random::getRandomFloat(0.5f, 1.0f),
-				  Random::getRandomFloat(0.5f, 1.0f)),
+			fvec3(Random::getRandomFloat(1.0f, 1.0f),
+				  Random::getRandomFloat(1.0f, 1.0f),
+				  Random::getRandomFloat(1.0f, 1.0f)),
 			0.7f,
 			1.8f};
 		this->lights.push_back(make_unique<PointLight>(value, 2.0f));

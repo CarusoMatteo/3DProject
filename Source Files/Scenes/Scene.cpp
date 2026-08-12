@@ -1,6 +1,8 @@
 #include "../../Header Files/Scenes/Scene.h"
 #include "../../Header Files/Game Objects/Camera.h"
 #include "../../Header Files/Game Objects/Cube.h"
+#include "../../Header Files/Game Objects/CustomModel.h"
+#include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/Skybox.h"
 #include "../../Header Files/Game Objects/Sphere.h"
@@ -22,7 +24,11 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 	Transform sphereTransform = {fvec3(1, 0, 0), Rotation(), fvec3(1)};
 
 	this->gameObjects = {
-		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::geometry()))};
+		shared_ptr<IVisibleGameObject>(new Skybox()),
+		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::unlit())),
+		shared_ptr<IVisibleGameObject>(new Cube(cubeTransform, ShaderFactory::unlit())),
+		shared_ptr<IVisibleGameObject>(new Sphere(sphereTransform, ShaderFactory::unlit())),
+	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 
 	// this->scatterObjects();
@@ -45,8 +51,8 @@ void Scene::renderScene(float currentTime)
 	{
 		object->render(currentTime);
 	}
-	ShaderFactory::geometry()->finishGeometryPass();
-	ShaderFactory::geometry()->lightingPass();
+	// ShaderFactory::geometry()->finishGeometryPass();
+	// ShaderFactory::geometry()->lightingPass();
 
 	this->gui->drawGui(this->gameObjects);
 }

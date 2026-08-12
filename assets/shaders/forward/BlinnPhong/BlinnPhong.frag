@@ -24,11 +24,11 @@ struct Material
 uniform Material material;
 out vec4 fragColor;
 
-const float strenght = 0.1;
+const float strength = 0.1;
 void main()
 {
 	vec3 halfwayVector = normalize(L + V);
-	vec3 ambient = strenght * light.power * material.ambient;
+	vec3 ambient = strength * light.power * material.ambient;
 	vec3 diffuse = light.power * light.color * max(dot(L, N), 0) * material.diffuse;
 	vec3 specular = light.power * light.color * pow(max(dot(N, halfwayVector), 0), material.shininess) * material.specular;
 
