@@ -83,3 +83,7 @@ shared_ptr<Texture> TextureFactory::steve()
 		steveTexture = make_shared<Texture>(loadTexture(STEVE_PATH, true));
 	return steveTexture.value();
 }
+
+shared_ptr<Texture> TextureFactory::fromFile(const string path, const bool shouldFlip){
+	return make_shared<Texture>(loadTexture(path, shouldFlip));
+}

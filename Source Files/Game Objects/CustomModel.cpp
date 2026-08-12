@@ -21,7 +21,7 @@ CustomModel::CustomModel(const string modelName, const function<shared_ptr<Rende
 
 CustomModel::CustomModel(const string modelName, const Transform transform, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const optional<shared_ptr<Texture>> texture) : name(modelName)
 {
-	this->model = ModelFactory::customModel(modelName, rendererFactoryFunction, transform, texture);
+	this->model = ModelFactory::fromFile(modelName, rendererFactoryFunction, transform, texture);
 }
 
 void CustomModel::update(float deltaTime)

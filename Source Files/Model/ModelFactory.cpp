@@ -67,7 +67,7 @@ shared_ptr<Model> ModelFactory::sphere(const string name, const fvec3 radius, co
 	return shared_ptr<Model>(new Model(modelTransform, {sphereMesh}));
 }
 
-shared_ptr<Model> ModelFactory::customModel(const string modelName, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const Transform modelTransform, const optional<shared_ptr<Texture>> texture)
+shared_ptr<Model> ModelFactory::fromFile(const string modelName, const function<shared_ptr<Renderer>()> rendererFactoryFunction, const Transform modelTransform, const optional<shared_ptr<Texture>> texture)
 {
 	return make_shared<Model>(loadModel(modelName, rendererFactoryFunction, modelTransform, texture));
 }

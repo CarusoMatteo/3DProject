@@ -1,19 +1,12 @@
 #include "../../Header Files/Scenes/Scene.h"
 #include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/Game Objects/Cube.h"
-#include "../../Header Files/Game Objects/CustomModel.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Game Objects/Plane.h"
-#include "../../Header Files/Game Objects/Skybox.h"
-#include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Random.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
-#include "../../Header Files/Texture/Texture.h"
-#include "../../Header Files/Texture/TextureFactory.h"
-#include "../../Header Files/Texture/TextureLoader.h"
 #include <glm/glm.hpp>
 #include <memory>
 
@@ -23,17 +16,15 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 	LightManager::I();
 
 	Transform planeTransform = {fvec3(0, -1.001f, 0), Rotation(), fvec3(5, 1, 5)};
-	Transform cubeTransform = {fvec3(-1, 0, 0), Rotation(), fvec3(1)};
-	Transform sphereTransform = {fvec3(1, 0, 0), Rotation(), fvec3(1)};
+	// Transform cubeTransform = {fvec3(-1, 0, 0), Rotation(), fvec3(1)};
+	// Transform sphereTransform = {fvec3(1, 0, 0), Rotation(), fvec3(1)};
 
-	shared_ptr<Texture> backpackTexture = make_shared<Texture>(loadTexture("./assets/models/backpack/diffuse.jpg", true));
+	// auto backpackTexture = TextureFactory::fromFile("./assets/models/backpack/diffuse.jpg", true);
 
 	this->gameObjects = {
-		shared_ptr<IVisibleGameObject>(new Skybox()),
-		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::unlit())),
-		shared_ptr<IVisibleGameObject>(new Cube(cubeTransform, ShaderFactory::unlit())),
-		shared_ptr<IVisibleGameObject>(new Sphere(sphereTransform, ShaderFactory::unlit())),
-		shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::unlit, backpackTexture))
+		// shared_ptr<IVisibleGameObject>(new Skybox()),
+		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::geometry()))
+		// shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::geometry, backpackTexture))
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 

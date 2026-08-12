@@ -21,6 +21,7 @@ public:
 	static shared_ptr<Texture> polkaDot();
 	static shared_ptr<Texture> sea();
 	static shared_ptr<Texture> steve();
+	static shared_ptr<Texture> fromFile(const string path, const bool shouldFlip);
 
 private:
 	// Instances of singletons for every texture
