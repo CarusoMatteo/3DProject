@@ -23,5 +23,5 @@ protected:
 	static shared_ptr<bool> drawAnchor;
 
 	bool bufferIsUsed(const unsigned int address, const size_t size) const;
-	void checkGLErrors();
+	void checkGLErrors() const;
 };

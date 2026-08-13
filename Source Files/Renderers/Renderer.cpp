@@ -26,7 +26,7 @@ bool Renderer::bufferIsUsed(const unsigned int address, const size_t size) const
 	return address != -1 && size > 0;
 }
 
-void Renderer::checkGLErrors()
+void Renderer::checkGLErrors() const
 {
 	const unsigned int error = glGetError();
 	if (error != GL_NO_ERROR)
