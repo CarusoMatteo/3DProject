@@ -6,6 +6,8 @@
 #include <optional>
 #include <string>
 
+optional<shared_ptr<GeometryRenderer>> ShaderFactory::geometryShader = nullopt;
+
 // Paths to the shader files
 
 const string FORWARD_SHADER_PATH = "assets/shaders/forward/";
@@ -74,5 +76,7 @@ shared_ptr<ForwardRenderer> ShaderFactory::interpolative()
 
 shared_ptr<GeometryRenderer> ShaderFactory::geometry()
 {
-	return make_shared<GeometryRenderer>(GEOMETRY_PASS_PATH, LIGHTING_PASS_PATH);
+	if (!geometryShader.has_value())
+		geometryShader = make_shared<GeometryRenderer>(GEOMETRY_PASS_PATH, LIGHTING_PASS_PATH);
+	return geometryShader.value();
 }

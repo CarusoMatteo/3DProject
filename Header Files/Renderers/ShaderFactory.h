@@ -16,4 +16,7 @@ public:
 	static shared_ptr<ForwardRenderer> interpolative();
 
 	static shared_ptr<GeometryRenderer> geometry();
+
+private:
+	static optional<shared_ptr<GeometryRenderer>> geometryShader;
 };
