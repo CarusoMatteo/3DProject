@@ -16,6 +16,7 @@ class Camera : public IGameObject
 public:
 	// Singleton access.
 	static Camera *I();
+	static Camera *I(vector<CameraTransform> states);
 
 	~Camera() = default;
 
@@ -29,15 +30,19 @@ private:
 
 	const float speed = 2.5f;
 	const float rotationSpeed = 0.05f;
-	Camera();
 
 	CameraTransform transform;
 	CameraProjection projection;
 
 	unique_ptr<BoundingBox> boundingBox;
+	vector<CameraTransform> states;
 
+	unsigned int currentState = 0;
+	float lerpProgress = 0;
+	const float lerpSpeed = 0.7f;
+
+	Camera(vector<CameraTransform> states);
 	void moveFirstPerson(float deltaTime);
 	void panFirstPerson();
-	void setTransform();
 	void setProjectionData();
 };

@@ -6,6 +6,7 @@
 #include <cmath>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 #include <memory>
 #include <optional>
 
@@ -14,18 +15,48 @@ using namespace std;
 
 optional<unique_ptr<Camera>> Camera::instance = nullopt;
 
+float easeLinear(const float t)
+{
+	return t;
+}
+
+float easeInOutSmooth(const float t)
+{
+	return t * t * (3.0f - 2.0f * t);
+}
+
+float easeInOutSmoother(const float t)
+{
+	return t * t * t * (t * (t * 6.0f - 15.0f) + 10.0f);
+}
+
+static fvec3 lerp(const fvec3 a, const fvec3 b, const float t, float (*easingFunction)(const float) = easeLinear)
+{
+	return a + easingFunction(t) * (b - a);
+}
+
 Camera *Camera::I()
+{
+	const fvec3 position = fvec3(0, 0, -10);
+	const fvec3 target = fvec3(0);
+	const fvec3 up = fvec3(0, 1, 0);
+	const fvec3 direction = target - position;
+
+	return Camera::I({{position, target, up, direction}});
+}
+
+Camera *Camera::I(vector<CameraTransform> states)
 {
 	if (!Camera::instance.has_value())
 	{
-		Camera::instance = unique_ptr<Camera>(new Camera());
+		Camera::instance = unique_ptr<Camera>(new Camera(states));
 	}
 	return Camera::instance.value().get();
 }
 
-Camera::Camera()
+Camera::Camera(vector<CameraTransform> states) : states(states)
 {
-	this->setTransform();
+	this->transform = states[0];
 	this->setProjectionData();
 
 	// Choose cursor mode, and its initial position
@@ -35,10 +66,31 @@ Camera::Camera()
 
 void Camera::update(float deltaTime)
 {
-	moveFirstPerson(deltaTime);
-	if (!InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR))
+	if (this->states.size() == 1)
 	{
-		panFirstPerson();
+		moveFirstPerson(deltaTime);
+		if (!InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR))
+			panFirstPerson();
+		return;
+	}
+
+	// Interpolate between state[currentState] and state[currentState + 1] based on deltaTime
+	cout << "Lerp Progress: " << lerpProgress << endl;
+	const CameraTransform currentState = this->states[this->currentState % this->states.size()];
+	const CameraTransform nextState = this->states[(this->currentState + 1) % this->states.size()];
+
+	fvec3 newPosition = lerp(currentState.position, nextState.position, lerpProgress, easeInOutSmooth);
+	fvec3 newTarget = lerp(currentState.target, nextState.target, lerpProgress, easeInOutSmooth);
+	fvec3 newUp = lerp(currentState.up, nextState.up, lerpProgress, easeInOutSmooth);
+	fvec3 newDirection = lerp(currentState.direction, nextState.direction, lerpProgress, easeInOutSmooth);
+
+	this->transform = {newPosition, newTarget, newUp, newDirection};
+
+	lerpProgress += deltaTime * lerpSpeed;
+	if (lerpProgress >= 1.0f)
+	{
+		lerpProgress = 0.0f;
+		this->currentState++;
 	}
 }
 
@@ -129,16 +181,6 @@ fmat4 Camera::makeViewMatrix() const
 fvec3 Camera::getPosition() const
 {
 	return this->transform.position;
-}
-
-void Camera::setTransform()
-{
-	fvec3 position = fvec3(0, 0, -10);
-	fvec3 target = fvec3(0);
-	fvec3 up = fvec3(0, 1, 0);
-	fvec3 direction = target - position;
-
-	this->transform = {position, target, up, direction};
 }
 
 void Camera::setProjectionData()

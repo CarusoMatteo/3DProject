@@ -1,30 +1,38 @@
 #include "../../Header Files/Scenes/Scene.h"
 #include "../../Header Files/Game Objects/Camera.h"
+#include "../../Header Files/Game Objects/CustomModel.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Game Objects/Plane.h"
+#include "../../Header Files/Game Objects/Skybox.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Random.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
+#include "../../Header Files/Texture/TextureFactory.h"
 #include <glm/glm.hpp>
 #include <memory>
 
 Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
-	Camera::I();
+	Camera::I({
+		{fvec3(-4, 2, 0), fvec3(0, 1, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(-4, 2, 0)},
+		{fvec3(0, 2, 4), fvec3(0, 1, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(0, 2, 4)},
+		{fvec3(4, 2, 0), fvec3(0, 1, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(4, 2, 0)},
+		{fvec3(0, 2, -4), fvec3(0, 1, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(0, 2, -4)},
+	});
 	LightManager::I();
 
 	Transform planeTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};
 	// Transform cubeTransform = {fvec3(-1, 0, 0), Rotation(), fvec3(1)};
 	// Transform sphereTransform = {fvec3(1, 0, 0), Rotation(), fvec3(1)};
 
-	// auto backpackTexture = TextureFactory::fromFile("./assets/models/backpack/diffuse.jpg", true);
+	auto backpackTexture = TextureFactory::fromFile("./assets/models/webble/Webble_Tex.png", false);
 
 	this->gameObjects = {
-		// shared_ptr<IVisibleGameObject>(new Skybox()),
-		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::geometry()))
-		// shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::geometry, backpackTexture))
+		shared_ptr<IVisibleGameObject>(new Skybox()),
+		// shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::blinnPhong())),
+		shared_ptr<IVisibleGameObject>(new CustomModel("webble", ShaderFactory::blinnPhong, backpackTexture)),
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 
@@ -48,8 +56,8 @@ void Scene::renderScene(float currentTime)
 	{
 		object->render(currentTime);
 	}
-	ShaderFactory::geometry()->finishGeometryPass();
-	ShaderFactory::geometry()->lightingPass();
+	// ShaderFactory::geometry()->finishGeometryPass();
+	// ShaderFactory::geometry()->lightingPass();
 
 	this->gui->drawGui(this->gameObjects);
 }
