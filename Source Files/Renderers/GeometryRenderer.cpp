@@ -105,16 +105,21 @@ void GeometryRenderer::lightingPass() const
 	unsigned int i = 0;
 	for (const LightValue &lightValue : LightManager::I()->getValues())
 	{
-		fvec3 lightPosition = lightValue.position;
-		fvec3 lightColor = lightValue.color;
-		float linear = lightValue.linear;
-		float quadratic = lightValue.quadratic;
+		const fvec3 lightPosition = lightValue.position;
+		const fvec3 lightColor = lightValue.color;
+		const float linear = lightValue.linear;
+		const float quadratic = lightValue.quadratic;
 
-		glUniform3fv(glGetUniformLocation(this->lightingPassProgramId, (this->uniforms.lightsStructName + "[" + std::to_string(i) + "]." + this->uniforms.lightPositionName).c_str()), 1, &lightPosition[0]);
-		glUniform3fv(glGetUniformLocation(this->lightingPassProgramId, (this->uniforms.lightsStructName + "[" + std::to_string(i) + "]." + this->uniforms.lightColorName).c_str()), 1, &lightColor[0]);
+		const string lightName = this->uniforms.lightsStructName + "[" + std::to_string(i) + "].";
+		const unsigned int lightPositionLocation = glGetUniformLocation(this->lightingPassProgramId, (lightName + this->uniforms.lightPositionName).c_str());
+		const unsigned int lightColorLocation = glGetUniformLocation(this->lightingPassProgramId, (lightName + this->uniforms.lightColorName).c_str());
+		const unsigned int lightLinearLocation = glGetUniformLocation(this->lightingPassProgramId, (lightName + this->uniforms.lightLinearName).c_str());
+		const unsigned int lightQuadraticLocation = glGetUniformLocation(this->lightingPassProgramId, (lightName + this->uniforms.lightQuadraticName).c_str());
 
-		glUniform1f(glGetUniformLocation(this->lightingPassProgramId, (this->uniforms.lightsStructName + "[" + std::to_string(i) + "]." + this->uniforms.lightLinearName).c_str()), linear);
-		glUniform1f(glGetUniformLocation(this->lightingPassProgramId, (this->uniforms.lightsStructName + "[" + std::to_string(i) + "]." + this->uniforms.lightQuadraticName).c_str()), quadratic);
+		glUniform3fv(lightPositionLocation, 1, &lightPosition[0]);
+		glUniform3fv(lightColorLocation, 1, &lightColor[0]);
+		glUniform1f(lightLinearLocation, linear);
+		glUniform1f(lightQuadraticLocation, quadratic);
 
 		i++;
 	}
