@@ -15,7 +15,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 	Camera::I();
 	LightManager::I();
 
-	Transform planeTransform = {fvec3(0, -1.001f, 0), Rotation(), fvec3(5, 1, 5)};
+	Transform planeTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};
 	// Transform cubeTransform = {fvec3(-1, 0, 0), Rotation(), fvec3(1)};
 	// Transform sphereTransform = {fvec3(1, 0, 0), Rotation(), fvec3(1)};
 
@@ -48,8 +48,8 @@ void Scene::renderScene(float currentTime)
 	{
 		object->render(currentTime);
 	}
-	// ShaderFactory::geometry()->finishGeometryPass();
-	// ShaderFactory::geometry()->lightingPass();
+	ShaderFactory::geometry()->finishGeometryPass();
+	ShaderFactory::geometry()->lightingPass();
 
 	this->gui->drawGui(this->gameObjects);
 }

@@ -82,6 +82,13 @@ void GeometryRenderer::finishGeometryPass()
 
 void GeometryRenderer::lightingPass() const
 {
+	if (!this->lastFrameTime.has_value())
+	{
+		cout << "Warning: lightingPass() called before geometryPass(), probably because no object uses GeometryRenderer in the current scene. Skipping lighting pass." << endl;
+		return;
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(this->lightingPassProgramId);
 	glActiveTexture(GL_TEXTURE0);
@@ -90,6 +97,10 @@ void GeometryRenderer::lightingPass() const
 	glBindTexture(GL_TEXTURE_2D, this->addresses.normals);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, this->addresses.albedosSpecular);
+
+	glUniform1i(this->uniforms.positions.location, this->uniforms.positions.value);
+	glUniform1i(this->uniforms.normals.location, this->uniforms.normals.value);
+	glUniform1i(this->uniforms.albedosSpecular.location, this->uniforms.albedosSpecular.value);
 
 	unsigned int i = 0;
 	for (const LightValue &lightValue : LightManager::I()->getValues())
@@ -109,17 +120,11 @@ void GeometryRenderer::lightingPass() const
 	}
 
 	glBindVertexArray(this->quadAddresses.vao);
+
+	glDisable(GL_DEPTH_TEST);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	glBindVertexArray(0);
-
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->addresses.gBuffer);
-	// write to default framebuffer
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-
-	const ivec2 screenSize = Window::I()->getSize();
-
-	glBlitFramebuffer(0, 0, screenSize.x, screenSize.y, 0, 0, screenSize.x, screenSize.y, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void GeometryRenderer::initGBuffer()
@@ -130,23 +135,15 @@ void GeometryRenderer::initGBuffer()
 
 void GeometryRenderer::initUniformReferences()
 {
+	glUseProgram(this->geometryPassProgramId);
 	this->uniforms.projectionMatrix.location = glGetUniformLocation(this->geometryPassProgramId, this->uniforms.projectionMatrix.name.c_str());
 	this->uniforms.modelMatrix.location = glGetUniformLocation(this->geometryPassProgramId, this->uniforms.modelMatrix.name.c_str());
 	this->uniforms.viewMatrix.location = glGetUniformLocation(this->geometryPassProgramId, this->uniforms.viewMatrix.name.c_str());
 
+	glUseProgram(this->lightingPassProgramId);
 	this->uniforms.positions.location = glGetUniformLocation(this->lightingPassProgramId, this->uniforms.positions.name.c_str());
 	this->uniforms.normals.location = glGetUniformLocation(this->lightingPassProgramId, this->uniforms.normals.name.c_str());
 	this->uniforms.albedosSpecular.location = glGetUniformLocation(this->lightingPassProgramId, this->uniforms.albedosSpecular.name.c_str());
-
-	this->uniforms.positions.value = 0;
-	this->uniforms.normals.value = 1;
-	this->uniforms.albedosSpecular.value = 2;
-
-	// This uniform values don't change every frame, so we set them once here instead of every frame in passUniforms().
-	glUseProgram(this->lightingPassProgramId);
-	glUniform1i(this->uniforms.positions.location, this->uniforms.positions.value);
-	glUniform1i(this->uniforms.normals.location, this->uniforms.normals.value);
-	glUniform1i(this->uniforms.albedosSpecular.location, this->uniforms.albedosSpecular.value);
 }
 
 void GeometryRenderer::initVao()
@@ -157,6 +154,8 @@ void GeometryRenderer::initVao()
 
 void GeometryRenderer::initVbos()
 {
+	glBindVertexArray(this->forwardAddresses.vao);
+
 	// Generates and makes active the VBO for the vertices
 	glGenBuffers(1, &this->forwardAddresses.vertices);
 	glBindBuffer(GL_ARRAY_BUFFER, this->forwardAddresses.vertices);
@@ -192,11 +191,14 @@ void GeometryRenderer::initQuad()
 		-1, -1, 0, 0, 0,
 		1, -1, 0, 1, 0,
 		1, 1, 0, 1, 1};
+
 	// setup plane VAO
 	glGenVertexArrays(1, &this->quadAddresses.vao);
 	glGenBuffers(1, &this->quadAddresses.vbo);
+
 	glBindVertexArray(this->quadAddresses.vao);
 	glBindBuffer(GL_ARRAY_BUFFER, this->quadAddresses.vbo);
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadValues.values), this->quadValues.values.data(), GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
@@ -207,6 +209,8 @@ void GeometryRenderer::initQuad()
 void GeometryRenderer::initFrameBuffer()
 {
 	const ivec2 screenSize = Window::I()->getSize();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, this->addresses.gBuffer);
 
 	// Position color buffer
 	glGenTextures(1, &this->addresses.positions);
@@ -236,7 +240,7 @@ void GeometryRenderer::initFrameBuffer()
 	unsigned int attachments[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
 	glDrawBuffers(3, attachments);
 
-	// Depth buffer
+	// Depth RBO
 	glGenRenderbuffers(1, &this->addresses.depths);
 	glBindRenderbuffer(GL_RENDERBUFFER, this->addresses.depths);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, screenSize.x, screenSize.y);
@@ -247,6 +251,8 @@ void GeometryRenderer::initFrameBuffer()
 		cerr << "Framebuffer not complete!" << endl;
 		throw runtime_error("Framebuffer not complete!");
 	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 // After this function, draw every mesh that uses deferred rendering. After that, call finishGeometryPass() to reset the framebuffer to default.
@@ -265,6 +271,10 @@ void GeometryRenderer::geometryPass(const float currentTime, const Transform mod
 
 	// Geometry pass: render scene's geometry/color data into g-buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->addresses.gBuffer);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glUseProgram(this->geometryPassProgramId);
 	this->updateUniformValues(modelTransform, meshTransform);
@@ -279,10 +289,16 @@ void GeometryRenderer::updateUniformValues(const Transform modelTransform, const
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
 	this->uniforms.viewMatrix.value = Camera::I()->makeViewMatrix();
+
+	this->uniforms.positions.value = 0;
+	this->uniforms.normals.value = 1;
+	this->uniforms.albedosSpecular.value = 2;
 }
 
 void GeometryRenderer::passUniforms()
 {
+	glUseProgram(this->geometryPassProgramId);
+
 	glUniformMatrix4fv(this->uniforms.projectionMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.projectionMatrix.value));
 	glUniformMatrix4fv(this->uniforms.modelMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.modelMatrix.value));
 	glUniformMatrix4fv(this->uniforms.viewMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.viewMatrix.value));
@@ -298,7 +314,7 @@ void GeometryRenderer::draw() const
 	glBindVertexArray(this->forwardAddresses.vao);
 
 	if (this->bufferIsUsed(this->forwardAddresses.indices, this->forwardValues.indices.size()))
-		glDrawElements(GL_TRIANGLES, static_cast<int>(this->forwardValues.indices.size() - 1), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, static_cast<int>(this->forwardValues.indices.size()), GL_UNSIGNED_INT, 0);
 	else
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 

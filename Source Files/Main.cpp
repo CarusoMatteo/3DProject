@@ -20,8 +20,8 @@ int main(void)
 		float currentTime = static_cast<float>(glfwGetTime());
 		float deltaTime = currentTime - lastFrameTime;
 
-		stage->drawClearColor();
 		stage->updateGameObjects(deltaTime);
+		stage->drawClearColor();
 		stage->renderScene(currentTime);
 		stage->swapBuffers();
 		stage->pollEvents();

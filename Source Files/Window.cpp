@@ -179,6 +179,7 @@ void Window::initializeGui()
 void Window::initOpenGL()
 {
 	glEnable(GL_BLEND);
+	glDepthFunc(GL_LESS);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 }
