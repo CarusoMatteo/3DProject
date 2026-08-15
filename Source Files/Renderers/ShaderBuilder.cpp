@@ -69,12 +69,57 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 		throw runtime_error("Fragment shader compilation failed.");
 	}
 
+	unsigned int geometryShaderId = 0;
+	// Read the geometry shader code if provided
+	if (files.geometry.has_value())
+	{
+		// Read the Geometry Shader code
+		const GLchar *geometryShader = ShaderBuilder::readShaderSource(files.geometry.value());
+		if (!geometryShader)
+		{
+			cerr << "Failed to load geometry shader source code from file: " << files.geometry.value() << endl;
+			throw runtime_error("Failed to load geometry shader source code.");
+		}
+		else if (ShaderBuilder::shouldPrintLogs)
+		{
+			cout << "Geometry shader \'" << files.geometry.value() << "\' loaded successfully " << endl;
+		}
+
+		// Generate an identifier for the GEOMETRY shader
+		geometryShaderId = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(geometryShaderId, 1, (const char **)&geometryShader, NULL);
+		// Compile the GEOMETRY Shader
+		glCompileShader(geometryShaderId);
+
+		glGetShaderiv(geometryShaderId, GL_COMPILE_STATUS, &success);
+		if (!success)
+		{
+			glGetShaderInfoLog(geometryShaderId, 512, NULL, infoLog);
+			cerr << "Error: Geometry shader compilation failed.\n"
+				 << infoLog << endl;
+			throw runtime_error("Geometry shader compilation failed.");
+		}
+	}
+
 	// Create an identifier for a program and attach the two compiled shaders to it
 	const unsigned int programId = glCreateProgram();
 
 	glAttachShader(programId, vertexShaderId);
 	glAttachShader(programId, fragmentShaderId);
+	if (files.geometry.has_value())
+	{
+		glAttachShader(programId, geometryShaderId);
+	}
 	glLinkProgram(programId);
+
+	glGetProgramiv(programId, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramInfoLog(programId, 512, NULL, infoLog);
+		std::cout << "Error: Linking program failed.\n"
+				  << infoLog << std::endl;
+		throw runtime_error("Linking program failed.");
+	}
 
 	return programId;
 }

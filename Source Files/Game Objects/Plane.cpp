@@ -20,7 +20,7 @@ Plane::Plane(const shared_ptr<Renderer> renderer) : Plane({fvec3(0, -1.5f, 0), R
 Plane::Plane(const Transform transform, const shared_ptr<Renderer> renderer)
 {
 	const string name = "Plane";
-	const fvec2 size = fvec2(1);
+	const fvec2 size = fvec2(1000);
 
 	this->model = ModelFactory::plane(name, size, renderer, transform, TextureFactory::none());
 }
