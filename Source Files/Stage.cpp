@@ -1,5 +1,7 @@
 #include "../Header Files/Stage.h"
+#include "../Header Files/Scenes/IScene.h"
 #include "../Header Files/Scenes/Scene.h"
+#include "../Header Files/Scenes/SceneSpecular.h"
 #include "../Header Files/Window.h"
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -9,7 +11,7 @@ Stage::Stage(const shared_ptr<fvec3> clearColor)
 {
 	this->clearColor = clearColor;
 	Window::I();
-	this->scene = unique_ptr<Scene>(new Scene(clearColor));
+	this->scene = unique_ptr<IScene>(new Scene(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)

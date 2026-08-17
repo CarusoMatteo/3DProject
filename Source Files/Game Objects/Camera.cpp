@@ -22,17 +22,26 @@ float easeLinear(const float t)
 
 float easeInOutSmooth(const float t)
 {
-	return t * t * (3.0f - 2.0f * t);
+	return pow(t, 2) * (3.0f - 2.0f * t);
 }
 
 float easeInOutSmoother(const float t)
 {
-	return t * t * t * (t * (t * 6.0f - 15.0f) + 10.0f);
+	return pow(t, 3) * (t * (t * 6.0f - 15.0f) + 10.0f);
 }
 
 static fvec3 lerp(const fvec3 a, const fvec3 b, const float t, float (*easingFunction)(const float) = easeLinear)
 {
 	return a + easingFunction(t) * (b - a);
+}
+
+static CameraTransform lerp(const CameraTransform a, const CameraTransform b, const float t, float (*easingFunction)(const float) = easeLinear)
+{
+	return {
+		lerp(a.position, b.position, t, easingFunction),
+		lerp(a.target, b.target, t, easingFunction),
+		lerp(a.up, b.up, t, easingFunction),
+		lerp(a.direction, b.direction, t, easingFunction)};
 }
 
 Camera *Camera::I()
@@ -75,16 +84,10 @@ void Camera::update(float deltaTime)
 	}
 
 	// Interpolate between state[currentState] and state[currentState + 1] based on deltaTime
-	cout << "Lerp Progress: " << lerpProgress << endl;
 	const CameraTransform currentState = this->states[this->currentState % this->states.size()];
 	const CameraTransform nextState = this->states[(this->currentState + 1) % this->states.size()];
 
-	fvec3 newPosition = lerp(currentState.position, nextState.position, lerpProgress, easeInOutSmooth);
-	fvec3 newTarget = lerp(currentState.target, nextState.target, lerpProgress, easeInOutSmooth);
-	fvec3 newUp = lerp(currentState.up, nextState.up, lerpProgress, easeInOutSmooth);
-	fvec3 newDirection = lerp(currentState.direction, nextState.direction, lerpProgress, easeInOutSmooth);
-
-	this->transform = {newPosition, newTarget, newUp, newDirection};
+	this->transform = lerp(currentState, nextState, lerpProgress, easeInOutSmoother);
 
 	lerpProgress += deltaTime * lerpSpeed;
 	if (lerpProgress >= 1.0f)
