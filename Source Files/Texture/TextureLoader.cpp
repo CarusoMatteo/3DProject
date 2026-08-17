@@ -1,6 +1,8 @@
 #include "../../Header Files/Texture/TextureLoader.h"
 #include "../../Header Files/Texture/Texture.h"
+#include <algorithm>
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -9,7 +11,16 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../lib/stb_image/stb_image.h"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "../../lib/stb_image/stb_image_write.h"
+
 using namespace std;
+using namespace glm;
+
+#define GRAYSCALE 1
+#define GRAYSCALE_ALPHA 2
+#define RGB 3
+#define RGBA 4
 
 Texture loadTexture(const string path, bool shouldFlip)
 {
@@ -82,4 +93,29 @@ Texture loadCubemap(vector<string> faces, bool shouldFlip)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	return texture;
+}
+
+void saveTexture(ivec2 size, vector<float> pixelsFloat, const string filename)
+{
+	vector<unsigned char> pixels8(size.x * size.y * 4);
+	for (size_t i = 0; i < pixelsFloat.size(); i++)
+	{
+		float v = std::clamp(pixelsFloat[i], 0.0f, 1.0f);
+		pixels8[i] = static_cast<unsigned char>(v * 255.0f);
+	}
+
+	// Vertical flip
+	vector<unsigned char> flipped(size.x * size.y * 4);
+	int rowSize = size.x * 4;
+	for (int y = 0; y < size.y; y++)
+	{
+		memcpy(&flipped[y * rowSize],
+			   &pixels8[(size.y - 1 - y) * rowSize],
+			   rowSize);
+	}
+	if (!stbi_write_bmp(filename.c_str(), size.x, size.y, RGBA, flipped.data()))
+	{
+		cerr << "stbi_write_bmp failed for image: " << filename << endl;
+		throw runtime_error("stbi_write_bmp failed for image" + filename);
+	}
 }
