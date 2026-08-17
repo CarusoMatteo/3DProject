@@ -9,5 +9,6 @@ enum InputEventsType
 	UP,
 	DOWN,
 	FREE_CURSOR,
+	TAKE_SCREENSHOT_NEXT_FRAME,
 	COUNT
 };

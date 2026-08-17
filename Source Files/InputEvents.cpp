@@ -86,6 +86,11 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 				Window::I()->disableCursor();
 		}
 		break;
+	case GLFW_KEY_P:
+		// Happens on release so we're sure it only happens once.
+		if (action == GLFW_RELEASE)
+			buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME) = true;
+		break;
 	default:
 		break;
 	}
@@ -104,4 +109,14 @@ void InputEvents::cursorPositionCallback(GLFWwindow *window, double xpos, double
 void InputEvents::framebufferSizeCallback(GLFWwindow *window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+}
+
+bool InputEvents::shouldTakeScreenshotNextFrame()
+{
+	if (buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME))
+	{
+		buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME) = false;
+		return true;
+	}
+	return false;
 }

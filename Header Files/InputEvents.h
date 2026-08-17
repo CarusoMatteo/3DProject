@@ -22,6 +22,8 @@ public:
 	static ButtonStates getButtonStates();
 	static fvec2 getCursorPosition();
 
+	static bool shouldTakeScreenshotNextFrame();
+
 private:
 	static unique_ptr<ButtonStates> buttonStates;
 	static unique_ptr<fvec2> cursorPosition;
