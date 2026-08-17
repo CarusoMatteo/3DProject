@@ -1,0 +1,59 @@
+#include "../../Header Files/Scenes/SceneSpecular.h"
+#include "../../Header Files/Game Objects/Camera.h"
+#include "../../Header Files/Game Objects/CustomModel.h"
+#include "../../Header Files/Game Objects/IVisibleGameObject.h"
+#include "../../Header Files/Game Objects/Plane.h"
+#include "../../Header Files/Game Objects/Skybox.h"
+#include "../../Header Files/Game Objects/Sphere.h"
+#include "../../Header Files/Gui/Gui.h"
+#include "../../Header Files/Lights/LightManager.h"
+#include "../../Header Files/Model/Transform.h"
+#include "../../Header Files/Random.h"
+#include "../../Header Files/Renderers/ShaderFactory.h"
+#include "../../Header Files/Texture/TextureFactory.h"
+#include <glm/glm.hpp>
+#include <memory>
+
+SceneSpecular::SceneSpecular(const shared_ptr<fvec3> clearColor)
+{
+	Camera::I({
+		{fvec3(-4, 0, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(-4, 0, 0)},
+		{fvec3(0, 0, 4), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 0, 4)},
+		{fvec3(4, 0, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(4, 0, 0)},
+		{fvec3(0, 0, -4), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 0, -4)},
+	});
+	LightManager::I();
+
+	Transform sphereTransform = {fvec3(0), Rotation(), fvec3(1)};
+
+	this->gameObjects = {
+		shared_ptr<IVisibleGameObject>(new Skybox()),
+		shared_ptr<IVisibleGameObject>(new Sphere(sphereTransform, ShaderFactory::reflection())),
+	};
+	this->gui = unique_ptr<Gui>(new Gui(clearColor));
+
+	// this->scatterObjects();
+}
+
+void SceneSpecular::updateGameObjects(float deltaTime)
+{
+	Camera::I()->update(deltaTime);
+	LightManager::I()->updateLights(deltaTime);
+
+	for (auto &&object : this->gameObjects)
+	{
+		object->update(deltaTime);
+	}
+}
+
+void SceneSpecular::renderScene(float currentTime)
+{
+	for (auto &&object : this->gameObjects)
+	{
+		object->render(currentTime);
+	}
+	// ShaderFactory::geometry()->finishGeometryPass();
+	// ShaderFactory::geometry()->lightingPass();
+
+	this->gui->drawGui(this->gameObjects);
+}

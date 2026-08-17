@@ -146,6 +146,8 @@
     <ClCompile Include="Source Files\Model\ModelLoader.cpp" />
     <ClCompile Include="Source Files\Renderers\GeometryRenderer.cpp" />
     <ClCompile Include="Source Files\Renderers\Renderer.cpp" />
+    <ClCompile Include="Source Files\Scenes\SceneGrid.cpp" />
+    <ClCompile Include="Source Files\Scenes\SceneSpecular.cpp" />
     <ClCompile Include="Source Files\Texture\CubeMapTextureFactory.cpp" />
     <ClCompile Include="Source Files\Model\Material.cpp" />
     <ClCompile Include="Source Files\Game Objects\Plane.cpp" />
@@ -193,6 +195,8 @@
     <ClInclude Include="Header Files\Renderers\BuffersAddresses.h" />
     <ClInclude Include="Header Files\Renderers\BuffersValues.h" />
     <ClInclude Include="Header Files\Renderers\GeometryRenderer.h" />
+    <ClInclude Include="Header Files\Scenes\SceneGrid.h" />
+    <ClInclude Include="Header Files\Scenes\SceneSpecular.h" />
     <ClInclude Include="Header Files\Texture\CubeMapTextureFactory.h" />
     <ClInclude Include="Header Files\Model\Material.h" />
     <ClInclude Include="Header Files\Game Objects\Plane.h" />
