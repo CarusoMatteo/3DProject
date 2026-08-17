@@ -1,0 +1,49 @@
+#version 330 core
+
+in vec3 N, L, R, V;
+in vec2 fragmentTextureCoordinate;
+
+uniform sampler2D textureSampler;
+uniform bool useTexture;
+
+struct PointLight
+{
+	vec3 position;
+	vec3 color;
+	float power;
+};
+uniform PointLight light;
+
+struct Material
+{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
+uniform Material material;
+
+layout (location = 0) out vec4 fragColor;
+layout (location = 1) out vec4 mainColor;
+layout (location = 2) out vec4 normalColor;
+layout (location = 3) out vec4 depthColor;
+
+const float strength = 0.1;
+void main()
+{
+	vec3 halfwayVector = normalize(L + V);
+	vec3 ambient = strength * light.power * material.ambient;
+	vec3 diffuse = light.power * light.color * max(dot(L, N), 0) * material.diffuse;
+	vec3 specular = light.power * light.color * pow(max(dot(N, halfwayVector), 0), material.shininess) * material.specular;
+
+	vec4 baseColor = vec4(ambient + diffuse + specular, 1.0);
+	if (useTexture)
+	{
+		baseColor *= texture(textureSampler, fragmentTextureCoordinate);
+	}
+
+	fragColor = baseColor;
+	mainColor = baseColor;
+	normalColor = vec4(N, 1);
+	depthColor = vec4(gl_FragCoord.zzz, 1);
+}

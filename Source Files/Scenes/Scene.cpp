@@ -1,9 +1,10 @@
 #include "../../Header Files/Scenes/Scene.h"
 #include "../../Header Files/Game Objects/Camera.h"
+#include "../../Header Files/Game Objects/Cube.h"
 #include "../../Header Files/Game Objects/CustomModel.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
-#include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/Skybox.h"
+#include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Model/Transform.h"
@@ -27,9 +28,11 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 	auto backpackTexture = TextureFactory::fromFile("./assets/models/backpack/diffuse.jpg", true);
 
 	this->gameObjects = {
-		shared_ptr<IVisibleGameObject>(new Skybox()),
-		// shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::blinnPhong())),
-		shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::blinnPhong, backpackTexture)),
+		// shared_ptr<IVisibleGameObject>(new Skybox()),
+		// shared_ptr<IVisibleGameObject>(new Cube(ShaderFactory::blinnPhongMRT())),
+		shared_ptr<IVisibleGameObject>(new Sphere(ShaderFactory::blinnPhongMRT())),
+		// shared_ptr<IVisibleGameObject>(new Sphere(Transform(fvec3(0, 1, 0)), ShaderFactory::blinnPhongMRT())),
+		// shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::blinnPhong, backpackTexture)),
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 

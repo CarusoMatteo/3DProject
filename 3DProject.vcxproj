@@ -144,6 +144,7 @@
     <ClCompile Include="Source Files\Game Objects\Skybox.cpp" />
     <ClCompile Include="Source Files\Lights\LightManager.cpp" />
     <ClCompile Include="Source Files\Model\ModelLoader.cpp" />
+    <ClCompile Include="Source Files\Renderers\ForwardRendererMRT.cpp" />
     <ClCompile Include="Source Files\Renderers\GeometryRenderer.cpp" />
     <ClCompile Include="Source Files\Renderers\Renderer.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneGrid.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Header Files\Model\ModelLoader.h" />
     <ClInclude Include="Header Files\Renderers\BuffersAddresses.h" />
     <ClInclude Include="Header Files\Renderers\BuffersValues.h" />
+    <ClInclude Include="Header Files\Renderers\ForwardRendererMRT.h" />
     <ClInclude Include="Header Files\Renderers\GeometryRenderer.h" />
     <ClInclude Include="Header Files\Scenes\SceneGrid.h" />
     <ClInclude Include="Header Files\Scenes\SceneSpecular.h" />
@@ -229,6 +231,7 @@
     <ClInclude Include="Header Files\Stage.h" />
     <ClInclude Include="Header Files\Window.h" />
     <ClInclude Include="lib\stb_image\stb_image.h" />
+    <ClInclude Include="lib\stb_image\stb_image_write.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp-vc142-mt.dll" />

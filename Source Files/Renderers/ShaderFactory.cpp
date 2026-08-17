@@ -1,5 +1,6 @@
 #include "../../Header Files/Renderers/ShaderFactory.h"
 #include "../../Header Files/Renderers/ForwardRenderer.h"
+#include "../../Header Files/Renderers/ForwardRendererMRT.h"
 #include "../../Header Files/Renderers/GeometryRenderer.h"
 #include "../../Header Files/Renderers/ShaderFiles.h"
 #include <memory>
@@ -20,6 +21,9 @@ const ShaderFiles PHONG_PATH = {
 const ShaderFiles BLINN_PHONG_PATH = {
 	FORWARD_SHADER_PATH + "Phong/Phong.vert",
 	FORWARD_SHADER_PATH + "BlinnPhong/BlinnPhong.frag"};
+const ShaderFiles BLINN_PHONG_MRT_PATH = {
+	FORWARD_SHADER_PATH + "Phong/Phong.vert",
+	FORWARD_SHADER_PATH + "BlinnPhong/BlinnPhongMRT.frag"};
 const ShaderFiles REFLECTION_PATH = {
 	FORWARD_SHADER_PATH + "Reflection/Reflection.vert",
 	FORWARD_SHADER_PATH + "Reflection/Reflection.frag"};
@@ -57,6 +61,11 @@ shared_ptr<ForwardRenderer> ShaderFactory::phong()
 shared_ptr<ForwardRenderer> ShaderFactory::blinnPhong()
 {
 	return make_shared<ForwardRenderer>(BLINN_PHONG_PATH);
+}
+
+shared_ptr<ForwardRendererMRT> ShaderFactory::blinnPhongMRT()
+{
+	return make_shared<ForwardRendererMRT>(BLINN_PHONG_MRT_PATH);
 }
 
 shared_ptr<ForwardRenderer> ShaderFactory::reflection()
