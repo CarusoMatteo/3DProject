@@ -2,32 +2,33 @@
 #include "../../Header Files/CameraProjection.h"
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/InputEventsType.h"
+#include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Window.h"
 #include <cmath>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 #include <memory>
 #include <optional>
+#include <vector>
 
 using namespace glm;
 using namespace std;
 
 optional<unique_ptr<Camera>> Camera::instance = nullopt;
 
-float easeLinear(const float t)
+static float easeLinear(const float t)
 {
 	return t;
 }
 
-float easeInOutSmooth(const float t)
+static float easeInOutSmooth(const float t)
 {
-	return pow(t, 2) * (3.0f - 2.0f * t);
+	return powf(t, 2) * (3.0f - 2.0f * t);
 }
 
-float easeInOutSmoother(const float t)
+static float easeInOutSmoother(const float t)
 {
-	return pow(t, 3) * (t * (t * 6.0f - 15.0f) + 10.0f);
+	return powf(t, 3) * (t * (t * 6.0f - 15.0f) + 10.0f);
 }
 
 static fvec3 lerp(const fvec3 a, const fvec3 b, const float t, float (*easingFunction)(const float) = easeLinear)
