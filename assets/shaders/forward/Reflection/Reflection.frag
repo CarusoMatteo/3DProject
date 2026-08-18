@@ -6,14 +6,19 @@ uniform samplerCube skyboxSampler;
 in vec3 normal;
 in vec3 position;
 
-out vec4 fragColor;
+layout (location = 0) out vec4 fragColor;
+layout (location = 1) out vec4 mainColor;
+layout (location = 2) out vec4 normalColor;
+layout (location = 3) out vec4 depthColor;
 
 void main()
 {
-	// Calcolo direzione di vista
+	// View direction
 	vec3 E = normalize(position - viewPosition);
-	// Calcolo vettore riflesso
+	// Reflection vector
 	vec3 R = reflect(E, normalize(normal));
-	// Campionamento della cubemap
-	fragColor = texture(skyboxSampler, R);
+	// Cubemap sampling
+	fragColor = mainColor = texture(skyboxSampler, R);
+	normalColor = vec4(normal, 1);
+	depthColor = vec4(gl_FragCoord.zzz, 1);
 }

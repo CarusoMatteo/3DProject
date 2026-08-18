@@ -141,9 +141,6 @@
     <ClCompile Include="Source Files\Scenes\SceneSpecular.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Renderers\ForwardRendererMRT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\.common\ImGui\imconfig.h">
@@ -318,9 +315,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\stb_image\stb_image_write.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Renderers\ForwardRendererMRT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,7 +4,6 @@
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/BuffersValues.h"
 #include "../../Header Files/Renderers/ForwardRenderer.h"
-#include "../../Header Files/Renderers/ForwardRendererMRT.h"
 #include "../../Header Files/Renderers/GeometryRenderer.h"
 #include "../../Header Files/Renderers/Renderer.h"
 #include "../../Header Files/Texture/Texture.h"
@@ -24,12 +23,6 @@ static bool isForwardRenderer(const shared_ptr<Renderer> shader)
 {
 	// Check if the shader is a ForwardRenderer by dynamic casting it.
 	return dynamic_pointer_cast<ForwardRenderer>(shader) != nullptr;
-}
-
-static bool isForwardRendererMRT(const shared_ptr<Renderer> shader)
-{
-	// Check if the shader is a ForwardRendererMRT by dynamic casting it.
-	return dynamic_pointer_cast<ForwardRendererMRT>(shader) != nullptr;
 }
 
 static bool isGeometryRenderer(const shared_ptr<Renderer> shader)
@@ -172,10 +165,6 @@ shared_ptr<Mesh> MeshFactory::cube(const string name, const float length, const 
 	{
 		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(forwardBufferValues);
 	}
-	else if (isForwardRendererMRT(shader))
-	{
-		dynamic_pointer_cast<ForwardRendererMRT>(shader)->setBufferValues(forwardBufferValues);
-	}
 	else if (isGeometryRenderer(shader))
 	{
 		const GeometryBufferValues geometryBufferValues = {/* TODO: positions, albedosSpecular, normals, depths */};
@@ -248,10 +237,6 @@ shared_ptr<Mesh> MeshFactory::sphere(const string name, const fvec3 radius, cons
 	if (isForwardRenderer(shader))
 	{
 		dynamic_pointer_cast<ForwardRenderer>(shader)->setBufferValues(forwardBufferValues);
-	}
-	else if (isForwardRendererMRT(shader))
-	{
-		dynamic_pointer_cast<ForwardRendererMRT>(shader)->setBufferValues(forwardBufferValues);
 	}
 	else if (isGeometryRenderer(shader))
 	{

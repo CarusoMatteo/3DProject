@@ -22,7 +22,11 @@ struct Material
 	float shininess;
 };
 uniform Material material;
-out vec4 fragColor;
+
+layout (location = 0) out vec4 fragColor;
+layout (location = 1) out vec4 mainColor;
+layout (location = 2) out vec4 normalColor;
+layout (location = 3) out vec4 depthColor;
 
 const float strength = 0.1;
 void main()
@@ -38,5 +42,7 @@ void main()
 		baseColor *= texture(textureSampler, fragmentTextureCoordinate);
 	}
 
-	fragColor = baseColor;
+	fragColor = mainColor = baseColor;
+	normalColor = vec4(N, 1);
+	depthColor = vec4(gl_FragCoord.zzz, 1);
 }

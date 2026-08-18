@@ -26,4 +26,9 @@ public:
 private:
 	unique_ptr<IScene> scene;
 	shared_ptr<fvec3> clearColor;
+
+	unsigned int fbo = -1;
+
+	void setupFBO();
+	void saveBuffers(const float currentTime, const ivec2 size) const;
 };

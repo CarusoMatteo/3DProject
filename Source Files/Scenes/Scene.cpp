@@ -16,23 +16,22 @@
 
 Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
-	Camera::I({
-		{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(-10, 2, 0)},
-		{fvec3(0, 2, 10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, 10)},
-		{fvec3(10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(10, 2, 0)},
-		{fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, -10)},
-	});
+	Camera::I(
+		// {{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(-10, 2, 0)},
+		// {fvec3(0, 2, 10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, 10)},
+		// {fvec3(10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(10, 2, 0)},
+		// {fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, -10)},}
+	);
 	LightManager::I();
 
 	Transform planeTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};
 	auto backpackTexture = TextureFactory::fromFile("./assets/models/backpack/diffuse.jpg", true);
 
 	this->gameObjects = {
-		// shared_ptr<IVisibleGameObject>(new Skybox()),
-		// shared_ptr<IVisibleGameObject>(new Cube(ShaderFactory::blinnPhongMRT())),
-		shared_ptr<IVisibleGameObject>(new Sphere(ShaderFactory::blinnPhongMRT())),
-		// shared_ptr<IVisibleGameObject>(new Sphere(Transform(fvec3(0, 1, 0)), ShaderFactory::blinnPhongMRT())),
-		// shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::blinnPhong, backpackTexture)),
+		shared_ptr<IVisibleGameObject>(new Skybox()),
+		shared_ptr<IVisibleGameObject>(new Cube(ShaderFactory::blinnPhong())),
+		shared_ptr<IVisibleGameObject>(new Sphere(Transform(fvec3(1, 0, 0)), ShaderFactory::blinnPhong())),
+		shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::blinnPhong, backpackTexture)),
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 

@@ -11,6 +11,7 @@ uniform vec3 viewPosition;
 
 out vec4 color;
 out vec2 fragmentTextureCoordinate;
+out vec3 N;
 
 struct PointLight
 {
@@ -29,7 +30,7 @@ struct Material
 };
 uniform Material material;
 
-const float strenght = 0.1;
+const float strength = 0.1;
 
 void main()
 {
@@ -39,13 +40,13 @@ void main()
 
 	vec4 eyeLightPos = viewMatrix * vec4(light.position, 1.0);
 
-	vec3 N = normalize(transpose(inverse(mat3(viewMatrix * modelMatrix))) * vertexNormal);
+	N = normalize(transpose(inverse(mat3(viewMatrix * modelMatrix))) * vertexNormal);
 
 	vec3 V = normalize(viewPosition - eyePosition.xyz);
 	vec3 L = normalize((eyeLightPos - eyePosition).xyz);
 	vec3 R = reflect(-L, N);
 
-	vec3 ambient = strenght * light.power * material.ambient;
+	vec3 ambient = strength * light.power * material.ambient;
 	vec3 diffuse = light.power * light.color * max(dot(L, N), 0) * material.diffuse;
 	vec3 specular = light.power * light.color * pow(max(dot(V, R), 0), material.shininess) * material.specular;
 
