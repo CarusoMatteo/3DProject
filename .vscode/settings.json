@@ -59,6 +59,7 @@
 		"blit",
 		"fmat",
 		"glfw",
+		"linearization",
 		"maskonaive",
 		"negx",
 		"negy",

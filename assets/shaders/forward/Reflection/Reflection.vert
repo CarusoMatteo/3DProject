@@ -17,4 +17,5 @@ void main()
 	position = vec3(modelMatrix * vec4(vertexPosition, 1.0));
 
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
+	depthColor = vec4(vec3(linearizeDepth(gl_FragCoord.z)), 1);
 }

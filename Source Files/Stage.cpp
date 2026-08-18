@@ -129,7 +129,7 @@ void Stage::setupFBO()
 
 void Stage::saveBuffers(const float currentTime, const ivec2 size) const
 {
-	if (InputEvents::shouldTakeScreenshotNextFrame())
+	if (InputEvents::shouldTakeScreenshotNextFrame(true))
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 

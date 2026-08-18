@@ -111,11 +111,12 @@ void InputEvents::framebufferSizeCallback(GLFWwindow *window, int width, int hei
 	glViewport(0, 0, width, height);
 }
 
-bool InputEvents::shouldTakeScreenshotNextFrame()
+bool InputEvents::shouldTakeScreenshotNextFrame(bool consumeInput)
 {
 	if (buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME))
 	{
-		buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME) = false;
+		if (consumeInput)
+			buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME) = false;
 		return true;
 	}
 	return false;

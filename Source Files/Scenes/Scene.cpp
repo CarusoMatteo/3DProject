@@ -3,9 +3,11 @@
 #include "../../Header Files/Game Objects/Cube.h"
 #include "../../Header Files/Game Objects/CustomModel.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
+#include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/Skybox.h"
 #include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Gui/Gui.h"
+#include "../../Header Files/InputEvents.h"
 #include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Random.h"
@@ -17,11 +19,12 @@
 Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I(
-		// {{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(-10, 2, 0)},
-		// {fvec3(0, 2, 10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, 10)},
-		// {fvec3(10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(10, 2, 0)},
-		// {fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, -10)},}
-	);
+		{
+			{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(-10, 2, 0)},
+			{fvec3(0, 2, 10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, 10)},
+			{fvec3(10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(10, 2, 0)},
+			{fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, -10)},
+		});
 	LightManager::I();
 
 	Transform planeTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};
@@ -29,6 +32,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 
 	this->gameObjects = {
 		shared_ptr<IVisibleGameObject>(new Skybox()),
+		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::blinnPhong())),
 		shared_ptr<IVisibleGameObject>(new Cube(ShaderFactory::blinnPhong())),
 		shared_ptr<IVisibleGameObject>(new Sphere(Transform(fvec3(1, 0, 0)), ShaderFactory::blinnPhong())),
 		shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::blinnPhong, backpackTexture)),
@@ -58,7 +62,8 @@ void Scene::renderScene(float currentTime)
 	// ShaderFactory::geometry()->finishGeometryPass();
 	// ShaderFactory::geometry()->lightingPass();
 
-	this->gui->drawGui(this->gameObjects);
+	if (!InputEvents::shouldTakeScreenshotNextFrame(false))
+		this->gui->drawGui(this->gameObjects);
 }
 
 void Scene::scatterObjects()

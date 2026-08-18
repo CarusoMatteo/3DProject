@@ -9,8 +9,15 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 viewPosition;
 
+uniform mat4 projectionMatrixPrev;
+uniform mat4 modelMatrixPrev;
+uniform mat4 viewMatrixPrev;
+
 out vec3 L, N, R, V;
 out vec2 fragmentTextureCoordinate;
+
+out vec4 clipPosition;
+out vec4 clipPositionPrev;
 
 struct PointLight
 {
@@ -31,7 +38,9 @@ uniform Material material;
 
 void main()
 {
-	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
+	clipPosition = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
+	clipPositionPrev = projectionMatrixPrev * viewMatrixPrev * modelMatrixPrev * vec4(vertexPosition, 1.0);
+	gl_Position = clipPosition;
 
 	vec4 eyePosition = viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
 

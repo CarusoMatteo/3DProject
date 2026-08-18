@@ -22,7 +22,8 @@ public:
 	static ButtonStates getButtonStates();
 	static fvec2 getCursorPosition();
 
-	static bool shouldTakeScreenshotNextFrame();
+	// The input should be consumed when the screenshot is actually taken.
+	static bool shouldTakeScreenshotNextFrame(bool consumeInput);
 
 private:
 	static unique_ptr<ButtonStates> buttonStates;
