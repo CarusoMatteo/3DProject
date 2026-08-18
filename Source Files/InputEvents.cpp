@@ -3,8 +3,10 @@
 #include "../Header Files/InputEventsType.h"
 #include "../Header Files/Window.h"
 #include <GLFW/glfw3.h>
+#include <filesystem>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <iostream>
 #include <memory>
 
 using namespace glm;
@@ -91,6 +93,10 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 		if (action == GLFW_RELEASE)
 			buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME) = true;
 		break;
+	case GLFW_KEY_K:
+		if (action == GLFW_RELEASE)
+			InputEvents::deleteScreenshotsFiles();
+		break;
 	default:
 		break;
 	}
@@ -120,4 +126,31 @@ bool InputEvents::shouldTakeScreenshotNextFrame(bool consumeInput)
 		return true;
 	}
 	return false;
+}
+
+void InputEvents::deleteScreenshotsFiles()
+{
+	const string directoryPath = "img";
+
+	if (!filesystem::exists(directoryPath))
+	{
+		cerr << "Directory \"" << directoryPath << "\" doesn't exist." << endl;
+		return;
+	}
+	if (!filesystem::is_directory(directoryPath))
+	{
+		cerr << "\"" << directoryPath << "\" is not a directory." << endl;
+		return;
+	}
+
+	// Iterate on all files of the directory
+	for (const auto &entry : filesystem::directory_iterator(directoryPath))
+	{
+		// Check if it's a regular file and has the .bmp extension
+		if (entry.is_regular_file() && entry.path().extension() == ".bmp")
+		{
+			filesystem::remove(entry.path());
+			cout << "Deleted: " << entry.path().filename() << endl;
+		}
+	}
 }

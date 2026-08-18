@@ -30,4 +30,6 @@ private:
 	static unique_ptr<fvec2> cursorPosition;
 
 	InputEvents() = default;
+
+	static void deleteScreenshotsFiles();
 };

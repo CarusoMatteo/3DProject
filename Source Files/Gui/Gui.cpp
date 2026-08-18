@@ -82,6 +82,8 @@ void Gui::settingsWindow()
 	ImGui::Text("WASD: Move camera horizontally");
 	ImGui::Text("QE: Move camera up/down");
 	ImGui::Text("TAB: %s", InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR) ? "Enable camera movement" : "Free cursor");
+	ImGui::Text("P: Take buffer screenshots");
+	ImGui::Text("K: Delete screenshots in img directory");
 	ImGui::End();
 }
 
