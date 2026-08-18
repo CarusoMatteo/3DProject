@@ -72,6 +72,7 @@ void Stage::setupFBO()
 	unsigned int texFileColor = -1;
 	unsigned int texNormal = -1;
 	unsigned int texDepth = -1;
+	unsigned int texMotionVectors = -1;
 	unsigned int rboDepth = -1;
 
 	glGenFramebuffers(1, &fbo);
@@ -109,14 +110,22 @@ void Stage::setupFBO()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, texDepth, 0);
 
+	// Texture 4: Motion vectors texture that will be saved to file.
+	glGenTextures(1, &texMotionVectors);
+	glBindTexture(GL_TEXTURE_2D, texMotionVectors);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, size.x, size.y, 0, GL_RGBA, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, texMotionVectors, 0);
+
 	// Depth (necessary because of the depth test)
 	glGenRenderbuffers(1, &rboDepth);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, size.x, size.y);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
 
-	GLenum drawBuffers[4] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3};
-	glDrawBuffers(4, drawBuffers);
+	GLenum drawBuffers[5] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4};
+	glDrawBuffers(5, drawBuffers);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
@@ -148,6 +157,11 @@ void Stage::saveBuffers(const float currentTime, const ivec2 size) const
 
 		glReadBuffer(GL_COLOR_ATTACHMENT3);
 		filename = ("img/" + to_string(currentTime) + "_depth.bmp");
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
+		saveTexture(size, pixelsFloat, filename);
+
+		glReadBuffer(GL_COLOR_ATTACHMENT4);
+		filename = ("img/" + to_string(currentTime) + "_motion_vectors.bmp");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		saveTexture(size, pixelsFloat, filename);
 

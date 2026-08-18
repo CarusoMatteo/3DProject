@@ -24,6 +24,10 @@ struct ForwardUniforms
 	Uniform<fmat4> viewMatrix = {"viewMatrix"};
 	Uniform<fvec3> viewPosition = {"viewPosition"};
 
+	Uniform<fmat4> projectionMatrixPrev = {"projectionMatrixPrev"};
+	Uniform<fmat4> modelMatrixPrev = {"modelMatrixPrev"};
+	Uniform<fmat4> viewMatrixPrev = {"viewMatrixPrev"};
+
 	Uniform<fvec3> lightPosition = {"light.position"};
 	Uniform<fvec3> lightColor = {"light.color"};
 	Uniform<float> lightPower = {"light.power"};

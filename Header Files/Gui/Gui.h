@@ -27,7 +27,7 @@ public:
 
 private:
 	const fvec2 settingsWindowPosition = fvec2(10, 10);
-	const fvec2 inspectorWindowPosition = fvec2(10, 470);
+	const fvec2 inspectorWindowPosition = fvec2(10, 540);
 
 	shared_ptr<fvec3> clearColor;
 

@@ -130,6 +130,10 @@ void ForwardRenderer::initUniformReferences()
 	this->uniforms.viewMatrix.location = glGetUniformLocation(this->programId, this->uniforms.viewMatrix.name.c_str());
 	this->uniforms.viewPosition.location = glGetUniformLocation(this->programId, this->uniforms.viewPosition.name.c_str());
 
+	this->uniforms.projectionMatrixPrev.location = glGetUniformLocation(this->programId, this->uniforms.projectionMatrixPrev.name.c_str());
+	this->uniforms.modelMatrixPrev.location = glGetUniformLocation(this->programId, this->uniforms.modelMatrixPrev.name.c_str());
+	this->uniforms.viewMatrixPrev.location = glGetUniformLocation(this->programId, this->uniforms.viewMatrixPrev.name.c_str());
+
 	this->uniforms.lightPosition.location = glGetUniformLocation(this->programId, this->uniforms.lightPosition.name.c_str());
 	this->uniforms.lightColor.location = glGetUniformLocation(this->programId, this->uniforms.lightColor.name.c_str());
 	this->uniforms.lightPower.location = glGetUniformLocation(this->programId, this->uniforms.lightPower.name.c_str());
@@ -152,6 +156,10 @@ void ForwardRenderer::initUniformReferences()
 
 void ForwardRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
 {
+	this->uniforms.projectionMatrixPrev.value = this->uniforms.projectionMatrix.value;
+	this->uniforms.modelMatrixPrev.value = this->uniforms.modelMatrix.value;
+	this->uniforms.viewMatrixPrev.value = this->uniforms.viewMatrix.value;
+
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
 	this->uniforms.viewMatrix.value = Camera::I()->makeViewMatrix();
@@ -182,6 +190,10 @@ void ForwardRenderer::passUniforms()
 	glUniformMatrix4fv(this->uniforms.modelMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.modelMatrix.value));
 	glUniformMatrix4fv(this->uniforms.viewMatrix.location, 1, GL_FALSE, value_ptr(this->uniforms.viewMatrix.value));
 	glUniform3fv(this->uniforms.viewPosition.location, 1, value_ptr(this->uniforms.viewPosition.value));
+
+	glUniformMatrix4fv(this->uniforms.projectionMatrixPrev.location, 1, GL_FALSE, value_ptr(this->uniforms.projectionMatrixPrev.value));
+	glUniformMatrix4fv(this->uniforms.modelMatrixPrev.location, 1, GL_FALSE, value_ptr(this->uniforms.modelMatrixPrev.value));
+	glUniformMatrix4fv(this->uniforms.viewMatrixPrev.location, 1, GL_FALSE, value_ptr(this->uniforms.viewMatrixPrev.value));
 
 	glUniform3fv(this->uniforms.lightPosition.location, 1, value_ptr(this->uniforms.lightPosition.value));
 	glUniform3fv(this->uniforms.lightColor.location, 1, value_ptr(this->uniforms.lightColor.value));

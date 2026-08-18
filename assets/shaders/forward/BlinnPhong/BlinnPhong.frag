@@ -3,6 +3,9 @@
 in vec3 N, L, R, V;
 in vec2 fragmentTextureCoordinate;
 
+in vec4 clipPosition;
+in vec4 clipPositionPrev;
+
 uniform sampler2D textureSampler;
 uniform bool useTexture;
 
@@ -41,6 +44,18 @@ float linearizeDepth(float depth)
 	return (2.0 * nearPlane * farPlane) / (farPlane + nearPlane - z * (farPlane - nearPlane)) / farPlane;
 }
 
+vec2 motionVector()
+{
+	// From clip space to normalized device coordinates (NDC)
+	vec2 ndcCurrent = clipPosition.xy / clipPosition.w;
+	vec2 ndcPrevious = clipPositionPrev.xy / clipPositionPrev.w;
+	// Motion vector in NDC space
+	vec2 motionVector = ndcCurrent - ndcPrevious;
+	// Convert to color space [-1, 1] => [0, 1]
+	return motionVector * 0.5 + 0.5;
+	// return motionVector * 2 + 0.5;
+}
+
 void main()
 {
 	vec3 halfwayVector = normalize(L + V);
@@ -57,5 +72,5 @@ void main()
 	fragColor = mainColor = baseColor;
 	normalColor = vec4(N, 1);
 	depthColor = vec4(vec3(linearizeDepth(gl_FragCoord.z)), 1);
-	velocityColor = vec4(vec3(0.0), 1);
+	fragColor = velocityColor = vec4(motionVector(), 0, 1);
 }
