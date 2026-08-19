@@ -77,5 +77,6 @@
 		"stbi",
 		"vbos",
 		"wasd"
-	]
+	],
+	"C_Cpp.default.compilerPath": "cl.exe"
 }
