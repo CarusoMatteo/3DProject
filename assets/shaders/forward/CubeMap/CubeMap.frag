@@ -1,5 +1,6 @@
 #version 330 core
 uniform samplerCube skyboxSampler;
+uniform int renderMode;
 
 in vec3 fragmentTextureCoordinate;
 
@@ -26,8 +27,17 @@ vec2 motionVector()
 
 void main()
 {
-	fragColor = mainColor = texture(skyboxSampler, fragmentTextureCoordinate);
+	mainColor = texture(skyboxSampler, fragmentTextureCoordinate);
 	normalColor = vec4(0, 0, 1, 1);
 	depthColor = vec4(1.0);
-	fragColor = velocityColor = vec4(motionVector(), 0, 1);
+	velocityColor = vec4(motionVector(), 0, 1);
+
+	if (renderMode == 2)
+		fragColor = normalColor;
+	else if (renderMode == 3)
+		fragColor = depthColor;
+	else if (renderMode == 4)
+		fragColor = velocityColor;
+	else if (renderMode == 1)
+		fragColor = mainColor;
 }

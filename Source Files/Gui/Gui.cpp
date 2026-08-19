@@ -84,6 +84,7 @@ void Gui::settingsWindow()
 	ImGui::Text("TAB: %s", InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR) ? "Enable camera movement" : "Free cursor");
 	ImGui::Text("P: Take buffer screenshots");
 	ImGui::Text("K: Delete screenshots in img directory");
+	ImGui::Text("1~4: Change render mode (1: Main, 2: Normal, 3: Depth, 4: Velocity)");
 	ImGui::End();
 }
 

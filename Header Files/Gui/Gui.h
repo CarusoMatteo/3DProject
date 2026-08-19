@@ -3,7 +3,6 @@
 #include "../Game Objects/IVisibleGameObject.h"
 #include "../Model/Transform.h"
 #include "IGui.h"
-#include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 #include <memory>
 #include <optional>
@@ -27,7 +26,7 @@ public:
 
 private:
 	const fvec2 settingsWindowPosition = fvec2(10, 10);
-	const fvec2 inspectorWindowPosition = fvec2(10, 540);
+	const fvec2 inspectorWindowPosition = fvec2(10, 570);
 
 	shared_ptr<fvec3> clearColor;
 

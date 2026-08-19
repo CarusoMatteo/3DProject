@@ -8,6 +8,7 @@ in vec4 clipPositionPrev;
 
 uniform sampler2D textureSampler;
 uniform bool useTexture;
+uniform int renderMode;
 
 struct PointLight
 {
@@ -34,7 +35,7 @@ layout (location = 4) out vec4 velocityColor;
 
 const float strength = 0.1;
 const float nearPlane = 0.1;
-const float farPlane = 75.0;
+const float farPlane = 100.0;
 
 float linearizeDepth(float depth)
 {
@@ -69,8 +70,17 @@ void main()
 		baseColor *= texture(textureSampler, fragmentTextureCoordinate);
 	}
 
-	fragColor = mainColor = baseColor;
+	mainColor = baseColor;
 	normalColor = vec4(N, 1);
 	depthColor = vec4(vec3(linearizeDepth(gl_FragCoord.z)), 1);
-	fragColor = velocityColor = vec4(motionVector(), 0, 1);
+	velocityColor = vec4(motionVector(), 0, 1);
+
+	if (renderMode == 2)
+		fragColor = normalColor;
+	else if (renderMode == 3)
+		fragColor = depthColor;
+	else if (renderMode == 4)
+		fragColor = velocityColor;
+	else if (renderMode == 1)
+		fragColor = mainColor;
 }

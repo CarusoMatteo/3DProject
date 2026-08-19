@@ -152,6 +152,8 @@ void ForwardRenderer::initUniformReferences()
 	this->uniforms.useTexture.location = glGetUniformLocation(this->programId, this->uniforms.useTexture.name.c_str());
 
 	this->uniforms.skybox.location = glGetUniformLocation(this->programId, this->uniforms.skybox.name.c_str());
+
+	this->uniforms.renderMode.location = glGetUniformLocation(this->programId, this->uniforms.renderMode.name.c_str());
 }
 
 void ForwardRenderer::updateUniformValues(const Transform modelTransform, const Transform meshTransform, const Material material, const optional<shared_ptr<Texture>> texture)
@@ -182,6 +184,8 @@ void ForwardRenderer::updateUniformValues(const Transform modelTransform, const 
 	this->uniforms.screenSize.value = Window::I()->getSize();
 
 	this->uniforms.useTexture.value = texture.has_value();
+
+	this->uniforms.renderMode.value = static_cast<int>(*this->renderMode);
 }
 
 void ForwardRenderer::passUniforms()
@@ -210,6 +214,8 @@ void ForwardRenderer::passUniforms()
 	glUniform1i(this->uniforms.isVisible.location, this->uniforms.isVisible.value ? 1 : 0);
 
 	glUniform1i(this->uniforms.useTexture.location, this->uniforms.useTexture.value ? 1 : 0);
+
+	glUniform1i(this->uniforms.renderMode.location, this->uniforms.renderMode.value);
 }
 
 void ForwardRenderer::bindTexture(const Texture texture) const

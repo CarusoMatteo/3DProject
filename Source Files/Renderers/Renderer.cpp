@@ -1,15 +1,15 @@
 #include "../../Header Files/Renderers/Renderer.h"
-#include <any>
+#include "../../Header Files/Renderers/RenderMode.h"
 #include <glad/glad.h>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
-#include <vector>
 
 using namespace std;
 
 shared_ptr<bool> Renderer::drawWireframe = make_shared<bool>(false);
 shared_ptr<bool> Renderer::drawAnchor = make_shared<bool>(false);
+shared_ptr<RenderMode> Renderer::renderMode = make_shared<RenderMode>(RenderMode::MAIN);
 
 shared_ptr<bool> Renderer::getDrawWireframeFlag()
 {
@@ -19,6 +19,11 @@ shared_ptr<bool> Renderer::getDrawWireframeFlag()
 shared_ptr<bool> Renderer::getDrawAnchorFlag()
 {
 	return Renderer::drawAnchor;
+}
+
+void Renderer::setRenderMode(const RenderMode mode)
+{
+	*Renderer::renderMode = mode;
 }
 
 bool Renderer::bufferIsUsed(const unsigned int address, const size_t size) const
