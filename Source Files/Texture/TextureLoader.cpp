@@ -118,4 +118,8 @@ void saveTexture(ivec2 size, vector<float> pixelsFloat, const string filename)
 		cerr << "stbi_write_bmp failed for image: " << filename << endl;
 		throw runtime_error("stbi_write_bmp failed for image" + filename);
 	}
+	else
+	{
+		cout << "Saved image: \"" << filename << "\"" << endl;
+	}
 }
