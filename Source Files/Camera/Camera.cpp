@@ -1,5 +1,6 @@
-#include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/CameraProjection.h"
+#include "../../Header Files/Camera/Camera.h"
+#include "../../Header Files/Camera/CameraPath.h"
+#include "../../Header Files/Camera/CameraProjection.h"
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/InputEventsType.h"
 #include "../../Header Files/Model/Transform.h"
@@ -9,64 +10,35 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <memory>
 #include <optional>
-#include <vector>
 
 using namespace glm;
 using namespace std;
 
 optional<unique_ptr<Camera>> Camera::instance = nullopt;
 
-static float easeLinear(const float t)
-{
-	return t;
-}
-
-static float easeInOutSmooth(const float t)
-{
-	return powf(t, 2) * (3.0f - 2.0f * t);
-}
-
-static float easeInOutSmoother(const float t)
-{
-	return powf(t, 3) * (t * (t * 6.0f - 15.0f) + 10.0f);
-}
-
-static fvec3 lerp(const fvec3 a, const fvec3 b, const float t, float (*easingFunction)(const float) = easeLinear)
-{
-	return a + easingFunction(t) * (b - a);
-}
-
-static CameraTransform lerp(const CameraTransform a, const CameraTransform b, const float t, float (*easingFunction)(const float) = easeLinear)
-{
-	return {
-		lerp(a.position, b.position, t, easingFunction),
-		lerp(a.target, b.target, t, easingFunction),
-		lerp(a.up, b.up, t, easingFunction),
-		lerp(a.direction, b.direction, t, easingFunction)};
-}
-
 Camera *Camera::I()
 {
 	const fvec3 position = fvec3(0, 0, -10);
 	const fvec3 target = fvec3(0);
 	const fvec3 up = fvec3(0, 1, 0);
-	const fvec3 direction = target - position;
 
-	return Camera::I({{position, target, up, direction}});
+	CameraPath defaultPath = CameraPath({{position, target, up}});
+
+	return Camera::I(defaultPath);
 }
 
-Camera *Camera::I(vector<CameraTransform> states)
+Camera *Camera::I(CameraPath cameraPath)
 {
 	if (!Camera::instance.has_value())
 	{
-		Camera::instance = unique_ptr<Camera>(new Camera(states));
+		Camera::instance = unique_ptr<Camera>(new Camera(cameraPath));
 	}
 	return Camera::instance.value().get();
 }
 
-Camera::Camera(vector<CameraTransform> states) : states(states)
+Camera::Camera(CameraPath cameraPath) : cameraPath(cameraPath)
 {
-	this->transform = states[0];
+	this->transform = cameraPath.getFirstTransform();
 	this->setProjectionData();
 
 	// Choose cursor mode, and its initial position
@@ -76,7 +48,7 @@ Camera::Camera(vector<CameraTransform> states) : states(states)
 
 void Camera::update(float deltaTime)
 {
-	if (this->states.size() == 1)
+	if (!this->cameraPath.has_value())
 	{
 		moveFirstPerson(deltaTime);
 		if (!InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR))
@@ -84,18 +56,7 @@ void Camera::update(float deltaTime)
 		return;
 	}
 
-	// Interpolate between state[currentState] and state[currentState + 1] based on deltaTime
-	const CameraTransform currentState = this->states[this->currentState % this->states.size()];
-	const CameraTransform nextState = this->states[(this->currentState + 1) % this->states.size()];
-
-	this->transform = lerp(currentState, nextState, lerpProgress, easeInOutSmoother);
-
-	lerpProgress += deltaTime * lerpSpeed;
-	if (lerpProgress >= 1.0f)
-	{
-		lerpProgress = 0.0f;
-		this->currentState++;
-	}
+	this->transform = this->cameraPath->getNextTransform(deltaTime);
 }
 
 void Camera::moveFirstPerson(float deltaTime)

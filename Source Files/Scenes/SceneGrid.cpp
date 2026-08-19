@@ -1,13 +1,12 @@
 #include "../../Header Files/Scenes/SceneGrid.h"
-#include "../../Header Files/Game Objects/Camera.h"
+#include "../../Header Files/Camera/Camera.h"
+#include "../../Header Files/Camera/CameraPath.h"
 #include "../../Header Files/Game Objects/CustomModel.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
-#include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/Skybox.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Model/Transform.h"
-#include "../../Header Files/Random.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
 #include "../../Header Files/Texture/TextureFactory.h"
 #include <glm/glm.hpp>
@@ -15,10 +14,10 @@
 
 SceneGrid::SceneGrid(const shared_ptr<fvec3> clearColor)
 {
-	Camera::I({
-		{fvec3(-10, 0.5f, 0), fvec3(0, 0.5f, 0), fvec3(0, 1, 0), fvec3(0, 0.5f, 0) - fvec3(-10, 0.5f, 0)},
-		{fvec3(-10, 0.5f, -15), fvec3(0, 0.5f, -15), fvec3(0, 1, 0), fvec3(0, 0.5f, -15) - fvec3(-10, 0.5f, -15)},
-	});
+	Camera::I(CameraPath({
+		{fvec3(-10, 0.5f, 0), fvec3(0, 0.5f, 0), fvec3(0, 1, 0)},
+		{fvec3(-10, 0.5f, -15), fvec3(0, 0.5f, -15), fvec3(0, 1, 0)},
+	}));
 	LightManager::I();
 
 	Transform gridTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};

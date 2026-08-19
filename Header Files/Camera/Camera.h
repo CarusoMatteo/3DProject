@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../CameraProjection.h"
+#include "../Camera/CameraPath.h"
+#include "../Camera/CameraProjection.h"
+#include "../Game Objects/IGameObject.h"
 #include "../Model/BoundingBox.h"
 #include "../Model/Transform.h"
-#include "IGameObject.h"
 #include <glm/glm.hpp>
 #include <memory>
 #include <optional>
@@ -16,7 +17,7 @@ class Camera : public IGameObject
 public:
 	// Singleton access.
 	static Camera *I();
-	static Camera *I(vector<CameraTransform> states);
+	static Camera *I(CameraPath cameraPath);
 
 	~Camera() = default;
 
@@ -35,13 +36,9 @@ private:
 	CameraProjection projection;
 
 	unique_ptr<BoundingBox> boundingBox;
-	vector<CameraTransform> states;
+	optional<CameraPath> cameraPath;
 
-	unsigned int currentState = 0;
-	float lerpProgress = 0;
-	const float lerpSpeed = 0.7f;
-
-	Camera(vector<CameraTransform> states);
+	Camera(CameraPath cameraPath);
 	void moveFirstPerson(float deltaTime);
 	void panFirstPerson();
 	void setProjectionData();

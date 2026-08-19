@@ -69,7 +69,7 @@
     <ClCompile Include="Source Files\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Game Objects\Camera.cpp">
+    <ClCompile Include="Source Files\Camera\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source Files\Model\Mesh.cpp">
@@ -141,6 +141,9 @@
     <ClCompile Include="Source Files\Scenes\SceneSpecular.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\Camera\CameraPath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\.common\ImGui\imconfig.h">
@@ -209,7 +212,7 @@
     <ClInclude Include="Header Files\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Game Objects\Camera.h">
+    <ClInclude Include="Header Files\Camera\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Model\BoundingBox.h">
@@ -221,7 +224,7 @@
     <ClInclude Include="Header Files\Model\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\CameraProjection.h">
+    <ClInclude Include="Header Files\Camera\CameraProjection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Model\MeshFactory.h">
@@ -315,6 +318,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lib\stb_image\stb_image_write.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Camera\CameraPath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Camera\EasingFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Renderers\RenderMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

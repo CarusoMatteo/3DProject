@@ -1,11 +1,11 @@
 #include "../../Header Files/Scenes/Scene.h"
-#include "../../Header Files/Game Objects/Camera.h"
-#include "../../Header Files/Game Objects/Cube.h"
+#include "../../Header Files/Camera/Camera.h"
+#include "../../Header Files/Camera/CameraPath.h"
+#include "../../Header Files/Camera/EasingFunctions.h"
 #include "../../Header Files/Game Objects/CustomModel.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Game Objects/Plane.h"
 #include "../../Header Files/Game Objects/Skybox.h"
-#include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/Lights/LightManager.h"
@@ -18,30 +18,26 @@
 
 Scene::Scene(const shared_ptr<fvec3> clearColor)
 {
-	Camera::I(
-		// Rotation around the origin
-		{
-			{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(-10, 2, 0)},
-			{fvec3(0, 2, 10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, 10)},
-			{fvec3(10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(10, 2, 0)},
-			{fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0), fvec3(0, 0, 0) - fvec3(0, 2, -10)},
-		}
-		// Slide from left to right
-		// {
-		// 	{fvec3(-5, 1, 7), fvec3(-5, 1, 0), fvec3(0, 1, 0), fvec3(-5, 1, 0) - fvec3(-5, 1, 7)},
-		// 	{fvec3(5, 1, 7), fvec3(5, 1, 0), fvec3(0, 1, 0), fvec3(5, 1, 0) - fvec3(5, 1, 7)},
-		// }
-		// Slide from top to bottom
-		// {
-		// 	{fvec3(0, -3, 7), fvec3(0, -3, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(0, -3, 7)},
-		// 	{fvec3(0, 3, 7), fvec3(0, 3, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(0, 3, 7)},
-		// }
-		// Slide from bottom left to top right
-		// {
-		// 	{fvec3(-5, -3, 10), fvec3(-5, -3, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(-5, -3, 10)},
-		// 	{fvec3(5, 3, 10), fvec3(5, 3, 0), fvec3(0, 1, 0), fvec3(0, 1, 0) - fvec3(5, 3, 10)},
-		// }
-	);
+	const CameraPath rotationAroundOrigin = CameraPath({
+		{{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.5f, easeInOutSmooth},
+		{{fvec3(0, 2, 10), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.7f, easeLinear},
+		{{fvec3(10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.5f, easeInOutSmoother},
+		{{fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 1.0f, easeLinear},
+	});
+	const CameraPath slideLeftToRight = CameraPath({
+		{{fvec3(-5, 1, 7), fvec3(-5, 1, 0), fvec3(0, 1, 0)}},
+		{{fvec3(5, 1, 7), fvec3(5, 1, 0), fvec3(0, 1, 0)}},
+	});
+	const CameraPath slideTopToBottom = CameraPath({
+		{{fvec3(0, -3, 7), fvec3(0, -3, 0), fvec3(0, 1, 0)}},
+		{{fvec3(0, 3, 7), fvec3(0, 3, 0), fvec3(0, 1, 0)}},
+	});
+	const CameraPath slideBottomLeftToTopRight = CameraPath({
+		{{fvec3(-5, -3, 10), fvec3(-5, -3, 0), fvec3(0, 1, 0)}},
+		{{fvec3(5, 3, 10), fvec3(5, 3, 0), fvec3(0, 1, 0)}},
+	});
+
+	Camera::I(rotationAroundOrigin);
 	LightManager::I();
 
 	Transform planeTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};
@@ -49,7 +45,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 
 	this->gameObjects = {
 		shared_ptr<IVisibleGameObject>(new Skybox()),
-		// shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::blinnPhong())),
+		shared_ptr<IVisibleGameObject>(new Plane(planeTransform, ShaderFactory::blinnPhong())),
 		// shared_ptr<IVisibleGameObject>(new Cube(ShaderFactory::blinnPhong())),
 		// shared_ptr<IVisibleGameObject>(new Sphere(ShaderFactory::blinnPhong())),
 		shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::blinnPhong, backpackTexture)),

@@ -138,7 +138,8 @@
     <ClCompile Include="..\.common\ImGui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\.common\ImGui\imgui_tables.cpp" />
     <ClCompile Include="..\.common\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="Source Files\Game Objects\Camera.cpp" />
+    <ClCompile Include="Source Files\Camera\Camera.cpp" />
+    <ClCompile Include="Source Files\Camera\CameraPath.cpp" />
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
     <ClCompile Include="Source Files\Game Objects\CustomModel.cpp" />
     <ClCompile Include="Source Files\Game Objects\Skybox.cpp" />
@@ -182,9 +183,11 @@
     <ClInclude Include="..\.common\ImGui\imstb_textedit.h" />
     <ClInclude Include="..\.common\ImGui\imstb_truetype.h" />
     <ClInclude Include="Header Files\ButtonStates.h" />
-    <ClInclude Include="Header Files\Game Objects\Camera.h" />
+    <ClInclude Include="Header Files\Camera\Camera.h" />
+    <ClInclude Include="Header Files\Camera\CameraPath.h" />
     <ClInclude Include="Header Files\Game Objects\Cube.h" />
     <ClInclude Include="Header Files\Game Objects\CustomModel.h" />
+    <ClInclude Include="Header Files\Camera\EasingFunctions.h" />
     <ClInclude Include="Header Files\Game Objects\IGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
@@ -195,6 +198,7 @@
     <ClInclude Include="Header Files\Renderers\BuffersAddresses.h" />
     <ClInclude Include="Header Files\Renderers\BuffersValues.h" />
     <ClInclude Include="Header Files\Renderers\GeometryRenderer.h" />
+    <ClInclude Include="Header Files\Renderers\RenderMode.h" />
     <ClInclude Include="Header Files\Scenes\SceneGrid.h" />
     <ClInclude Include="Header Files\Scenes\SceneSpecular.h" />
     <ClInclude Include="Header Files\Texture\CubeMapTextureFactory.h" />
@@ -219,7 +223,7 @@
     <ClInclude Include="Header Files\Texture\TextureFactory.h" />
     <ClInclude Include="Header Files\Texture\TextureLoader.h" />
     <ClInclude Include="Header Files\Model\Transform.h" />
-    <ClInclude Include="Header Files\CameraProjection.h" />
+    <ClInclude Include="Header Files\Camera\CameraProjection.h" />
     <ClInclude Include="Header Files\Renderers\Uniforms.h" />
     <ClInclude Include="Header Files\Random.h" />
     <ClInclude Include="Header Files\Renderers\Renderer.h" />

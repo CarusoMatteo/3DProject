@@ -1,5 +1,5 @@
 #include "../../Header Files/Renderers/ForwardRenderer.h"
-#include "../../Header Files/Game Objects/Camera.h"
+#include "../../Header Files/Camera/Camera.h"
 #include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Lights/LightValue.h"
 #include "../../Header Files/Model/Material.h"
