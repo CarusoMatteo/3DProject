@@ -25,8 +25,8 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 		{{fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 1.0f, easeLinear},
 	});
 	const CameraPath slideLeftToRight = CameraPath({
-		{{fvec3(-5, 1, 7), fvec3(-5, 1, 0), fvec3(0, 1, 0)}},
-		{{fvec3(5, 1, 7), fvec3(5, 1, 0), fvec3(0, 1, 0)}},
+		{{fvec3(-5, 1, 7), fvec3(-5, 1, 0), fvec3(0, 1, 0)}, 10.0f, easeLinear},
+		{{fvec3(5, 1, 7), fvec3(5, 1, 0), fvec3(0, 1, 0)}, 10.0f, easeLinear},
 	});
 	const CameraPath slideTopToBottom = CameraPath({
 		{{fvec3(0, -3, 7), fvec3(0, -3, 0), fvec3(0, 1, 0)}},
@@ -37,7 +37,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 		{{fvec3(5, 3, 10), fvec3(5, 3, 0), fvec3(0, 1, 0)}},
 	});
 
-	Camera::I(rotationAroundOrigin);
+	Camera::I(slideLeftToRight);
 	LightManager::I();
 
 	Transform planeTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};

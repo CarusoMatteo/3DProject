@@ -54,7 +54,6 @@ vec2 motionVector()
 	vec2 motionVector = ndcCurrent - ndcPrevious;
 	// Convert to color space [-1, 1] => [0, 1]
 	return motionVector * 0.5 + 0.5;
-	// return motionVector * 2 + 0.5;
 }
 
 void main()
