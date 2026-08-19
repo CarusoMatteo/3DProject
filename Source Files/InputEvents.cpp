@@ -1,6 +1,8 @@
 #include "../Header Files/InputEvents.h"
 #include "../Header Files/ButtonStates.h"
 #include "../Header Files/InputEventsType.h"
+#include "../Header Files/Renderers/RenderMode.h"
+#include "../Header Files/Renderers/Renderer.h"
 #include "../Header Files/Window.h"
 #include <GLFW/glfw3.h>
 #include <filesystem>
@@ -8,6 +10,7 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <memory>
+#include <string>
 
 using namespace glm;
 using namespace std;
@@ -97,6 +100,22 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 		if (action == GLFW_RELEASE)
 			InputEvents::deleteScreenshotsFiles();
 		break;
+	case GLFW_KEY_1:
+		if (action == GLFW_RELEASE)
+			Renderer::setRenderMode(RenderMode::MAIN);
+		break;
+	case GLFW_KEY_2:
+		if (action == GLFW_RELEASE)
+			Renderer::setRenderMode(RenderMode::NORMAL);
+		break;
+	case GLFW_KEY_3:
+		if (action == GLFW_RELEASE)
+			Renderer::setRenderMode(RenderMode::DEPTH);
+		break;
+	case GLFW_KEY_4:
+		if (action == GLFW_RELEASE)
+			Renderer::setRenderMode(RenderMode::VELOCITY);
+		break;
 	default:
 		break;
 	}
@@ -150,7 +169,7 @@ void InputEvents::deleteScreenshotsFiles()
 		if (entry.is_regular_file() && entry.path().extension() == ".bmp")
 		{
 			filesystem::remove(entry.path());
-			cout << "Deleted: " << entry.path().filename() << endl;
+			cout << "Deleted image: " << entry.path().filename() << endl;
 		}
 	}
 }

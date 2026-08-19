@@ -46,6 +46,8 @@ struct ForwardUniforms
 	Uniform<bool> useTexture = {"useTexture"};
 
 	Uniform<none> skybox = {"skyboxSampler"};
+
+	Uniform<int> renderMode = {"renderMode"};
 };
 
 struct GeometryUniforms
