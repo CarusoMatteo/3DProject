@@ -35,7 +35,7 @@ SceneGeoGrid::SceneGeoGrid(const shared_ptr<fvec3> clearColor)
 	});
 
 	Camera::I(slideLeftToRight);
-	LightManager::I({{.position = fvec3(45), .color = fvec3(1)}});
+	LightManager::I({{.position = fvec3(0, 45, 10), .color = fvec3(1)}});
 
 	Transform gridTransform = {fvec3(10, 1, 0), Rotation(90, fvec3(0, 1, 0)), fvec3(0.5, 1, 2)};
 

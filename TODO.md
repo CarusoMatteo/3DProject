@@ -1,6 +1,6 @@
 # TODO
 - GEO: Thin geometry
-	- [ ] Grid
+	- [x] Grid
 	- [ ] Spiral
 	- [ ] Thin triangles
 
