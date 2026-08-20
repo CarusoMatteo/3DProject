@@ -41,7 +41,7 @@ private:
 		ScreenshotTuple motionVectorsBuffer;
 	};
 
-	const unsigned int howManyScreenshotsInARow = 3;
+	const unsigned int screenshotsInARowCount = 100;
 	vector<ScreenshotData> screenshotQueue;
 
 	unique_ptr<IScene> scene;

@@ -14,13 +14,29 @@
 
 SceneGeoGrid::SceneGeoGrid(const shared_ptr<fvec3> clearColor)
 {
-	Camera::I(CameraPath({
-		{fvec3(-10, 0.5f, 0), fvec3(0, 0.5f, 0), fvec3(0, 1, 0)},
-		{fvec3(-10, 0.5f, -15), fvec3(0, 0.5f, -15), fvec3(0, 1, 0)},
-	}));
+	const CameraPath rotationAroundOrigin = CameraPath({
+		{{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.5f, easeInOutSmooth},
+		{{fvec3(0, 2, 10), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.7f, easeLinear},
+		{{fvec3(10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.5f, easeInOutSmoother},
+		{{fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 1.0f, easeLinear},
+	});
+	const CameraPath slideLeftToRight = CameraPath({
+		{{fvec3(-5, 1, 7), fvec3(-5, 1, 0), fvec3(0, 1, 0)}, 1.0f, easeLinear},
+		{{fvec3(5, 1, 7), fvec3(5, 1, 0), fvec3(0, 1, 0)}, 1.0f, easeLinear},
+	});
+	const CameraPath slideTopToBottom = CameraPath({
+		{{fvec3(0, -3, 7), fvec3(0, -3, 0), fvec3(0, 1, 0)}},
+		{{fvec3(0, 3, 7), fvec3(0, 3, 0), fvec3(0, 1, 0)}},
+	});
+	const CameraPath slideBottomLeftToTopRight = CameraPath({
+		{{fvec3(-5, -3, 10), fvec3(-5, -3, 0), fvec3(0, 1, 0)}},
+		{{fvec3(5, 3, 10), fvec3(5, 3, 0), fvec3(0, 1, 0)}},
+	});
+
+	Camera::I(slideLeftToRight);
 	LightManager::I();
 
-	Transform gridTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};
+	Transform gridTransform = {fvec3(10, 1, 0), Rotation(90, fvec3(0,1,0)), fvec3(0.5, 1, 2)};
 
 	this->gameObjects = {
 		shared_ptr<IVisibleGameObject>(new Skybox()),

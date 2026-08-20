@@ -165,8 +165,8 @@ void InputEvents::deleteScreenshotsFiles()
 	// Iterate on all files of the directory
 	for (const auto &entry : filesystem::directory_iterator(directoryPath))
 	{
-		// Check if it's a regular file and has the .bmp extension
-		if (entry.is_regular_file() && entry.path().extension() == ".bmp")
+		// Check if it's a regular file and has the .bmp or .png extension
+		if (entry.is_regular_file() && (entry.path().extension() == ".bmp" || entry.path().extension() == ".png"))
 		{
 			filesystem::remove(entry.path());
 			cout << "Deleted image: " << entry.path().filename() << endl;

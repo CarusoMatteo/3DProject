@@ -13,4 +13,4 @@ Texture loadTexture(const string path, bool shouldFlip);
 
 Texture loadCubemap(vector<string> faces, bool shouldFlip);
 
-void saveTexture(ivec2 size, vector<float> pixelsFloat, const string filename);
+void saveTexture(ivec2 size, const vector<float> &pixelsFloat, const string filenameNoExtension, bool saveToPng, bool writeOnSuccess);

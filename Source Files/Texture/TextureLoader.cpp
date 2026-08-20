@@ -95,7 +95,7 @@ Texture loadCubemap(vector<string> faces, bool shouldFlip)
 	return texture;
 }
 
-void saveTexture(ivec2 size, vector<float> pixelsFloat, const string filename)
+void saveTexture(ivec2 size, const vector<float> &pixelsFloat, const string filenameNoExtension, bool saveToPng, bool writeOnSuccess)
 {
 	vector<unsigned char> pixels8(size.x * size.y * 4);
 	for (size_t i = 0; i < pixelsFloat.size(); i++)
@@ -113,12 +113,20 @@ void saveTexture(ivec2 size, vector<float> pixelsFloat, const string filename)
 			   &pixels8[(size.y - 1 - y) * rowSize],
 			   rowSize);
 	}
-	if (!stbi_write_bmp(filename.c_str(), size.x, size.y, RGBA, flipped.data()))
+
+	const string filename = filenameNoExtension + (saveToPng ? ".png" : ".bmp");
+	const bool saved = saveToPng ? stbi_write_png(filename.c_str(), size.x, size.y, RGBA, flipped.data(), size.x * RGBA)
+								 : stbi_write_bmp(filename.c_str(), size.x, size.y, RGBA, flipped.data());
+
+	if (!saved)
 	{
-		cerr << "stbi_write_bmp failed for image: " << filename << endl;
-		throw runtime_error("stbi_write_bmp failed for image" + filename);
+		const string errorMessage = saveToPng ? "stbi_write_png failed for image: " + filename
+											  : "stbi_write_bmp failed for image: " + filename;
+		cerr << errorMessage << endl;
+		throw runtime_error(errorMessage);
 	}
-	else
+
+	if (writeOnSuccess)
 	{
 		cout << "Saved image: \"" << filename << "\"" << endl;
 	}

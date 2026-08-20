@@ -27,6 +27,10 @@ Gui::Gui(const shared_ptr<fvec3> clearColor) : IGui()
 
 void Gui::drawGui(vector<shared_ptr<IVisibleGameObject>> objects)
 {
+	// Hide UI when we're about to take a screenshot
+	if (InputEvents::shouldTakeScreenshotNextFrame(false))
+		return;
+
 	// Prepares a new frame for ImGui
 	ImGui_ImplGlfw_NewFrame();
 	// Prepares a new frame for OpenGL3 rendering

@@ -75,8 +75,7 @@ void SceneTest::renderScene(float currentTime)
 	// ShaderFactory::geometry()->finishGeometryPass();
 	// ShaderFactory::geometry()->lightingPass();
 
-	if (!InputEvents::shouldTakeScreenshotNextFrame(false))
-		this->gui->drawGui(this->gameObjects);
+	this->gui->drawGui(this->gameObjects);
 }
 
 void SceneTest::scatterObjects()

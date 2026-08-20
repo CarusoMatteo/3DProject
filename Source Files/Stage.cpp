@@ -1,6 +1,7 @@
 #include "../Header Files/Stage.h"
 #include "../Header Files/InputEvents.h"
 #include "../Header Files/Scenes/IScene.h"
+#include "../Header Files/Scenes/SceneGeoGrid.h"
 #include "../Header Files/Scenes/SceneTest.h"
 #include "../Header Files/Texture/TextureLoader.h"
 #include "../Header Files/Window.h"
@@ -23,9 +24,7 @@ void Stage::updateGameObjects(const float deltaTime)
 {
 	// Ignore deltaTime if we're currently saving screenshots, to avoid skipping frames in the scene update.
 	if (!screenshotQueue.empty())
-	{
 		this->scene->updateGameObjects(1 / 60.0f);
-	}
 	else
 		this->scene->updateGameObjects(deltaTime);
 }
@@ -144,7 +143,7 @@ void Stage::setupFBO()
 void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 {
 	// Consume input only when we've saved the correct amount of screenshots in a row.
-	const bool shouldConsumeInput = this->screenshotQueue.size() >= this->howManyScreenshotsInARow - 1;
+	const bool shouldConsumeInput = this->screenshotQueue.size() >= this->screenshotsInARowCount - 1;
 	const bool shouldTakeScreenshot = InputEvents::shouldTakeScreenshotNextFrame(shouldConsumeInput);
 
 	if (shouldTakeScreenshot)
@@ -156,26 +155,27 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 		ScreenshotData data;
 
 		glReadBuffer(GL_COLOR_ATTACHMENT1);
-		filename = ("img/" + to_string(currentTime) + "_main.bmp");
+		filename = ("img/" + to_string(currentTime) + "_main");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.mainBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT2);
-		filename = ("img/" + to_string(currentTime) + "_normal.bmp");
+		filename = ("img/" + to_string(currentTime) + "_normal");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.normalBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT3);
-		filename = ("img/" + to_string(currentTime) + "_depth.bmp");
+		filename = ("img/" + to_string(currentTime) + "_depth");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.depthBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT4);
-		filename = ("img/" + to_string(currentTime) + "_motion_vectors.bmp");
+		filename = ("img/" + to_string(currentTime) + "_motion_vectors");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.motionVectorsBuffer = {filename, size, pixelsFloat};
 
 		this->screenshotQueue.push_back(data);
+		cout << "Saved screenshot data " << this->screenshotQueue.size() << " / " << this->screenshotsInARowCount << " (" << static_cast<float>(this->screenshotQueue.size()) / this->screenshotsInARowCount * 100 << "%) to queue" << endl;
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		if (shouldConsumeInput)
@@ -188,11 +188,31 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 
 void Stage::saveBuffers() const
 {
+	const unsigned int screenshotsPerData = 4; // main, normal, depth, motion vectors
+	const unsigned int total = this->screenshotsInARowCount * screenshotsPerData;
+	const bool saveToPng = true;
+
+	float i = 0;
 	for (const ScreenshotData &data : this->screenshotQueue)
 	{
-		saveTexture(data.mainBuffer.size, data.mainBuffer.pixelsFloat, data.mainBuffer.filename);
-		saveTexture(data.normalBuffer.size, data.normalBuffer.pixelsFloat, data.normalBuffer.filename);
-		saveTexture(data.depthBuffer.size, data.depthBuffer.pixelsFloat, data.depthBuffer.filename);
-		saveTexture(data.motionVectorsBuffer.size, data.motionVectorsBuffer.pixelsFloat, data.motionVectorsBuffer.filename);
+		saveTexture(data.mainBuffer.size, data.mainBuffer.pixelsFloat, data.mainBuffer.filename, saveToPng, false);
+		cout << "Saved screenshots "
+			 << ++i << " / " << total << " ("
+			 << i / total * 100 << "%) to disk." << endl;
+
+		saveTexture(data.normalBuffer.size, data.normalBuffer.pixelsFloat, data.normalBuffer.filename, saveToPng, false);
+		cout << "Saved screenshots "
+			 << ++i << " / " << total << " ("
+			 << i / total * 100 << "%) to disk." << endl;
+
+		saveTexture(data.depthBuffer.size, data.depthBuffer.pixelsFloat, data.depthBuffer.filename, saveToPng, false);
+		cout << "Saved screenshots "
+			 << ++i << " / " << total << " ("
+			 << i / total * 100 << "%) to disk." << endl;
+
+		saveTexture(data.motionVectorsBuffer.size, data.motionVectorsBuffer.pixelsFloat, data.motionVectorsBuffer.filename, saveToPng, false);
+		cout << "Saved screenshots "
+			 << ++i << " / " << total << " ("
+			 << i / total * 100 << "%) to disk." << endl;
 	}
 }
