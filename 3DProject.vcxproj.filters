@@ -135,7 +135,7 @@
     <ClCompile Include="Source Files\Game Objects\CustomModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Scenes\SceneGrid.cpp">
+    <ClCompile Include="Source Files\Scenes\SceneGeoGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source Files\Scenes\SceneSpecular.cpp">
@@ -311,7 +311,7 @@
     <ClInclude Include="Header Files\Game Objects\CustomModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Scenes\SceneGrid.h">
+    <ClInclude Include="Header Files\Scenes\SceneGeoGrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Scenes\SceneSpecular.h">

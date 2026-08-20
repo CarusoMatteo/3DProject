@@ -10,11 +10,11 @@
 using namespace glm;
 using namespace std;
 
-class SceneGrid : public IScene
+class SceneGeoGrid : public IScene
 {
 public:
-	SceneGrid(const shared_ptr<fvec3> clearColor);
-	~SceneGrid() = default;
+	SceneGeoGrid(const shared_ptr<fvec3> clearColor);
+	~SceneGeoGrid() = default;
 
 	void updateGameObjects(const float deltaTime) override;
 	void renderScene(const float currentTime) override;

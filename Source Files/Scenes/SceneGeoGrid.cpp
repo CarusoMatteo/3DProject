@@ -1,4 +1,4 @@
-#include "../../Header Files/Scenes/SceneGrid.h"
+#include "../../Header Files/Scenes/SceneGeoGrid.h"
 #include "../../Header Files/Camera/Camera.h"
 #include "../../Header Files/Camera/CameraPath.h"
 #include "../../Header Files/Game Objects/CustomModel.h"
@@ -12,7 +12,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 
-SceneGrid::SceneGrid(const shared_ptr<fvec3> clearColor)
+SceneGeoGrid::SceneGeoGrid(const shared_ptr<fvec3> clearColor)
 {
 	Camera::I(CameraPath({
 		{fvec3(-10, 0.5f, 0), fvec3(0, 0.5f, 0), fvec3(0, 1, 0)},
@@ -24,14 +24,14 @@ SceneGrid::SceneGrid(const shared_ptr<fvec3> clearColor)
 
 	this->gameObjects = {
 		shared_ptr<IVisibleGameObject>(new Skybox()),
-		shared_ptr<IVisibleGameObject>(new CustomModel("grid", ShaderFactory::blinnPhong, TextureFactory::none())),
+		shared_ptr<IVisibleGameObject>(new CustomModel("grid", gridTransform, ShaderFactory::blinnPhong, TextureFactory::none())),
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
 
 	// this->scatterObjects();
 }
 
-void SceneGrid::updateGameObjects(float deltaTime)
+void SceneGeoGrid::updateGameObjects(float deltaTime)
 {
 	Camera::I()->update(deltaTime);
 	LightManager::I()->updateLights(deltaTime);
@@ -42,7 +42,7 @@ void SceneGrid::updateGameObjects(float deltaTime)
 	}
 }
 
-void SceneGrid::renderScene(float currentTime)
+void SceneGeoGrid::renderScene(float currentTime)
 {
 	for (auto &&object : this->gameObjects)
 	{
