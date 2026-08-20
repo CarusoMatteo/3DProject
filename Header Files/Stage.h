@@ -39,17 +39,20 @@ private:
 		ScreenshotTuple normalBuffer;
 		ScreenshotTuple depthBuffer;
 		ScreenshotTuple motionVectorsBuffer;
+		ScreenshotTuple mainBuffer4k;
 	};
 
-	const unsigned int screenshotsInARowCount = 100;
+	const unsigned int screenshotsInARowCount = 1;
 	vector<ScreenshotData> screenshotQueue;
 
 	unique_ptr<IScene> scene;
 	shared_ptr<fvec3> clearColor;
 
 	unsigned int fbo = -1;
+	unsigned int fbo4k = -1;
 
 	void setupFBO();
+	void setupFBO4k();
 	void addBuffersToSaveQueue(const float currentTime, const ivec2 size);
 	void saveBuffers() const;
 };

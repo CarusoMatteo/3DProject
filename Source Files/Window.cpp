@@ -140,11 +140,11 @@ void Window::initializeWindow()
 	}
 
 	// Resize window to fraction of monitor size
-	const int newWidth = static_cast<int>(mode->width * this->monitorPercentageSize.x);
-	const int newHeight = static_cast<int>(mode->height * this->monitorPercentageSize.y);
-	glfwSetWindowSize(this->window, newWidth, newHeight);
+	// const int newWidth = static_cast<int>(mode->width * this->monitorPercentageSize.x);
+	// const int newHeight = static_cast<int>(mode->height * this->monitorPercentageSize.y);
+	// glfwSetWindowSize(this->window, newWidth, newHeight);
 
-	glViewport(0, 0, newWidth, newHeight);
+	glViewport(0, 0, windowWidth, windowHeight);
 
 	// Enable V-Sync (Frame rate is capped to monitor refresh rate).
 	glfwSwapInterval(1);

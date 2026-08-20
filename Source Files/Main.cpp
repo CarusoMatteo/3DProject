@@ -16,7 +16,7 @@ int main(void)
 {
 	const unique_ptr<Stage> stage(new Stage(clearColor));
 
-	InputEvents::takeScreenshots();
+	// InputEvents::takeScreenshots();
 
 	while (!stage->shouldWindowClose())
 	{
