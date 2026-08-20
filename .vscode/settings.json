@@ -57,6 +57,7 @@
 		"assimp",
 		"blinn",
 		"blit",
+		"disocclusion",
 		"fmat",
 		"glfw",
 		"linearization",
