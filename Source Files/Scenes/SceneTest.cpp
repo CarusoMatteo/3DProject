@@ -9,6 +9,7 @@
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/Lights/LightManager.h"
+#include "../../Header Files/Lights/LightValue.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Random.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
@@ -38,7 +39,7 @@ SceneTest::SceneTest(const shared_ptr<fvec3> clearColor)
 	});
 
 	Camera::I(slideLeftToRight);
-	LightManager::I();
+	LightManager::I({{.position = fvec3(45), .color = fvec3(1)}});
 
 	Transform planeTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};
 	auto backpackTexture = TextureFactory::fromFile("./assets/models/backpack/diffuse.jpg", true);

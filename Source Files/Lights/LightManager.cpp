@@ -14,9 +14,14 @@ optional<unique_ptr<LightManager>> LightManager::instance = nullopt;
 
 LightManager *LightManager::I()
 {
+	return LightManager::I({{.position = fvec3(45), .color = fvec3(1)}});
+}
+
+LightManager *LightManager::I(vector<LightValue> lightValues)
+{
 	if (!LightManager::instance.has_value())
 	{
-		LightManager::instance = unique_ptr<LightManager>(new LightManager());
+		LightManager::instance = unique_ptr<LightManager>(new LightManager(lightValues));
 	}
 	return LightManager::instance.value().get();
 }
@@ -62,15 +67,10 @@ vector<float> LightManager::getPowers() const
 	return result;
 }
 
-LightManager::LightManager()
+LightManager::LightManager(vector<LightValue> lightValues)
 {
-	for (unsigned int i = 0; i < this->numberOfLights; i++)
+	for (const auto &value : lightValues)
 	{
-		const LightValue value = {
-			fvec3(50),
-			fvec3(1),
-			0.7f,
-			1.8f};
 		this->lights.push_back(make_unique<PointLight>(value, 2.0f));
 	}
 }

@@ -6,6 +6,7 @@
 #include "../../Header Files/Game Objects/Skybox.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Lights/LightManager.h"
+#include "../../Header Files/Lights/LightValue.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
 #include "../../Header Files/Texture/TextureFactory.h"
@@ -34,9 +35,9 @@ SceneGeoGrid::SceneGeoGrid(const shared_ptr<fvec3> clearColor)
 	});
 
 	Camera::I(slideLeftToRight);
-	LightManager::I();
+	LightManager::I({{.position = fvec3(45), .color = fvec3(1)}});
 
-	Transform gridTransform = {fvec3(10, 1, 0), Rotation(90, fvec3(0,1,0)), fvec3(0.5, 1, 2)};
+	Transform gridTransform = {fvec3(10, 1, 0), Rotation(90, fvec3(0, 1, 0)), fvec3(0.5, 1, 2)};
 
 	this->gameObjects = {
 		shared_ptr<IVisibleGameObject>(new Skybox()),

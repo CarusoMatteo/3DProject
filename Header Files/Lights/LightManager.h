@@ -16,6 +16,7 @@ class LightManager
 public:
 	// Singleton access.
 	static LightManager *I();
+	static LightManager *I(vector<LightValue> lightValues);
 
 	~LightManager() = default;
 
@@ -27,9 +28,8 @@ public:
 
 private:
 	static optional<unique_ptr<LightManager>> instance;
-	const unsigned int numberOfLights = 1;
 
 	vector<unique_ptr<PointLight>> lights;
 
-	LightManager();
+	LightManager(vector<LightValue> lightValues);
 };

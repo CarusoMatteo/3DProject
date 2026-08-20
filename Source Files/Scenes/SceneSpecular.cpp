@@ -6,6 +6,7 @@
 #include "../../Header Files/Game Objects/Sphere.h"
 #include "../../Header Files/Gui/Gui.h"
 #include "../../Header Files/Lights/LightManager.h"
+#include "../../Header Files/Lights/LightValue.h"
 #include "../../Header Files/Model/Transform.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
 #include <glm/glm.hpp>
@@ -19,7 +20,7 @@ SceneSpecular::SceneSpecular(const shared_ptr<fvec3> clearColor)
 		{fvec3(4, 0, 0), fvec3(0, 0, 0), fvec3(0, 1, 0)},
 		{fvec3(0, 0, -4), fvec3(0, 0, 0), fvec3(0, 1, 0)},
 	}));
-	LightManager::I();
+	LightManager::I({{.position = fvec3(45), .color = fvec3(1)}});
 
 	Transform sphereTransform = {fvec3(0), Rotation(), fvec3(1)};
 
