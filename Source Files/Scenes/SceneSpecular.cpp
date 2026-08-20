@@ -29,8 +29,6 @@ SceneSpecular::SceneSpecular(const shared_ptr<fvec3> clearColor)
 		shared_ptr<IVisibleGameObject>(new Sphere(sphereTransform, ShaderFactory::reflection())),
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
-
-	// this->scatterObjects();
 }
 
 void SceneSpecular::updateGameObjects(float deltaTime)
@@ -50,8 +48,6 @@ void SceneSpecular::renderScene(float currentTime)
 	{
 		object->render(currentTime);
 	}
-	// ShaderFactory::geometry()->finishGeometryPass();
-	// ShaderFactory::geometry()->lightingPass();
 
 	this->gui->drawGui(this->gameObjects);
 }

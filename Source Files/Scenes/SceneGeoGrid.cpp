@@ -44,8 +44,6 @@ SceneGeoGrid::SceneGeoGrid(const shared_ptr<fvec3> clearColor)
 		shared_ptr<IVisibleGameObject>(new CustomModel("grid", gridTransform, ShaderFactory::blinnPhong, TextureFactory::none())),
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
-
-	// this->scatterObjects();
 }
 
 void SceneGeoGrid::updateGameObjects(float deltaTime)
@@ -65,8 +63,6 @@ void SceneGeoGrid::renderScene(float currentTime)
 	{
 		object->render(currentTime);
 	}
-	// ShaderFactory::geometry()->finishGeometryPass();
-	// ShaderFactory::geometry()->lightingPass();
 
 	this->gui->drawGui(this->gameObjects);
 }

@@ -53,8 +53,6 @@ SceneTest::SceneTest(const shared_ptr<fvec3> clearColor)
 		shared_ptr<IVisibleGameObject>(new CustomModel("backpack", ShaderFactory::blinnPhong, backpackTexture)),
 	};
 	this->gui = unique_ptr<Gui>(new Gui(clearColor));
-
-	// this->scatterObjects();
 }
 
 void SceneTest::updateGameObjects(float deltaTime)
@@ -74,8 +72,6 @@ void SceneTest::renderScene(float currentTime)
 	{
 		object->render(currentTime);
 	}
-	// ShaderFactory::geometry()->finishGeometryPass();
-	// ShaderFactory::geometry()->lightingPass();
 
 	this->gui->drawGui(this->gameObjects);
 }
