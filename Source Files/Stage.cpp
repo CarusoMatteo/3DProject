@@ -35,15 +35,15 @@ static string formatDuration(const double seconds)
 	return formatted.str();
 }
 
-Stage::Stage(const shared_ptr<fvec3> clearColor)
+Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 {
 	this->clearColor = clearColor;
-	Window::I();
+	Window::I(fixedWindowSize);
 
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneGeoGrid(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)

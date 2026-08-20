@@ -1,4 +1,5 @@
 #include "../../Header Files/Gui/Gui.h"
+#include "../../Header Files/Camera/Camera.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Gui/IGui.h"
 #include "../../Header Files/InputEvents.h"
@@ -69,11 +70,12 @@ void Gui::settingsWindow()
 	ImGui::ColorEdit3("Background Color", (float *)this->clearColor.get());
 
 	fvec2 mousePosition = InputEvents::getCursorPosition();
+	const CameraTransform cameraTransform = Camera::I()->getTransform();
+	const fvec3 cameraPosition = cameraTransform.position;
 
 	ImGui::Text("Mouse Coordinates relative to GLFW Window: (%.1f, %.1f)", mousePosition.x, mousePosition.y);
 	ImGui::Checkbox("Wireframe", Renderer::getDrawWireframeFlag().get());
-	ImGui::Checkbox("Anchor", Renderer::getDrawAnchorFlag().get());
-	// ImGui::Checkbox("Bounding Box", MeshBB::shouldDrawBoundingBoxRef());
+	ImGui::Text("Camera position: (%.1f, %.1f, %.1f), target: (%.1f, %.1f, %.1f)", cameraPosition.x, cameraPosition.y, cameraPosition.z, cameraTransform.target.x, cameraTransform.target.y, cameraTransform.target.z);
 
 	fvec3 *lightPositionPtr = LightManager::I()->getPositionPtrs()[0];
 	ImGui::SliderFloat("Light position x", &lightPositionPtr->x, -50.0f, 50.0f);

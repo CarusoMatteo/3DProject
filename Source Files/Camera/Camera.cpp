@@ -18,13 +18,16 @@ optional<unique_ptr<Camera>> Camera::instance = nullopt;
 
 Camera *Camera::I()
 {
-	const fvec3 position = fvec3(0, 0, -10);
-	const fvec3 target = fvec3(0);
-	const fvec3 up = fvec3(0, 1, 0);
+	return Camera::I(SimpleCameraTransform{.position = fvec3(0, 0, -10), .target = fvec3(0), .up = fvec3(0, 1, 0)}.toCameraTransform());
+}
 
-	CameraPath defaultPath = CameraPath({{position, target, up}});
-
-	return Camera::I(defaultPath);
+Camera *Camera::I(CameraTransform transform)
+{
+	if (!Camera::instance.has_value())
+	{
+		Camera::instance = unique_ptr<Camera>(new Camera(transform));
+	}
+	return Camera::instance.value().get();
 }
 
 Camera *Camera::I(CameraPath cameraPath)
@@ -34,6 +37,16 @@ Camera *Camera::I(CameraPath cameraPath)
 		Camera::instance = unique_ptr<Camera>(new Camera(cameraPath));
 	}
 	return Camera::instance.value().get();
+}
+
+Camera::Camera(CameraTransform transform) : transform(transform)
+{
+	this->cameraPath = nullopt;
+	this->setProjectionData();
+
+	// Choose cursor mode, and its initial position
+	Window::I()->centerCursor();
+	Window::I()->disableCursor();
 }
 
 Camera::Camera(CameraPath cameraPath) : cameraPath(cameraPath)
@@ -143,16 +156,16 @@ fmat4 Camera::makeViewMatrix() const
 	return this->transform.toMatrix();
 }
 
-fvec3 Camera::getPosition() const
+CameraTransform Camera::getTransform() const
 {
-	return this->transform.position;
+	return this->transform;
 }
 
 void Camera::setProjectionData()
 {
 	const float fovY = 45.0f;
 	const float nearPlane = 0.1f;
-	const float farPlane = 2000.0f;
+	const float farPlane = 1000.0f;
 
 	const ivec2 windowSize = Window::I()->getSize();
 	const float aspect = static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y);

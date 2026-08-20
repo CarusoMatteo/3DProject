@@ -38,7 +38,8 @@ SceneTest::SceneTest(const shared_ptr<fvec3> clearColor)
 		{{fvec3(5, 3, 10), fvec3(5, 3, 0), fvec3(0, 1, 0)}},
 	});
 
-	Camera::I(slideLeftToRight);
+	const SimpleCameraTransform defaultTransform = {.position = fvec3(-11, -0.5f, -25.7f), .target = fvec3(-10.5f, -0.6f, -24.8f)};
+	Camera::I(defaultTransform.toCameraTransform());
 	LightManager::I({{.position = fvec3(45), .color = fvec3(1)}});
 
 	Transform planeTransform = {fvec3(0, -1, 0), Rotation(), fvec3(5, 1, 5)};

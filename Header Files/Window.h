@@ -13,7 +13,7 @@ class Window
 {
 public:
 	// Singleton access.
-	static Window *I();
+	static Window *I(bool fixedSize = true);
 	~Window();
 
 	bool shouldClose();
@@ -32,12 +32,12 @@ private:
 	const string windowTitle = "3D Project";
 	const fvec2 monitorPercentageSize = fvec2(0.8f);
 
-	Window();
+	Window(bool fixedSize);
 
 	// Can't be smart pointer.
 	GLFWwindow *window;
 
-	void initializeWindow();
+	void initializeWindow(bool fixedSize);
 	void initInputEvents();
 	void initializeGui();
 	void initOpenGL();

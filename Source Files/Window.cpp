@@ -16,18 +16,18 @@ using namespace std;
 
 optional<unique_ptr<Window>> Window::instance = nullopt;
 
-Window *Window::I()
+Window *Window::I(bool fixedSize)
 {
 	if (!Window::instance.has_value())
 	{
-		Window::instance = unique_ptr<Window>(new Window());
+		Window::instance = unique_ptr<Window>(new Window(fixedSize));
 	}
 	return Window::instance.value().get();
 }
 
-Window::Window()
+Window::Window(bool fixedSize)
 {
-	this->initializeWindow();
+	this->initializeWindow(fixedSize);
 	this->initInputEvents();
 	this->initializeGui();
 	this->initOpenGL();
@@ -89,7 +89,7 @@ void Window::showCursor()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
-void Window::initializeWindow()
+void Window::initializeWindow(bool fixedSize)
 {
 	// If glfwInit fails, throw an exception.
 	if (!glfwInit())
@@ -139,12 +139,16 @@ void Window::initializeWindow()
 		throw runtime_error("Failed to load OpenGL function pointers");
 	}
 
-	// Resize window to fraction of monitor size
-	// const int newWidth = static_cast<int>(mode->width * this->monitorPercentageSize.x);
-	// const int newHeight = static_cast<int>(mode->height * this->monitorPercentageSize.y);
-	// glfwSetWindowSize(this->window, newWidth, newHeight);
-
-	glViewport(0, 0, windowWidth, windowHeight);
+	if (!fixedSize)
+	{
+		// Resize window to fraction of monitor size
+		const int newWidth = static_cast<int>(mode->width * this->monitorPercentageSize.x);
+		const int newHeight = static_cast<int>(mode->height * this->monitorPercentageSize.y);
+		glfwSetWindowSize(this->window, newWidth, newHeight);
+		glViewport(0, 0, newWidth, newHeight);
+	}
+	else
+		glViewport(0, 0, windowWidth, windowHeight);
 
 	// Enable V-Sync (Frame rate is capped to monitor refresh rate).
 	glfwSwapInterval(1);

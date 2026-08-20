@@ -17,6 +17,7 @@ class Camera : public IGameObject
 public:
 	// Singleton access.
 	static Camera *I();
+	static Camera *I(CameraTransform transform);
 	static Camera *I(CameraPath cameraPath);
 
 	~Camera() = default;
@@ -24,7 +25,7 @@ public:
 	void update(const float deltaTime) override;
 	fmat4 makeProjectionMatrix() const;
 	fmat4 makeViewMatrix() const;
-	fvec3 getPosition() const;
+	CameraTransform getTransform() const;
 
 private:
 	static optional<unique_ptr<Camera>> instance;
@@ -38,6 +39,7 @@ private:
 	unique_ptr<BoundingBox> boundingBox;
 	optional<CameraPath> cameraPath;
 
+	Camera(CameraTransform transform);
 	Camera(CameraPath cameraPath);
 	void moveFirstPerson(float deltaTime);
 	void panFirstPerson();

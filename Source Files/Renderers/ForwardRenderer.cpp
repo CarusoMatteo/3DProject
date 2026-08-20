@@ -165,7 +165,7 @@ void ForwardRenderer::updateUniformValues(const Transform modelTransform, const 
 	this->uniforms.projectionMatrix.value = Camera::I()->makeProjectionMatrix();
 	this->uniforms.modelMatrix.value = modelTransform.toMatrix() * meshTransform.toMatrix();
 	this->uniforms.viewMatrix.value = Camera::I()->makeViewMatrix();
-	this->uniforms.viewPosition.value = Camera::I()->getPosition();
+	this->uniforms.viewPosition.value = Camera::I()->getTransform().position;
 
 	// Use only first light in forward rendering
 	const LightValue value = LightManager::I()->getValues()[0];

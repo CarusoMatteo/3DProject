@@ -7,11 +7,11 @@
 
 using namespace std;
 
-struct SimpleCameraTransForm
+struct SimpleCameraTransform
 {
 	fvec3 position;
 	fvec3 target;
-	fvec3 up;
+	fvec3 up = fvec3(0, 1, 0);
 
 	CameraTransform toCameraTransform() const
 	{
@@ -21,7 +21,7 @@ struct SimpleCameraTransForm
 
 struct CameraState
 {
-	SimpleCameraTransForm transform;
+	SimpleCameraTransform transform;
 	float lerpSpeed = 0.5f;
 	function<float(const float)> easingFunction = easeInOutSmoother;
 };

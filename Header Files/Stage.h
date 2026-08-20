@@ -14,7 +14,7 @@ class Window;
 class Stage
 {
 public:
-	Stage(const shared_ptr<fvec3> clearColor);
+	Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize);
 	~Stage() = default;
 
 	void updateGameObjects(const float deltaTime);
