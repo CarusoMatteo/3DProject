@@ -2,7 +2,6 @@
 #include "../Header Files/InputEvents.h"
 #include "../Header Files/Scenes/IScene.h"
 #include "../Header Files/Scenes/Scene.h"
-#include "../Header Files/Scenes/SceneSpecular.h"
 #include "../Header Files/Texture/TextureLoader.h"
 #include "../Header Files/Window.h"
 #include <glad/glad.h>
@@ -22,10 +21,16 @@ Stage::Stage(const shared_ptr<fvec3> clearColor)
 
 void Stage::updateGameObjects(const float deltaTime)
 {
-	this->scene->updateGameObjects(deltaTime);
+	// Ignore deltaTime if we're currently saving screenshots, to avoid skipping frames in the scene update.
+	if (!screenshotQueue.empty())
+	{
+		this->scene->updateGameObjects(1 / 60.0f);
+	}
+	else
+		this->scene->updateGameObjects(deltaTime);
 }
 
-void Stage::renderScene(const float currentTime) const
+void Stage::renderScene(const float currentTime)
 {
 	const ivec2 size = Window::I()->getSize();
 	// 1. Render the scene in the FBO (with MRT enabled)
@@ -41,7 +46,7 @@ void Stage::renderScene(const float currentTime) const
 	glBlitFramebuffer(0, 0, size.x, size.y, 0, 0, size.x, size.y, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
 	// 3. Read the pixels of the texture to save
-	saveBuffers(currentTime, size);
+	addBuffersToSaveQueue(currentTime, size);
 }
 
 void Stage::drawClearColor() const
@@ -136,35 +141,58 @@ void Stage::setupFBO()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Stage::saveBuffers(const float currentTime, const ivec2 size) const
+void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 {
-	if (InputEvents::shouldTakeScreenshotNextFrame(true))
+	// Consume input only when we've saved the correct amount of screenshots in a row.
+	const bool shouldConsumeInput = this->screenshotQueue.size() >= this->howManyScreenshotsInARow - 1;
+	const bool shouldTakeScreenshot = InputEvents::shouldTakeScreenshotNextFrame(shouldConsumeInput);
+
+	if (shouldTakeScreenshot)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
 		string filename;
 		vector<float> pixelsFloat(size.x * size.y * 4);
+		ScreenshotData data;
 
 		glReadBuffer(GL_COLOR_ATTACHMENT1);
 		filename = ("img/" + to_string(currentTime) + "_main.bmp");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		saveTexture(size, pixelsFloat, filename);
+		data.mainBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT2);
 		filename = ("img/" + to_string(currentTime) + "_normal.bmp");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		saveTexture(size, pixelsFloat, filename);
+		data.normalBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT3);
 		filename = ("img/" + to_string(currentTime) + "_depth.bmp");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		saveTexture(size, pixelsFloat, filename);
+		data.depthBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT4);
 		filename = ("img/" + to_string(currentTime) + "_motion_vectors.bmp");
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		saveTexture(size, pixelsFloat, filename);
+		data.motionVectorsBuffer = {filename, size, pixelsFloat};
 
+		this->screenshotQueue.push_back(data);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		if (shouldConsumeInput)
+		{
+			this->saveBuffers();
+			this->screenshotQueue.clear();
+		}
+	}
+}
+
+void Stage::saveBuffers() const
+{
+	for (const ScreenshotData &data : this->screenshotQueue)
+	{
+		saveTexture(data.mainBuffer.size, data.mainBuffer.pixelsFloat, data.mainBuffer.filename);
+		saveTexture(data.normalBuffer.size, data.normalBuffer.pixelsFloat, data.normalBuffer.filename);
+		saveTexture(data.depthBuffer.size, data.depthBuffer.pixelsFloat, data.depthBuffer.filename);
+		saveTexture(data.motionVectorsBuffer.size, data.motionVectorsBuffer.pixelsFloat, data.motionVectorsBuffer.filename);
 	}
 }
