@@ -10,11 +10,11 @@
 using namespace glm;
 using namespace std;
 
-class Scene : public IScene
+class SceneTest : public IScene
 {
 public:
-	Scene(const shared_ptr<fvec3> clearColor);
-	~Scene() = default;
+	SceneTest(const shared_ptr<fvec3> clearColor);
+	~SceneTest() = default;
 
 	void updateGameObjects(const float deltaTime) override;
 	void renderScene(const float currentTime) override;

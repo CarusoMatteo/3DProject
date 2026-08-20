@@ -1,4 +1,4 @@
-#include "../../Header Files/Scenes/Scene.h"
+#include "../../Header Files/Scenes/SceneTest.h"
 #include "../../Header Files/Camera/Camera.h"
 #include "../../Header Files/Camera/CameraPath.h"
 #include "../../Header Files/Camera/EasingFunctions.h"
@@ -16,7 +16,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 
-Scene::Scene(const shared_ptr<fvec3> clearColor)
+SceneTest::SceneTest(const shared_ptr<fvec3> clearColor)
 {
 	const CameraPath rotationAroundOrigin = CameraPath({
 		{{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.5f, easeInOutSmooth},
@@ -55,7 +55,7 @@ Scene::Scene(const shared_ptr<fvec3> clearColor)
 	// this->scatterObjects();
 }
 
-void Scene::updateGameObjects(float deltaTime)
+void SceneTest::updateGameObjects(float deltaTime)
 {
 	Camera::I()->update(deltaTime);
 	LightManager::I()->updateLights(deltaTime);
@@ -66,7 +66,7 @@ void Scene::updateGameObjects(float deltaTime)
 	}
 }
 
-void Scene::renderScene(float currentTime)
+void SceneTest::renderScene(float currentTime)
 {
 	for (auto &&object : this->gameObjects)
 	{
@@ -79,7 +79,7 @@ void Scene::renderScene(float currentTime)
 		this->gui->drawGui(this->gameObjects);
 }
 
-void Scene::scatterObjects()
+void SceneTest::scatterObjects()
 {
 	const float min = -10.0f;
 	const float max = 10.0f;

@@ -167,7 +167,7 @@
     <ClCompile Include="Source Files\Texture\TextureLoader.cpp" />
     <ClCompile Include="Source Files\Random.cpp" />
     <ClCompile Include="Source Files\Renderers\ForwardRenderer.cpp" />
-    <ClCompile Include="Source Files\Scenes\Scene.cpp" />
+    <ClCompile Include="Source Files\Scenes\SceneTest.cpp" />
     <ClCompile Include="Source Files\Renderers\ShaderBuilder.cpp" />
     <ClCompile Include="Source Files\Stage.cpp" />
     <ClCompile Include="Source Files\Window.cpp" />
@@ -229,7 +229,7 @@
     <ClInclude Include="Header Files\Renderers\Renderer.h" />
     <ClInclude Include="Header Files\Renderers\ForwardRenderer.h" />
     <ClInclude Include="Header Files\Scenes\IScene.h" />
-    <ClInclude Include="Header Files\Scenes\Scene.h" />
+    <ClInclude Include="Header Files\Scenes\SceneTest.h" />
     <ClInclude Include="Header Files\Stage.h" />
     <ClInclude Include="Header Files\Window.h" />
     <ClInclude Include="lib\stb_image\stb_image.h" />

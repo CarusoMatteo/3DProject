@@ -48,7 +48,7 @@
     <ClCompile Include="Source Files\Gui\Gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Scenes\Scene.cpp">
+    <ClCompile Include="Source Files\Scenes\SceneTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source Files\glad.c">
@@ -188,7 +188,7 @@
     <ClInclude Include="Header Files\Scenes\IScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Scenes\Scene.h">
+    <ClInclude Include="Header Files\Scenes\SceneTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\ButtonStates.h">

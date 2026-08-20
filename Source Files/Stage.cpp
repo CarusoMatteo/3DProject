@@ -1,7 +1,7 @@
 #include "../Header Files/Stage.h"
 #include "../Header Files/InputEvents.h"
 #include "../Header Files/Scenes/IScene.h"
-#include "../Header Files/Scenes/Scene.h"
+#include "../Header Files/Scenes/SceneTest.h"
 #include "../Header Files/Texture/TextureLoader.h"
 #include "../Header Files/Window.h"
 #include <glad/glad.h>
@@ -16,7 +16,7 @@ Stage::Stage(const shared_ptr<fvec3> clearColor)
 
 	setupFBO();
 
-	this->scene = unique_ptr<IScene>(new Scene(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)
