@@ -5,6 +5,7 @@
 #include "../Header Files/Scenes/SceneTest.h"
 #include "../Header Files/Texture/TextureLoader.h"
 #include "../Header Files/Window.h"
+#include <GLFW/glfw3.h>
 #include <future>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -15,6 +16,8 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+using namespace std;
 
 static string formatDuration(const double seconds)
 {
@@ -210,16 +213,24 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 
 void Stage::saveBuffers() const
 {
-	const unsigned int screenshotsPerData = 4; // main, normal, depth, motion vectors
+	// How many buffers we have per screenshot data (main, normal, depth, motion vectors)
+	const unsigned int screenshotsPerData = 4;
+	// Total number of screenshots to save
 	const unsigned int total = this->screenshotsInARowCount * screenshotsPerData;
-	const double estimateOneScreenshot = 5.0; // Estimated time to save one screenshot in seconds
+	// Estimated time to save one screenshot in seconds
+	const double estimateOneScreenshot = 5.0;
+	// Estimated time to save all screenshots in seconds without parallelization
 	const double estimatedTimeIndividual = estimateOneScreenshot * total;
+	// Estimated time to save all screenshots in seconds with parallelization
 	const double estimatedTimeAll = estimateOneScreenshot * this->screenshotsInARowCount;
+	// Whether to save the screenshots as PNG files or not
 	const bool saveToPng = true;
 
 	double timeSum = 0;
 	double i = 0;
 	const double startTime = glfwGetTime();
+
+	cout << "Saving screenshots to disk...\t\t\t\t\t\tEstimated time left: " << formatDuration(estimatedTimeAll) << endl;
 	for (const ScreenshotData &data : this->screenshotQueue)
 	{
 		auto saveAsync = [&](const ScreenshotTuple &buffer)
@@ -244,24 +255,21 @@ void Stage::saveBuffers() const
 		cout << "Saved screenshots  "
 			 << i + 1 << " / " << total << "  ("
 			 << (i + 1) / total * 100 << "%) to disk."
-			 << "\tTook " << mainSaveTime << " seconds."
-			 << "\tEstimated time left: " << formatDuration(estimatedTimeAll - estimateOneScreenshot * i / 4) << endl;
+			 << "\tTook " << mainSaveTime << " seconds." << endl;
 
 		const double normalSaveTime = normalSave.get();
 		timeSum += normalSaveTime;
 		cout << "Saved screenshots  "
 			 << i + 2 << " / " << total << "  ("
 			 << (i + 2) / total * 100 << "%) to disk."
-			 << "\tTook " << normalSaveTime << " seconds."
-			 << "\tEstimated time left: " << formatDuration(estimatedTimeAll - estimateOneScreenshot * i / 4) << endl;
+			 << "\tTook " << normalSaveTime << " seconds." << endl;
 
 		const double depthSaveTime = depthSave.get();
 		timeSum += depthSaveTime;
 		cout << "Saved screenshots  "
 			 << i + 3 << " / " << total << "  ("
 			 << (i + 3) / total * 100 << "%) to disk."
-			 << "\tTook " << depthSaveTime << " seconds."
-			 << "\tEstimated time left: " << formatDuration(estimatedTimeAll - estimateOneScreenshot * i / 4) << endl;
+			 << "\tTook " << depthSaveTime << " seconds." << endl;
 
 		const double motionVectorsSaveTime = motionVectorsSave.get();
 		timeSum += motionVectorsSaveTime;
@@ -274,6 +282,6 @@ void Stage::saveBuffers() const
 		i += 4;
 	}
 
-	cout << "Saved all screenshots to disk.\t\t\tTotal time: " << formatDuration(glfwGetTime() - startTime) << endl
+	cout << "Saved all screenshots to disk.\t\t\tTook " << formatDuration(glfwGetTime() - startTime) << " compared to the estimate: " << formatDuration(estimatedTimeAll) << endl
 		 << "Average time per screenshot: " << timeSum / total << " seconds." << endl;
 }

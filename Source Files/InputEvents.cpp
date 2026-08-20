@@ -94,7 +94,7 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 	case GLFW_KEY_P:
 		// Happens on release so we're sure it only happens once.
 		if (action == GLFW_RELEASE)
-			buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME) = true;
+			takeScreenshots();
 		break;
 	case GLFW_KEY_K:
 		if (action == GLFW_RELEASE)
@@ -134,6 +134,11 @@ void InputEvents::cursorPositionCallback(GLFWwindow *window, double xpos, double
 void InputEvents::framebufferSizeCallback(GLFWwindow *window, int width, int height)
 {
 	glViewport(0, 0, width, height);
+}
+
+void InputEvents::takeScreenshots()
+{
+	buttonStates->at(InputEventsType::TAKE_SCREENSHOT_NEXT_FRAME) = true;
 }
 
 bool InputEvents::shouldTakeScreenshotNextFrame(bool consumeInput)

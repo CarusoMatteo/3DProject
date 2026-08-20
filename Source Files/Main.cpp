@@ -1,5 +1,6 @@
 using namespace std;
 
+#include "../Header Files/InputEvents.h"
 #include "../Header Files/Stage.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -14,6 +15,8 @@ float lastFrameTime = 0.0f;
 int main(void)
 {
 	const unique_ptr<Stage> stage(new Stage(clearColor));
+
+	InputEvents::takeScreenshots();
 
 	while (!stage->shouldWindowClose())
 	{

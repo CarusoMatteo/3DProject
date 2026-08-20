@@ -67,12 +67,8 @@ LightManager::LightManager()
 	for (unsigned int i = 0; i < this->numberOfLights; i++)
 	{
 		const LightValue value = {
-			fvec3(Random::getRandomFloat(-50, 50),
-				  Random::getRandomFloat(20, 50),
-				  Random::getRandomFloat(-50, 50)),
-			fvec3(Random::getRandomFloat(1.0f, 1.0f),
-				  Random::getRandomFloat(1.0f, 1.0f),
-				  Random::getRandomFloat(1.0f, 1.0f)),
+			fvec3(50),
+			fvec3(1),
 			0.7f,
 			1.8f};
 		this->lights.push_back(make_unique<PointLight>(value, 2.0f));
