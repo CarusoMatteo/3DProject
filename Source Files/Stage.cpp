@@ -6,6 +6,7 @@
 #include "../Header Files/Texture/TextureLoader.h"
 #include "../Header Files/Window.h"
 #include <GLFW/glfw3.h>
+#include <format>
 #include <future>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -193,7 +194,7 @@ void Stage::setupFBO4k()
 	// Texture 1: The one that will be saved to file.
 	glGenTextures(1, &texFileColor);
 	glBindTexture(GL_TEXTURE_2D, texFileColor);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, texFileColor, 0);
@@ -230,23 +231,26 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 		vector<float> pixelsFloat(size.x * size.y * 4);
 		ScreenshotData data;
 
+		// 0 based
+		unsigned int currentScreenshotIndex = this->screenshotQueue.size();
+
 		glReadBuffer(GL_COLOR_ATTACHMENT1);
-		filename = ("img/" + to_string(currentTime) + "_main");
+		filename = ("img/main_" + format("{:03}", currentScreenshotIndex));
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.mainBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT2);
-		filename = ("img/" + to_string(currentTime) + "_normal");
+		filename = ("img/normal_" + format("{:03}", currentScreenshotIndex));
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.normalBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT3);
-		filename = ("img/" + to_string(currentTime) + "_depth");
+		filename = ("img/depth_" + format("{:03}", currentScreenshotIndex));
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.depthBuffer = {filename, size, pixelsFloat};
 
 		glReadBuffer(GL_COLOR_ATTACHMENT4);
-		filename = ("img/" + to_string(currentTime) + "_motion_vectors");
+		filename = ("img/motion_" + format("{:03}", currentScreenshotIndex));
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.motionVectorsBuffer = {filename, size, pixelsFloat};
 
@@ -255,7 +259,7 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 		pixelsFloat.resize(3840 * 2160 * 4);
 
 		glReadBuffer(GL_COLOR_ATTACHMENT1);
-		filename = ("img/" + to_string(currentTime) + "_main_4k");
+		filename = ("img/main4k_" + format("{:03}", currentScreenshotIndex));
 		glReadPixels(0, 0, 3840, 2160, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.mainBuffer4k = {filename, {3840, 2160}, pixelsFloat};
 
@@ -278,7 +282,7 @@ void Stage::saveBuffers() const
 	// Total number of screenshots to save
 	const unsigned int total = this->screenshotsInARowCount * screenshotsPerData;
 	// Estimated time to save one screenshot in seconds
-	const double estimateOneScreenshot = 5.0;
+	const double estimateOneScreenshot = 6.0;
 	// Estimated time to save all screenshots in seconds without parallelization
 	const double estimatedTimeIndividual = estimateOneScreenshot * total;
 	// Estimated time to save all screenshots in seconds with parallelization
