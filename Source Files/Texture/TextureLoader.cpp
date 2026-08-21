@@ -14,6 +14,8 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "../../lib/stb_image/stb_image_write.h"
 
+#include "../../lib/tinyexr/exr.h"
+
 using namespace std;
 using namespace glm;
 

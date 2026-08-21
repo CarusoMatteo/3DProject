@@ -43,7 +43,7 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneGeoGrid(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)
@@ -134,7 +134,7 @@ void Stage::setupFBO()
 	// Texture 1: The one that will be saved to file.
 	glGenTextures(1, &texFileColor);
 	glBindTexture(GL_TEXTURE_2D, texFileColor);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, size.x, size.y, 0, GL_RGBA, GL_FLOAT, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, texFileColor, 0);

@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "C:\\Tesi\\.common\\dependencies_GL_GLFW\\lib",
                 "C:\\Tesi\\.common\\dependencies_GL_GLFW\\include",
-                "C:\\Tesi\\.common\\dependencies_GL_GLFW"
+                "C:\\Tesi\\.common\\dependencies_GL_GLFW",
+                "C:\\Tesi\\.common\\tinyexr\\lib"
             ],
             "defines": [
                 "_DEBUG",

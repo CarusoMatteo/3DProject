@@ -76,6 +76,7 @@
 		"skybox",
 		"skyboxes",
 		"stbi",
+		"tinyexr",
 		"vbos",
 		"wasd"
 	],
