@@ -14,8 +14,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "../../lib/stb_image/stb_image_write.h"
 
-#include "../../lib/tinyexr/exr.h"
-
 using namespace std;
 using namespace glm;
 
@@ -119,6 +117,51 @@ void saveTexture(ivec2 size, const vector<float> &pixelsFloat, const string file
 	const string filename = filenameNoExtension + (saveToPng ? ".png" : ".bmp");
 	const bool saved = saveToPng ? stbi_write_png(filename.c_str(), size.x, size.y, RGBA, flipped.data(), size.x * RGBA)
 								 : stbi_write_bmp(filename.c_str(), size.x, size.y, RGBA, flipped.data());
+
+	if (!saved)
+	{
+		const string errorMessage = saveToPng ? "stbi_write_png failed for image: " + filename
+											  : "stbi_write_bmp failed for image: " + filename;
+		cerr << errorMessage << endl;
+		throw runtime_error(errorMessage);
+	}
+
+	if (writeOnSuccess)
+	{
+		cout << "Saved image: \"" << filename << "\"" << endl;
+	}
+}
+
+void saveTextureGrayScale(ivec2 size, const vector<float> &pixelsFloat, const string filenameNoExtension, bool saveToPng, bool writeOnSuccess)
+{
+	int numChannels = 1;
+	const size_t numPixels = static_cast<size_t>(size.x) * size.y;
+	if (pixelsFloat.size() != numPixels * numChannels)
+	{
+		throw runtime_error("saveTextureGrayScale: pixelsFloat size (" + to_string(pixelsFloat.size()) +
+							") does not match size.x*size.y*numChannels (" + to_string(numPixels * numChannels) + ")");
+	}
+
+	vector<unsigned char> pixels8(numPixels);
+	for (size_t i = 0; i < numPixels; i++)
+	{
+		float v = std::clamp(pixelsFloat[i * numChannels], 0.0f, 1.0f); // channel 0 only
+		pixels8[i] = static_cast<unsigned char>(v * 255.0f + 0.5f);		// +0.5f for correct rounding
+	}
+
+	// Vertical flip
+	vector<unsigned char> flipped(numPixels);
+	int rowSize = size.x;
+	for (int y = 0; y < size.y; y++)
+	{
+		memcpy(&flipped[y * rowSize],
+			   &pixels8[(size.y - 1 - y) * rowSize],
+			   rowSize);
+	}
+
+	const string filename = filenameNoExtension + (saveToPng ? ".png" : ".bmp");
+	const bool saved = saveToPng ? stbi_write_png(filename.c_str(), size.x, size.y, GRAYSCALE, flipped.data(), size.x * GRAYSCALE)
+								 : stbi_write_bmp(filename.c_str(), size.x, size.y, GRAYSCALE, flipped.data());
 
 	if (!saved)
 	{

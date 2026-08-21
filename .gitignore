@@ -367,8 +367,10 @@ FodyWeavers.xsd
 
 .github/
 
-/assets/models/webble*/
+assets/models/webble*/
 
-/assets/shaders/tedaldi/
+assets/shaders/tedaldi/
 
-/img/
+img/
+
+todo/
