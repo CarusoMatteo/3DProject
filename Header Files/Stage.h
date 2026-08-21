@@ -26,22 +26,6 @@ public:
 	void pollEvents() const;
 
 private:
-	struct ScreenshotTuple
-	{
-		string filename;
-		ivec2 size;
-		vector<float> pixelsFloat;
-	};
-
-	struct ScreenshotData
-	{
-		ScreenshotTuple mainBuffer;
-		ScreenshotTuple normalBuffer;
-		ScreenshotTuple depthBuffer;
-		ScreenshotTuple motionVectorsBuffer;
-		ScreenshotTuple mainBuffer4k;
-	};
-
 	const unsigned int screenshotsInARowCount = 20;
 	unsigned int screenshotIndex = 0;
 	double timeSum;

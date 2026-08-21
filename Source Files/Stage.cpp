@@ -7,6 +7,7 @@
 #include "../Header Files/Window.h"
 #include <GLFW/glfw3.h>
 #include <format>
+#include <functional>
 #include <future>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -238,14 +239,14 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 		// Whether to save the screenshots as PNG files or not
 		const bool saveToPng = true;
 
-		auto saveAsync = [&](const ScreenshotTuple &buffer)
+		auto saveAsync = [saveToPng](const string &filename, const ivec2 bufferSize, const vector<float> &pixelsFloat)
 		{
 			return async(
 				launch::async,
-				[&buffer, saveToPng]()
+				[filename, bufferSize, pixelsFloatRef = cref(pixelsFloat), saveToPng]()
 				{
 					const double currentTime = glfwGetTime();
-					saveTexture(buffer.size, buffer.pixelsFloat, buffer.filename, saveToPng, false);
+					saveTexture(bufferSize, pixelsFloatRef.get(), filename, saveToPng, false);
 					return glfwGetTime() - currentTime;
 				});
 		};
@@ -261,43 +262,39 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
 		string filename;
-		vector<float> pixelsFloat(size.x * size.y * 4);
-		ScreenshotData data;
+		vector<float> mainPixels(size.x * size.y * 4);
+		vector<float> normalPixels(size.x * size.y * 4);
+		vector<float> depthPixels(size.x * size.y * 4);
+		vector<float> motionPixels(size.x * size.y * 4);
+		vector<float> main4kPixels(3840 * 2160 * 4);
 
 		// 0 based
 		glReadBuffer(GL_COLOR_ATTACHMENT1);
 		filename = ("img/main_" + format("{:03}", this->screenshotIndex));
-		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.mainBuffer = {filename, size, pixelsFloat};
-		future<double> mainSave = saveAsync(data.mainBuffer);
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, mainPixels.data());
+		future<double> mainSave = saveAsync(filename, size, mainPixels);
 
 		glReadBuffer(GL_COLOR_ATTACHMENT2);
 		filename = ("img/normal_" + format("{:03}", this->screenshotIndex));
-		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.normalBuffer = {filename, size, pixelsFloat};
-		future<double> normalSave = saveAsync(data.normalBuffer);
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, normalPixels.data());
+		future<double> normalSave = saveAsync(filename, size, normalPixels);
 
 		glReadBuffer(GL_COLOR_ATTACHMENT3);
 		filename = ("img/depth_" + format("{:03}", this->screenshotIndex));
-		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.depthBuffer = {filename, size, pixelsFloat};
-		future<double> depthSave = saveAsync(data.depthBuffer);
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, depthPixels.data());
+		future<double> depthSave = saveAsync(filename, size, depthPixels);
 
 		glReadBuffer(GL_COLOR_ATTACHMENT4);
 		filename = ("img/motion_" + format("{:03}", this->screenshotIndex));
-		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.motionVectorsBuffer = {filename, size, pixelsFloat};
-		future<double> motionVectorsSave = saveAsync(data.motionVectorsBuffer);
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, motionPixels.data());
+		future<double> motionVectorsSave = saveAsync(filename, size, motionPixels);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo4k);
 
-		pixelsFloat.resize(3840 * 2160 * 4);
-
 		glReadBuffer(GL_COLOR_ATTACHMENT1);
 		filename = ("img/main4k_" + format("{:03}", this->screenshotIndex));
-		glReadPixels(0, 0, 3840, 2160, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.mainBuffer4k = {filename, {3840, 2160}, pixelsFloat};
-		future<double> mainBuffer4kSave = saveAsync(data.mainBuffer4k);
+		glReadPixels(0, 0, 3840, 2160, GL_RGBA, GL_FLOAT, main4kPixels.data());
+		future<double> mainBuffer4kSave = saveAsync(filename, {3840, 2160}, main4kPixels);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
