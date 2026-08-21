@@ -44,13 +44,13 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneGeoGrid(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)
 {
 	// Ignore deltaTime if we're currently saving screenshots, to avoid skipping frames in the scene update.
-	if (!screenshotQueue.empty())
+	if (this->screenshotIndex > 0)
 		this->scene->updateGameObjects(1 / 60.0f);
 	else
 		this->scene->updateGameObjects(deltaTime);
@@ -220,83 +220,24 @@ void Stage::setupFBO4k()
 void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 {
 	// Consume input only when we've saved the correct amount of screenshots in a row.
-	const bool shouldConsumeInput = this->screenshotQueue.size() >= this->screenshotsInARowCount - 1;
+	const bool shouldConsumeInput = this->screenshotIndex >= this->screenshotsInARowCount - 1;
 	const bool shouldTakeScreenshot = InputEvents::shouldTakeScreenshotNextFrame(shouldConsumeInput);
 
 	if (shouldTakeScreenshot)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+		// How many buffers we have per screenshot data (main, normal, depth, motion vectors, main4k)
+		const unsigned int screenshotsPerData = 5;
+		// Total number of screenshots to save
+		const unsigned int total = this->screenshotsInARowCount * screenshotsPerData;
+		// Estimated time to save one screenshot in seconds
+		const double estimateOneScreenshot = 6.0;
+		// Estimated time to save all screenshots in seconds without parallelization
+		const double estimatedTimeIndividual = estimateOneScreenshot * total;
+		// Estimated time to save all screenshots in seconds with parallelization
+		const double estimatedTimeAll = estimateOneScreenshot * this->screenshotsInARowCount;
+		// Whether to save the screenshots as PNG files or not
+		const bool saveToPng = true;
 
-		string filename;
-		vector<float> pixelsFloat(size.x * size.y * 4);
-		ScreenshotData data;
-
-		// 0 based
-		unsigned int currentScreenshotIndex = this->screenshotQueue.size();
-
-		glReadBuffer(GL_COLOR_ATTACHMENT1);
-		filename = ("img/main_" + format("{:03}", currentScreenshotIndex));
-		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.mainBuffer = {filename, size, pixelsFloat};
-
-		glReadBuffer(GL_COLOR_ATTACHMENT2);
-		filename = ("img/normal_" + format("{:03}", currentScreenshotIndex));
-		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.normalBuffer = {filename, size, pixelsFloat};
-
-		glReadBuffer(GL_COLOR_ATTACHMENT3);
-		filename = ("img/depth_" + format("{:03}", currentScreenshotIndex));
-		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.depthBuffer = {filename, size, pixelsFloat};
-
-		glReadBuffer(GL_COLOR_ATTACHMENT4);
-		filename = ("img/motion_" + format("{:03}", currentScreenshotIndex));
-		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.motionVectorsBuffer = {filename, size, pixelsFloat};
-
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo4k);
-
-		pixelsFloat.resize(3840 * 2160 * 4);
-
-		glReadBuffer(GL_COLOR_ATTACHMENT1);
-		filename = ("img/main4k_" + format("{:03}", currentScreenshotIndex));
-		glReadPixels(0, 0, 3840, 2160, GL_RGBA, GL_FLOAT, pixelsFloat.data());
-		data.mainBuffer4k = {filename, {3840, 2160}, pixelsFloat};
-
-		this->screenshotQueue.push_back(data);
-		cout << "Saved screenshot data " << this->screenshotQueue.size() << " / " << this->screenshotsInARowCount << " (" << static_cast<float>(this->screenshotQueue.size()) / this->screenshotsInARowCount * 100 << "%) to queue" << endl;
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		if (shouldConsumeInput)
-		{
-			this->saveBuffers();
-			this->screenshotQueue.clear();
-		}
-	}
-}
-
-void Stage::saveBuffers() const
-{
-	// How many buffers we have per screenshot data (main, normal, depth, motion vectors, main4k)
-	const unsigned int screenshotsPerData = 5;
-	// Total number of screenshots to save
-	const unsigned int total = this->screenshotsInARowCount * screenshotsPerData;
-	// Estimated time to save one screenshot in seconds
-	const double estimateOneScreenshot = 6.0;
-	// Estimated time to save all screenshots in seconds without parallelization
-	const double estimatedTimeIndividual = estimateOneScreenshot * total;
-	// Estimated time to save all screenshots in seconds with parallelization
-	const double estimatedTimeAll = estimateOneScreenshot * this->screenshotsInARowCount;
-	// Whether to save the screenshots as PNG files or not
-	const bool saveToPng = true;
-
-	double timeSum = 0;
-	double i = 0;
-	const double startTime = glfwGetTime();
-
-	cout << "Saving screenshots to disk...\t\t\t\t\t\tEstimated time left: " << formatDuration(estimatedTimeAll) << endl;
-	for (const ScreenshotData &data : this->screenshotQueue)
-	{
 		auto saveAsync = [&](const ScreenshotTuple &buffer)
 		{
 			return async(
@@ -309,51 +250,101 @@ void Stage::saveBuffers() const
 				});
 		};
 
+		// First screenshot of the series
+		if (this->screenshotIndex == 0)
+		{
+			cout << "Saving screenshots to disk...\t\t\t\t\t\tEstimated time left: " << formatDuration(estimatedTimeAll) << endl;
+			this->timeSum = 0;
+			this->startTime = glfwGetTime();
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+		string filename;
+		vector<float> pixelsFloat(size.x * size.y * 4);
+		ScreenshotData data;
+
+		// 0 based
+		glReadBuffer(GL_COLOR_ATTACHMENT1);
+		filename = ("img/main_" + format("{:03}", this->screenshotIndex));
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
+		data.mainBuffer = {filename, size, pixelsFloat};
 		future<double> mainSave = saveAsync(data.mainBuffer);
+
+		glReadBuffer(GL_COLOR_ATTACHMENT2);
+		filename = ("img/normal_" + format("{:03}", this->screenshotIndex));
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
+		data.normalBuffer = {filename, size, pixelsFloat};
 		future<double> normalSave = saveAsync(data.normalBuffer);
+
+		glReadBuffer(GL_COLOR_ATTACHMENT3);
+		filename = ("img/depth_" + format("{:03}", this->screenshotIndex));
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
+		data.depthBuffer = {filename, size, pixelsFloat};
 		future<double> depthSave = saveAsync(data.depthBuffer);
+
+		glReadBuffer(GL_COLOR_ATTACHMENT4);
+		filename = ("img/motion_" + format("{:03}", this->screenshotIndex));
+		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
+		data.motionVectorsBuffer = {filename, size, pixelsFloat};
 		future<double> motionVectorsSave = saveAsync(data.motionVectorsBuffer);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo4k);
+
+		pixelsFloat.resize(3840 * 2160 * 4);
+
+		glReadBuffer(GL_COLOR_ATTACHMENT1);
+		filename = ("img/main4k_" + format("{:03}", this->screenshotIndex));
+		glReadPixels(0, 0, 3840, 2160, GL_RGBA, GL_FLOAT, pixelsFloat.data());
+		data.mainBuffer4k = {filename, {3840, 2160}, pixelsFloat};
 		future<double> mainBuffer4kSave = saveAsync(data.mainBuffer4k);
 
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// Wait for async end here
 		const double mainSaveTime = mainSave.get();
 		timeSum += mainSaveTime;
 		cout << "Saved screenshots  "
-			 << i + 1 << " / " << total << "  ("
-			 << (i + 1) / total * 100 << "%) to disk."
+			 << this->screenshotIndex * 5 + 1 << " / " << total << "  ("
+			 << (this->screenshotIndex * 5.0 + 1) / total * 100 << "%) to disk."
 			 << "\tTook " << mainSaveTime << " seconds." << endl;
 
 		const double normalSaveTime = normalSave.get();
 		timeSum += normalSaveTime;
 		cout << "Saved screenshots  "
-			 << i + 2 << " / " << total << "  ("
-			 << (i + 2) / total * 100 << "%) to disk."
+			 << this->screenshotIndex * 5 + 2 << " / " << total << "  ("
+			 << (this->screenshotIndex * 5.0 + 2) / total * 100 << "%) to disk."
 			 << "\tTook " << normalSaveTime << " seconds." << endl;
 
 		const double depthSaveTime = depthSave.get();
 		timeSum += depthSaveTime;
 		cout << "Saved screenshots  "
-			 << i + 3 << " / " << total << "  ("
-			 << (i + 3) / total * 100 << "%) to disk."
+			 << this->screenshotIndex * 5 + 3 << " / " << total << "  ("
+			 << (this->screenshotIndex * 5.0 + 3) / total * 100 << "%) to disk."
 			 << "\tTook " << depthSaveTime << " seconds." << endl;
 
 		const double motionVectorsSaveTime = motionVectorsSave.get();
 		timeSum += motionVectorsSaveTime;
 		cout << "Saved screenshots  "
-			 << i + 4 << " / " << total << "  ("
-			 << (i + 4) / total * 100 << "%) to disk."
+			 << this->screenshotIndex * 5 + 4 << " / " << total << "  ("
+			 << (this->screenshotIndex * 5.0 + 4) / total * 100 << "%) to disk."
 			 << "\tTook " << motionVectorsSaveTime << " seconds." << endl;
 
 		const double mainBuffer4kSaveTime = mainBuffer4kSave.get();
 		timeSum += mainBuffer4kSaveTime;
 		cout << "Saved screenshots  "
-			 << i + 5 << " / " << total << "  ("
-			 << (i + 5) / total * 100 << "%) to disk."
+			 << this->screenshotIndex * 5 + 5 << " / " << total << "  ("
+			 << (this->screenshotIndex * 5.0 + 5) / total * 100 << "%) to disk."
 			 << "\tTook " << mainBuffer4kSaveTime << " seconds."
-			 << "\tEstimated time left: " << formatDuration(estimatedTimeAll - estimateOneScreenshot * i / 4) << endl;
+			 << "\tEstimated time left: " << formatDuration(estimatedTimeAll - estimateOneScreenshot * this->screenshotIndex / screenshotsPerData) << endl;
 
-		i += screenshotsPerData;
+		this->screenshotIndex += 1;
+
+		if (this->screenshotIndex >= this->screenshotsInARowCount)
+		{
+			cout << "Saved all screenshots to disk.\t\t\tTook " << formatDuration(glfwGetTime() - startTime) << " compared to the estimate: " << formatDuration(estimatedTimeAll) << endl
+				 << "Average time per screenshot: " << timeSum / total << " seconds." << endl;
+			this->screenshotIndex = 0;
+		}
 	}
-
-	cout << "Saved all screenshots to disk.\t\t\tTook " << formatDuration(glfwGetTime() - startTime) << " compared to the estimate: " << formatDuration(estimatedTimeAll) << endl
-		 << "Average time per screenshot: " << timeSum / total << " seconds." << endl;
 }

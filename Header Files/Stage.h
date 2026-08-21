@@ -42,8 +42,10 @@ private:
 		ScreenshotTuple mainBuffer4k;
 	};
 
-	const unsigned int screenshotsInARowCount = 1;
-	vector<ScreenshotData> screenshotQueue;
+	const unsigned int screenshotsInARowCount = 20;
+	unsigned int screenshotIndex = 0;
+	double timeSum;
+	double startTime;
 
 	unique_ptr<IScene> scene;
 	shared_ptr<fvec3> clearColor;
@@ -54,5 +56,4 @@ private:
 	void setupFBO();
 	void setupFBO4k();
 	void addBuffersToSaveQueue(const float currentTime, const ivec2 size);
-	void saveBuffers() const;
 };
