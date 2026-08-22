@@ -1,7 +1,7 @@
 # TODO
 - GEO: Thin geometry
 	- [x] Grid
-	- [ ] Spiral
+	- [x] Spiral
 	- [ ] Thin triangles
 
 - TEX: High Frequency textures

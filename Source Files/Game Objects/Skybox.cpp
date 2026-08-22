@@ -14,7 +14,7 @@ Skybox::Skybox(const Transform transform, const shared_ptr<Renderer> renderer)
 	const string name = "Skybox";
 	const float length = 1.0f;
 
-	this->model = ModelFactory::cube(name, length, renderer, transform, CubeMapTextureFactory::clouds());
+	this->model = ModelFactory::cube(name, length, renderer, transform, CubeMapTextureFactory::maskonaive());
 }
 
 void Skybox::update(const float deltaTime)

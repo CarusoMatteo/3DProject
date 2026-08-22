@@ -18,7 +18,7 @@ optional<unique_ptr<Camera>> Camera::instance = nullopt;
 
 Camera *Camera::I()
 {
-	return Camera::I(SimpleCameraTransform{.position = fvec3(0, 0, -10), .target = fvec3(0), .up = fvec3(0, 1, 0)}.toCameraTransform());
+	return Camera::I(SimpleCameraTransform{.position = fvec3(0, 0, -10), .target = fvec3(0)}.toCameraTransform());
 }
 
 Camera *Camera::I(CameraTransform transform)
