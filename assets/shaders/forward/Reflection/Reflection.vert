@@ -11,9 +11,9 @@ out vec3 position;
 
 void main()
 {
-	// Normali in coordinate del mondo
+	// Normals in world coordinates
 	N = mat3(transpose(inverse(modelMatrix))) * vertexNormal;
-	// Posizione in coordinate del mondo
+	// Position in world coordinates
 	position = vec3(modelMatrix * vec4(vertexPosition, 1.0));
 
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
