@@ -75,6 +75,9 @@ void main()
 		baseColor *= texture(textureSampler, fragmentTextureCoordinate);
 	}
 
+	if (baseColor.a < 0.5)
+		discard;
+
 	mainColor = baseColor;
 	normalColor = vec4(N, 1);
 	depthColor = vec4(vec3(linearizeDepth(gl_FragCoord.z)), 1);

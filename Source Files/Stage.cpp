@@ -2,6 +2,7 @@
 #include "../Header Files/InputEvents.h"
 #include "../Header Files/Scenes/IScene.h"
 #include "../Header Files/Scenes/SceneEdges.h"
+#include "../Header Files/Scenes/SceneVegetation.h"
 #include "../Header Files/Scenes/SceneGeoGrid.h"
 #include "../Header Files/Scenes/SceneGeoSpiral.h"
 #include "../Header Files/Scenes/SceneGeoThinTriangles.h"
@@ -50,7 +51,7 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneGeoThinTriangles(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneVegetation(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)
