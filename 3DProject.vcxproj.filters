@@ -156,6 +156,9 @@
     <ClCompile Include="Source Files\Scenes\SceneTexRepeatedPatterns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\Scenes\SceneEdges.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\.common\ImGui\imconfig.h">
@@ -354,6 +357,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Scenes\SceneTexRepeatedPatterns.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Scenes\SceneEdges.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
