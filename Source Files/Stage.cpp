@@ -1,6 +1,7 @@
 #include "../Header Files/Stage.h"
 #include "../Header Files/InputEvents.h"
 #include "../Header Files/Scenes/IScene.h"
+#include "../Header Files/Scenes/SceneDisocclusion.h"
 #include "../Header Files/Scenes/SceneEdges.h"
 #include "../Header Files/Scenes/SceneGeoGrid.h"
 #include "../Header Files/Scenes/SceneGeoSpiral.h"
@@ -52,7 +53,7 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneSpecular(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneDisocclusion(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)

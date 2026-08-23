@@ -165,6 +165,9 @@
     <ClCompile Include="Source Files\Scenes\SceneVegetation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\Scenes\SceneDisocclusion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\.common\ImGui\imconfig.h">
@@ -372,6 +375,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Scenes\SceneVegetation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Scenes\SceneDisocclusion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

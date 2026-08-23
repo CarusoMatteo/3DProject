@@ -11,11 +11,11 @@
 using namespace glm;
 using namespace std;
 
-class SceneEdges : public IScene
+class SceneDisocclusion : public IScene
 {
 public:
-	SceneEdges(const shared_ptr<fvec3> clearColor);
-	~SceneEdges() = default;
+	SceneDisocclusion(const shared_ptr<fvec3> clearColor);
+	~SceneDisocclusion() = default;
 
 	void updateGameObjects(const float deltaTime) override;
 	void renderScene(const float currentTime) override;

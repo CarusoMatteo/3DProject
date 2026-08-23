@@ -9,14 +9,14 @@
 	- [x] Bricks
 	- [x] Repeated patterns
 
-- [ ] SPE: Specular
-	- [ ] Lucid spheres (with normal map?)
+- [x] SPE: Specular
+	- [x] Lucid spheres (with normal map?)
 
 - [x] VEG: Vegetation
 	- [x] Tree with many billboards
 
-- [ ] DIS: Disocclusion
-	- [ ] Object passes in front of another one
+- [x] DIS: Disocclusion
+	- [x] Object passes in front of another one
 
 - [x] EDG: High contrast edges
 	- [x] Black silhouette on a uniform background
