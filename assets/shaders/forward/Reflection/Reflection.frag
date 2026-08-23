@@ -2,6 +2,7 @@
 
 uniform vec3 viewPosition;
 uniform samplerCube skyboxSampler;
+uniform int renderMode;
 
 in vec3 N;
 in vec3 position;
