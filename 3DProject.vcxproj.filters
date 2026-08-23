@@ -144,10 +144,10 @@
     <ClCompile Include="Source Files\Camera\CameraPath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Scenes\SceneGeoThinTriangles.cpp">
+    <ClCompile Include="Source Files\Scenes\SceneGeoSpiral.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Scenes\SceneGeoSpiral.cpp">
+    <ClCompile Include="Source Files\Scenes\SceneTexCheckerboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -338,10 +338,10 @@
     <ClInclude Include="lib\tinyexr\exr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Scenes\SceneGeoThinTriangles.h">
+    <ClInclude Include="Header Files\Scenes\SceneGeoSpiral.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Scenes\SceneGeoSpiral.h">
+    <ClInclude Include="Header Files\Scenes\SceneTexCheckerboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

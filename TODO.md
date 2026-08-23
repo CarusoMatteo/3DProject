@@ -5,7 +5,7 @@
 	- [ ] Thin triangles
 
 - TEX: High Frequency textures
-	- [ ] Checkerboard
+	- [x] Checkerboard
 	- [ ] Bricks
 	- [ ] Repeated patterns
 
