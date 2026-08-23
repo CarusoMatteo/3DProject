@@ -100,6 +100,10 @@ void InputEvents::keyCallback(GLFWwindow *window, int key, int scancode, int act
 		if (action == GLFW_RELEASE)
 			InputEvents::deleteScreenshotsFiles();
 		break;
+	case GLFW_KEY_U:
+		if (action == GLFW_RELEASE)
+			buttonStates->at(InputEventsType::DISABLE_UI) = !buttonStates->at(InputEventsType::DISABLE_UI);
+		break;
 	case GLFW_KEY_1:
 		if (action == GLFW_RELEASE)
 			Renderer::setRenderMode(RenderMode::MAIN);

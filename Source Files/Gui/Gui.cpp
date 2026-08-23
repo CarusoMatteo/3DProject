@@ -28,8 +28,8 @@ Gui::Gui(const shared_ptr<fvec3> clearColor) : IGui()
 
 void Gui::drawGui(vector<shared_ptr<IVisibleGameObject>> objects)
 {
-	// Hide UI when we're about to take a screenshot
-	if (InputEvents::shouldTakeScreenshotNextFrame(false))
+	// Hide UI when we're about to take a screenshot or when UI is disabled
+	if (InputEvents::shouldTakeScreenshotNextFrame(false) || InputEvents::getButtonStates().at(InputEventsType::DISABLE_UI))
 		return;
 
 	// Prepares a new frame for ImGui
@@ -90,6 +90,7 @@ void Gui::settingsWindow()
 	ImGui::Text("TAB: %s", InputEvents::getButtonStates().at(InputEventsType::FREE_CURSOR) ? "Enable camera movement" : "Free cursor");
 	ImGui::Text("P: Take buffer screenshots");
 	ImGui::Text("K: Delete screenshots in img directory");
+	ImGui::Text("U: Toggle UI");
 	ImGui::Text("1~4: Change render mode (1: Main, 2: Normal, 3: Depth, 4: Velocity)");
 	ImGui::End();
 }
