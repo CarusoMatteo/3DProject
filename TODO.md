@@ -6,7 +6,7 @@
 
 - TEX: High Frequency textures
 	- [x] Checkerboard
-	- [ ] Bricks
+	- [x] Bricks
 	- [ ] Repeated patterns
 
 - SPE: Specular

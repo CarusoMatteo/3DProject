@@ -154,6 +154,7 @@
     <ClCompile Include="Source Files\Scenes\SceneGeoGrid.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneGeoSpiral.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneSpecular.cpp" />
+    <ClCompile Include="Source Files\Scenes\SceneTexBricks.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneTexCheckerboard.cpp" />
     <ClCompile Include="Source Files\Texture\CubeMapTextureFactory.cpp" />
     <ClCompile Include="Source Files\Model\Material.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Header Files\Scenes\SceneGeoGrid.h" />
     <ClInclude Include="Header Files\Scenes\SceneGeoSpiral.h" />
     <ClInclude Include="Header Files\Scenes\SceneSpecular.h" />
+    <ClInclude Include="Header Files\Scenes\SceneTexBricks.h" />
     <ClInclude Include="Header Files\Scenes\SceneTexCheckerboard.h" />
     <ClInclude Include="Header Files\Texture\CubeMapTextureFactory.h" />
     <ClInclude Include="Header Files\Model\Material.h" />

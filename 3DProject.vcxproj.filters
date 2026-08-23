@@ -150,6 +150,9 @@
     <ClCompile Include="Source Files\Scenes\SceneTexCheckerboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\Scenes\SceneTexBricks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\.common\ImGui\imconfig.h">
@@ -342,6 +345,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Scenes\SceneTexCheckerboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Scenes\SceneTexBricks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
