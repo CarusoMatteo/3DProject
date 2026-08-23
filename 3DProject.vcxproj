@@ -154,6 +154,7 @@
     <ClCompile Include="Source Files\Scenes\SceneEdges.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneGeoGrid.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneGeoSpiral.cpp" />
+    <ClCompile Include="Source Files\Scenes\SceneGeoThinTriangles.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneSpecular.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneTexBricks.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneTexCheckerboard.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Header Files\Scenes\SceneEdges.h" />
     <ClInclude Include="Header Files\Scenes\SceneGeoGrid.h" />
     <ClInclude Include="Header Files\Scenes\SceneGeoSpiral.h" />
+    <ClInclude Include="Header Files\Scenes\SceneGeoThinTriangles.h" />
     <ClInclude Include="Header Files\Scenes\SceneSpecular.h" />
     <ClInclude Include="Header Files\Scenes\SceneTexBricks.h" />
     <ClInclude Include="Header Files\Scenes\SceneTexCheckerboard.h" />

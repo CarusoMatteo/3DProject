@@ -11,7 +11,7 @@ using namespace std;
 
 const shared_ptr<fvec3> clearColor(new fvec3(0, 0, 0.16f));
 // True => 1920x1080, False => 0.8 * monitor resolution
-const bool fixedWindowSize = true;
+const bool fixedWindowSize = false;
 float lastFrameTime = 0.0f;
 
 int main(void)

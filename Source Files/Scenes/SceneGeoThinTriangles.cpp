@@ -1,0 +1,77 @@
+#include "../../Header Files/Scenes/SceneGeoThinTriangles.h"
+#include "../../Header Files/Camera/Camera.h"
+#include "../../Header Files/Camera/CameraPath.h"
+#include "../../Header Files/Game Objects/CustomModel.h"
+#include "../../Header Files/Game Objects/IVisibleGameObject.h"
+#include "../../Header Files/Game Objects/Skybox.h"
+#include "../../Header Files/Gui/Gui.h"
+#include "../../Header Files/Lights/LightManager.h"
+#include "../../Header Files/Lights/LightValue.h"
+#include "../../Header Files/Model/Transform.h"
+#include "../../Header Files/Random.h"
+#include "../../Header Files/Renderers/ShaderFactory.h"
+#include "../../Header Files/Texture/TextureFactory.h"
+#include <glm/glm.hpp>
+#include <memory>
+
+SceneGeoThinTriangles::SceneGeoThinTriangles(const shared_ptr<fvec3> clearColor)
+{
+	const CameraPath rotationAroundOrigin = CameraPath({
+		{{fvec3(-10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.5f, easeInOutSmooth},
+		{{fvec3(0, 2, 10), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.7f, easeLinear},
+		{{fvec3(10, 2, 0), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 0.5f, easeInOutSmoother},
+		{{fvec3(0, 2, -10), fvec3(0, 0, 0), fvec3(0, 1, 0)}, 1.0f, easeLinear},
+	});
+	const CameraPath slideLeftToRight = CameraPath({
+		{{fvec3(20, 1, -5), fvec3(0, 1, -5), fvec3(0, 1, 0)}, 1.0f, easeInOutSmoother},
+		{{fvec3(20, 1, 5), fvec3(0, 1, 5), fvec3(0, 1, 0)}, 1.0f, easeInOutSmoother},
+	});
+	const CameraPath slideTopToBottom = CameraPath({
+		{{fvec3(0, -3, 7), fvec3(0, -3, 0), fvec3(0, 1, 0)}},
+		{{fvec3(0, 3, 7), fvec3(0, 3, 0), fvec3(0, 1, 0)}},
+	});
+	const CameraPath slideBottomLeftToTopRight = CameraPath({
+		{{fvec3(-5, -3, 10), fvec3(-5, -3, 0), fvec3(0, 1, 0)}},
+		{{fvec3(5, 3, 10), fvec3(5, 3, 0), fvec3(0, 1, 0)}},
+	});
+
+	Camera::I(slideLeftToRight);
+	LightManager::I({{.position = fvec3(0, 45, 10), .color = fvec3(1)}});
+
+	this->gameObjects = {
+		shared_ptr<IVisibleGameObject>(new Skybox()),
+	};
+
+	int numTriangles = 500;
+	for (int i = 0; i < numTriangles; i++)
+		this->gameObjects.push_back(shared_ptr<IVisibleGameObject>(new CustomModel(
+			"pyramid",
+			{.position = fvec3(Random::getRandomFloat(-2, 2), Random::getRandomFloat(-10, 10), Random::getRandomFloat(-20, 20)),
+			 .rotation = {.angle = 90, .axis = fvec3(0, 1, 0)},
+			 .scale = fvec3(0.1f, 1, 0.1f)},
+			ShaderFactory::blinnPhong,
+			TextureFactory::none())));
+
+	this->gui = unique_ptr<Gui>(new Gui(clearColor));
+}
+
+void SceneGeoThinTriangles::updateGameObjects(float deltaTime)
+{
+	Camera::I()->update(deltaTime);
+	LightManager::I()->updateLights(deltaTime);
+
+	for (auto &&object : this->gameObjects)
+	{
+		object->update(deltaTime);
+	}
+}
+
+void SceneGeoThinTriangles::renderScene(float currentTime)
+{
+	for (auto &&object : this->gameObjects)
+	{
+		object->render(currentTime);
+	}
+
+	this->gui->drawGui(this->gameObjects);
+}
