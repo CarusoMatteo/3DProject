@@ -45,10 +45,10 @@ float linearizeDepth(float depth)
 	float linearDepth = (2.0 * nearPlane * farPlane) / (farPlane + nearPlane - z * (farPlane - nearPlane));
 
 	// Normalize between farPlane and nearPlane
-	return (linearDepth - nearPlane) / (farPlane - nearPlane);
+	// return (linearDepth - nearPlane) / (farPlane - nearPlane);
 
 	// Logarithmic normalization, amplifies the depth differences for objects closer to the camera
-	// return log(linearDepth / nearPlane) / log(farPlane / nearPlane);
+	return log(linearDepth / nearPlane) / log(farPlane / nearPlane);
 }
 
 vec2 motionVector()
