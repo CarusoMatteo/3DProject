@@ -18,10 +18,10 @@ optional<unique_ptr<Camera>> Camera::instance = nullopt;
 
 Camera *Camera::I()
 {
-	return Camera::I(SimpleCameraTransform{.position = fvec3(0, 0, -10), .target = fvec3(0)}.toCameraTransform());
+	return Camera::I(CameraTransform{.position = fvec3(0, 0, -10), .target = fvec3(0)}.toCameraTransform());
 }
 
-Camera *Camera::I(CameraTransform transform)
+Camera *Camera::I(CameraFullTransform transform)
 {
 	if (!Camera::instance.has_value())
 	{
@@ -39,7 +39,7 @@ Camera *Camera::I(CameraPath cameraPath)
 	return Camera::instance.value().get();
 }
 
-Camera::Camera(CameraTransform transform) : transform(transform)
+Camera::Camera(CameraFullTransform transform) : transform(transform)
 {
 	this->cameraPath = nullopt;
 	this->setProjectionData();
@@ -156,7 +156,7 @@ fmat4 Camera::makeViewMatrix() const
 	return this->transform.toMatrix();
 }
 
-CameraTransform Camera::getTransform() const
+CameraFullTransform Camera::getTransform() const
 {
 	return this->transform;
 }

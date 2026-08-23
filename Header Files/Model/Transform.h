@@ -29,7 +29,7 @@ struct Transform
 	}
 };
 
-struct CameraTransform
+struct CameraFullTransform
 {
 	fvec3 position;
 	fvec3 target;

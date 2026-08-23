@@ -70,7 +70,7 @@ void Gui::settingsWindow()
 	ImGui::ColorEdit3("Background Color", (float *)this->clearColor.get());
 
 	fvec2 mousePosition = InputEvents::getCursorPosition();
-	const CameraTransform cameraTransform = Camera::I()->getTransform();
+	const CameraFullTransform cameraTransform = Camera::I()->getTransform();
 	const fvec3 cameraPosition = cameraTransform.position;
 
 	ImGui::Text("Mouse Coordinates relative to GLFW Window: (%.1f, %.1f)", mousePosition.x, mousePosition.y);
