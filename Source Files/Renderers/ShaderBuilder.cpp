@@ -37,7 +37,7 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	if (!success)
 	{
 		glGetShaderInfoLog(vertexShaderId, 512, NULL, infoLog);
-		cerr << "Error: Vertex shader compilation failed.\n"
+		cerr << "Error: Vertex shader for " << files.vertex << " compilation failed.\n"
 			 << infoLog << endl;
 		throw runtime_error("Vertex shader compilation failed.");
 	}
@@ -64,7 +64,7 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 	if (!success)
 	{
 		glGetShaderInfoLog(fragmentShaderId, 512, NULL, infoLog);
-		cerr << "Error: Fragment shader compilation failed.\n"
+		cerr << "Error: Fragment shader " << files.fragment << " compilation failed.\n"
 			 << infoLog << endl;
 		throw runtime_error("Fragment shader compilation failed.");
 	}
@@ -95,7 +95,7 @@ unsigned int ShaderBuilder::buildShader(ShaderFiles files)
 		if (!success)
 		{
 			glGetShaderInfoLog(geometryShaderId, 512, NULL, infoLog);
-			cerr << "Error: Geometry shader compilation failed.\n"
+			cerr << "Error: Geometry shader " << files.geometry.value() << " compilation failed.\n"
 				 << infoLog << endl;
 			throw runtime_error("Geometry shader compilation failed.");
 		}

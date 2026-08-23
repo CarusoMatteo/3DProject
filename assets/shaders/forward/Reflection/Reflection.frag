@@ -4,8 +4,11 @@ uniform vec3 viewPosition;
 uniform samplerCube skyboxSampler;
 uniform int renderMode;
 
-in vec3 N;
+in vec3 normal, N;
 in vec3 position;
+
+in vec4 clipPosition;
+in vec4 clipPositionPrev;
 
 layout (location = 0) out vec4 fragColor;
 layout (location = 1) out vec4 mainColor;
@@ -46,7 +49,7 @@ void main()
 	// View direction
 	vec3 E = normalize(position - viewPosition);
 	// Reflection vector
-	vec3 R = reflect(E, normalize(N));
+	vec3 R = reflect(E, normalize(normal));
 	// Cubemap sampling
 	mainColor = texture(skyboxSampler, R);
 	normalColor = vec4(N, 1);

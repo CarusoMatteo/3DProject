@@ -2,14 +2,15 @@
 #include "../Header Files/InputEvents.h"
 #include "../Header Files/Scenes/IScene.h"
 #include "../Header Files/Scenes/SceneEdges.h"
-#include "../Header Files/Scenes/SceneVegetation.h"
 #include "../Header Files/Scenes/SceneGeoGrid.h"
 #include "../Header Files/Scenes/SceneGeoSpiral.h"
 #include "../Header Files/Scenes/SceneGeoThinTriangles.h"
+#include "../Header Files/Scenes/SceneSpecular.h"
 #include "../Header Files/Scenes/SceneTest.h"
 #include "../Header Files/Scenes/SceneTexBricks.h"
 #include "../Header Files/Scenes/SceneTexCheckerboard.h"
 #include "../Header Files/Scenes/SceneTexRepeatedPatterns.h"
+#include "../Header Files/Scenes/SceneVegetation.h"
 #include "../Header Files/Texture/TextureLoader.h"
 #include "../Header Files/Window.h"
 #include <GLFW/glfw3.h>
@@ -51,7 +52,7 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneVegetation(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneSpecular(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)
