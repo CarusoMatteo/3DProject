@@ -257,7 +257,7 @@ void ForwardRenderer::draw() const
 	// Draw the vertices of the shape as specified by renderMode, starting from the first vertex (0), for vertexCount vertices in total
 	// If this object uses the index buffer, use glDrawElements instead of glDrawArrays
 	if (this->bufferIsUsed(this->addresses.indices, this->values.indices.size()))
-		glDrawElements(GL_TRIANGLES, static_cast<int>(this->values.indices.size() - 1), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, static_cast<int>(this->values.indices.size()), GL_UNSIGNED_INT, 0);
 	else
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
