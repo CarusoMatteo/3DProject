@@ -1,22 +1,22 @@
 # TODO
-- GEO: Thin geometry
+- [ ] GEO: Thin geometry
 	- [x] Grid
 	- [x] Spiral
 	- [ ] Thin triangles
 
-- TEX: High Frequency textures
+- [x] TEX: High Frequency textures
 	- [x] Checkerboard
 	- [x] Bricks
-	- [ ] Repeated patterns
+	- [x] Repeated patterns
 
-- SPE: Specular
+- [ ] SPE: Specular
 	- [ ] Lucid spheres (with normal map?)
 
-- VEG: Vegetation
+- [ ] VEG: Vegetation
 	- [ ] Tree with many billboards
 
-- DIS: Disocclusion
+- [ ] DIS: Disocclusion
 	- [ ] Object passes in front of another one
 
-- EDG: High contrast edges
+- [ ] EDG: High contrast edges
 	- [ ] Black silhouette on a uniform background
