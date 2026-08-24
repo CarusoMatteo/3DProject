@@ -1,9 +1,9 @@
 #include "../../Header Files/Camera/Camera.h"
-#include "../../Header Files/Camera/CameraPath.h"
 #include "../../Header Files/Camera/CameraProjection.h"
 #include "../../Header Files/InputEvents.h"
 #include "../../Header Files/InputEventsType.h"
 #include "../../Header Files/Model/Transform.h"
+#include "../../Header Files/Path/CameraPath.h"
 #include "../../Header Files/Window.h"
 #include <cmath>
 #include <glm/glm.hpp>

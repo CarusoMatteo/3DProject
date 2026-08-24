@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "../Camera/CameraPath.h"
 #include "../Game Objects/IVisibleGameObject.h"
 #include "../Gui/Gui.h"
+#include "../Path/Path.h"
 #include "IScene.h"
 #include <glm/glm.hpp>
 #include <memory>

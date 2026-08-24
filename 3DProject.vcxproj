@@ -143,12 +143,13 @@
     <ClCompile Include="..\.common\ImGui\imgui_tables.cpp" />
     <ClCompile Include="..\.common\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source Files\Camera\Camera.cpp" />
-    <ClCompile Include="Source Files\Camera\CameraPath.cpp" />
+    <ClCompile Include="Source Files\Path\CameraPath.cpp" />
     <ClCompile Include="Source Files\Game Objects\Cube.cpp" />
     <ClCompile Include="Source Files\Game Objects\CustomModel.cpp" />
     <ClCompile Include="Source Files\Game Objects\Skybox.cpp" />
     <ClCompile Include="Source Files\Lights\LightManager.cpp" />
     <ClCompile Include="Source Files\Model\ModelLoader.cpp" />
+    <ClCompile Include="Source Files\Path\Path.cpp" />
     <ClCompile Include="Source Files\Renderers\GeometryRenderer.cpp" />
     <ClCompile Include="Source Files\Renderers\Renderer.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneDisocclusion.cpp" />
@@ -196,10 +197,10 @@
     <ClInclude Include="..\.common\ImGui\imstb_truetype.h" />
     <ClInclude Include="Header Files\ButtonStates.h" />
     <ClInclude Include="Header Files\Camera\Camera.h" />
-    <ClInclude Include="Header Files\Camera\CameraPath.h" />
+    <ClInclude Include="Header Files\Path\CameraPath.h" />
     <ClInclude Include="Header Files\Game Objects\Cube.h" />
     <ClInclude Include="Header Files\Game Objects\CustomModel.h" />
-    <ClInclude Include="Header Files\Camera\EasingFunctions.h" />
+    <ClInclude Include="Header Files\Path\EasingFunctions.h" />
     <ClInclude Include="Header Files\Game Objects\IGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\ITemporaryGameObject.h" />
     <ClInclude Include="Header Files\Game Objects\IVisibleGameObject.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="Header Files\Lights\LightManager.h" />
     <ClInclude Include="Header Files\Lights\LightValue.h" />
     <ClInclude Include="Header Files\Model\ModelLoader.h" />
+    <ClInclude Include="Header Files\Path\Path.h" />
     <ClInclude Include="Header Files\Renderers\BuffersAddresses.h" />
     <ClInclude Include="Header Files\Renderers\BuffersValues.h" />
     <ClInclude Include="Header Files\Renderers\GeometryRenderer.h" />

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../Camera/CameraPath.h"
 #include "../Camera/CameraProjection.h"
 #include "../Game Objects/IGameObject.h"
 #include "../Model/BoundingBox.h"
 #include "../Model/Transform.h"
+#include "../Path/CameraPath.h"
 #include <glm/glm.hpp>
 #include <memory>
 #include <optional>

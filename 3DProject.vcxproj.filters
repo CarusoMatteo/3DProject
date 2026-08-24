@@ -141,7 +141,7 @@
     <ClCompile Include="Source Files\Scenes\SceneSpecular.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\Camera\CameraPath.cpp">
+    <ClCompile Include="Source Files\Path\CameraPath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source Files\Scenes\SceneGeoSpiral.cpp">
@@ -166,6 +166,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source Files\Scenes\SceneDisocclusion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\Path\Path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -344,10 +347,10 @@
     <ClInclude Include="lib\stb_image\stb_image_write.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Camera\CameraPath.h">
+    <ClInclude Include="Header Files\Path\CameraPath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\Camera\EasingFunctions.h">
+    <ClInclude Include="Header Files\Path\EasingFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Renderers\RenderMode.h">
@@ -378,6 +381,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Header Files\Scenes\SceneDisocclusion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header Files\Path\Path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

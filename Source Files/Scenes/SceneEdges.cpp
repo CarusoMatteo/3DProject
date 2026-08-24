@@ -1,7 +1,5 @@
 #include "../../Header Files/Scenes/SceneEdges.h"
 #include "../../Header Files/Camera/Camera.h"
-#include "../../Header Files/Camera/CameraPath.h"
-#include "../../Header Files/Camera/EasingFunctions.h"
 #include "../../Header Files/Game Objects/CustomModel.h"
 #include "../../Header Files/Game Objects/IVisibleGameObject.h"
 #include "../../Header Files/Game Objects/Skybox.h"
@@ -9,6 +7,8 @@
 #include "../../Header Files/Lights/LightManager.h"
 #include "../../Header Files/Lights/LightValue.h"
 #include "../../Header Files/Model/Transform.h"
+#include "../../Header Files/Path/EasingFunctions.h"
+#include "../../Header Files/Path/Path.h"
 #include "../../Header Files/Renderers/ShaderFactory.h"
 #include "../../Header Files/Texture/TextureFactory.h"
 #include <glm/glm.hpp>
