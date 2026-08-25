@@ -53,17 +53,36 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
-	// this->scene = unique_ptr<IScene>(new SceneDisocclusion(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneDisocclusion(clearColor));
+	this->sceneName = "diso";
+
 	// this->scene = unique_ptr<IScene>(new SceneEdges(clearColor));
+	// this->sceneName = "edge";
+
 	// this->scene = unique_ptr<IScene>(new SceneGeoGrid(clearColor));
+	// this->sceneName = "geo_grid";
+	
 	// this->scene = unique_ptr<IScene>(new SceneGeoSpiral(clearColor));
+	// this->sceneName = "geo_spir";
+
 	// this->scene = unique_ptr<IScene>(new SceneGeoThinTriangles(clearColor));
+	// this->sceneName = "geo_tria";
+
 	// this->scene = unique_ptr<IScene>(new SceneSpecular(clearColor));
+	// this->sceneName = "spec";
+
 	// this->scene = unique_ptr<IScene>(new SceneTexBricks(clearColor));
+	// this->sceneName = "tex_bric";
+
 	// this->scene = unique_ptr<IScene>(new SceneTexCheckerboard(clearColor));
+	// this->sceneName = "tex_chec";
+
 	// this->scene = unique_ptr<IScene>(new SceneTexRepeatedPatterns(clearColor));
+	// this->sceneName = "tex_patt";
+
 	// this->scene = unique_ptr<IScene>(new SceneVegetation(clearColor));
+	// this->sceneName = "vege";
 }
 
 void Stage::updateGameObjects(const float deltaTime)
@@ -103,6 +122,13 @@ void Stage::renderScene(const float currentTime)
 
 		// Reset the viewport to the window size
 		glViewport(0, 0, size.x, size.y);
+	}
+
+	// Skip first render screenshots because the motion vectors aren't ready yet.
+	if (this->firstRender)
+	{
+		this->firstRender = false;
+		return;
 	}
 
 	// 3. Read the pixels of the texture to save
@@ -285,25 +311,25 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 
 		// 0 based
 		glReadBuffer(GL_COLOR_ATTACHMENT1);
-		filename = ("img/main_" + format("{:03}", this->screenshotIndex));
+		filename = ("img/" + this->sceneName + "/main_" + format("{:03}", this->screenshotIndex));
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.mainBuffer = {filename, size, pixelsFloat};
 		future<double> mainSave = saveAsync(data.mainBuffer);
 
 		glReadBuffer(GL_COLOR_ATTACHMENT2);
-		filename = ("img/normal_" + format("{:03}", this->screenshotIndex));
+		filename = ("img/" + this->sceneName + "/normal_" + format("{:03}", this->screenshotIndex));
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.normalBuffer = {filename, size, pixelsFloat};
 		future<double> normalSave = saveAsync(data.normalBuffer);
 
 		glReadBuffer(GL_COLOR_ATTACHMENT3);
-		filename = ("img/depth_" + format("{:03}", this->screenshotIndex));
+		filename = ("img/" + this->sceneName + "/depth_" + format("{:03}", this->screenshotIndex));
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.depthBuffer = {filename, size, pixelsFloat};
 		future<double> depthSave = saveAsync(data.depthBuffer);
 
 		glReadBuffer(GL_COLOR_ATTACHMENT4);
-		filename = ("img/motion_" + format("{:03}", this->screenshotIndex));
+		filename = ("img/" + this->sceneName + "/motion_" + format("{:03}", this->screenshotIndex));
 		glReadPixels(0, 0, size.x, size.y, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.motionVectorsBuffer = {filename, size, pixelsFloat};
 		future<double> motionVectorsSave = saveAsync(data.motionVectorsBuffer);
@@ -313,7 +339,7 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 		pixelsFloat.resize(3840 * 2160 * 4);
 
 		glReadBuffer(GL_COLOR_ATTACHMENT1);
-		filename = ("img/main4k_" + format("{:03}", this->screenshotIndex));
+		filename = ("img/" + this->sceneName + "/main4k_" + format("{:03}", this->screenshotIndex));
 		glReadPixels(0, 0, 3840, 2160, GL_RGBA, GL_FLOAT, pixelsFloat.data());
 		data.mainBuffer4k = {filename, {3840, 2160}, pixelsFloat};
 		future<double> mainBuffer4kSave = saveAsync(data.mainBuffer4k);

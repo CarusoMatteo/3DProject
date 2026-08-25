@@ -42,7 +42,9 @@ private:
 		ScreenshotTuple mainBuffer4k;
 	};
 
-	const unsigned int screenshotsInARowCount = 20;
+	const unsigned int screenshotsInARowCount = 200;
+	bool firstRender = true;
+	string sceneName;
 	unsigned int screenshotIndex = 0;
 	double timeSum;
 	double startTime;
