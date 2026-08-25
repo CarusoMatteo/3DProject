@@ -53,14 +53,24 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneDisocclusion(clearColor));
+	this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneDisocclusion(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneEdges(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneGeoGrid(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneGeoSpiral(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneGeoThinTriangles(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneSpecular(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneTexBricks(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneTexCheckerboard(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneTexRepeatedPatterns(clearColor));
+	// this->scene = unique_ptr<IScene>(new SceneVegetation(clearColor));
 }
 
 void Stage::updateGameObjects(const float deltaTime)
 {
 	// Ignore deltaTime if we're currently saving screenshots, to avoid skipping frames in the scene update.
 	if (this->screenshotIndex > 0)
-		this->scene->updateGameObjects(1 / 60.0f);
+		this->scene->updateGameObjects(1 / 20.0f);
 	else
 		this->scene->updateGameObjects(deltaTime);
 }
@@ -239,7 +249,7 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 		// Total number of screenshots to save
 		const unsigned int total = this->screenshotsInARowCount * screenshotsPerData;
 		// Estimated time to save one screenshot in seconds
-		const double estimateOneScreenshot = 6.0;
+		const double estimateOneScreenshot = 10.0;
 		// Estimated time to save all screenshots in seconds without parallelization
 		const double estimatedTimeIndividual = estimateOneScreenshot * total;
 		// Estimated time to save all screenshots in seconds with parallelization
