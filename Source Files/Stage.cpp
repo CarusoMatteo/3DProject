@@ -53,16 +53,18 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	// this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
-	this->scene = unique_ptr<IScene>(new SceneDisocclusion(clearColor));
-	this->sceneName = "diso";
+	this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
+	this->sceneName = "test";
+
+	// this->scene = unique_ptr<IScene>(new SceneDisocclusion(clearColor));
+	// this->sceneName = "diso";
 
 	// this->scene = unique_ptr<IScene>(new SceneEdges(clearColor));
 	// this->sceneName = "edge";
 
 	// this->scene = unique_ptr<IScene>(new SceneGeoGrid(clearColor));
 	// this->sceneName = "geo_grid";
-	
+
 	// this->scene = unique_ptr<IScene>(new SceneGeoSpiral(clearColor));
 	// this->sceneName = "geo_spir";
 
