@@ -15,8 +15,8 @@
 
 SceneDisocclusion::SceneDisocclusion(const shared_ptr<fvec3> clearColor)
 	: cubePath({
-		  PathState{{.position = fvec3(-15, 0, 0)}, 3.0f, easeLinear},
-		  PathState{{.position = fvec3(15, 0, 0)}, 3.0f, easeLinear},
+		  PathState{{.position = fvec3(-15, 0, 0)}, 1.0f, easeLinear},
+		  PathState{{.position = fvec3(15, 0, 0)}, 1.0f, easeLinear},
 	  })
 {
 	const CameraPath stuck = CameraPath({

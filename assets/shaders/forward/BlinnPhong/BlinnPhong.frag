@@ -76,7 +76,7 @@ void main()
 	}
 
 	// Alpha clip, discard fragments with an alpha value too low.
-	// For multiple texture with transparency layerd on top of each other.
+	// For multiple texture with transparency layered on top of each other.
 	if (baseColor.a < 0.5)
 		discard;
 

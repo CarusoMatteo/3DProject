@@ -381,7 +381,7 @@ void Stage::addBuffersToSaveQueue(const float currentTime, const ivec2 size)
 			 << this->screenshotIndex * 5 + 5 << " / " << total << "  ("
 			 << (this->screenshotIndex * 5.0 + 5) / total * 100 << "%) to disk."
 			 << "\tTook " << mainBuffer4kSaveTime << " seconds."
-			 << "\tEstimated time left: " << formatDuration(estimatedTimeAll - estimateOneScreenshot * this->screenshotIndex / screenshotsPerData) << endl;
+			 << "\tEstimated time left: " << formatDuration(estimatedTimeAll - (glfwGetTime() - startTime)) << endl;
 
 		this->screenshotIndex += 1;
 
