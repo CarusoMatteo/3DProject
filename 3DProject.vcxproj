@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Tesi\.common\dependencies_GL_GLFW\include;C:\Tesi\.common\dependencies_GL_GLFW;C:\Tesi\.common\tinyexr\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\.common\dependencies_GL_GLFW\include;..\.common\dependencies_GL_GLFW;..\.common\tinyexr\lib;..\.common\dependencies_GL_GLFW\include\KHR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Tesi\.common\dependencies_GL_GLFW\lib;C:\Tesi\.common\tinyexr;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\.common\dependencies_GL_GLFW\lib;..\.common\tinyexr;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Tesi\.common\dependencies_GL_GLFW\include;C:\Tesi\.common\dependencies_GL_GLFW;C:\Tesi\.common\tinyexr\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\.common\dependencies_GL_GLFW\include;..\.common\dependencies_GL_GLFW;..\.common\tinyexr\lib;..\.common\dependencies_GL_GLFW\include\KHR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -130,7 +130,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Tesi\.common\dependencies_GL_GLFW\lib;C:\Tesi\.common\tinyexr;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\.common\dependencies_GL_GLFW\lib;..\.common\tinyexr;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -161,6 +161,7 @@
     <ClCompile Include="Source Files\Scenes\SceneTexBricks.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneTexCheckerboard.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneTexRepeatedPatterns.cpp" />
+    <ClCompile Include="Source Files\Scenes\SceneValidation.cpp" />
     <ClCompile Include="Source Files\Scenes\SceneVegetation.cpp" />
     <ClCompile Include="Source Files\Texture\CubeMapTextureFactory.cpp" />
     <ClCompile Include="Source Files\Model\Material.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Header Files\Scenes\SceneTexBricks.h" />
     <ClInclude Include="Header Files\Scenes\SceneTexCheckerboard.h" />
     <ClInclude Include="Header Files\Scenes\SceneTexRepeatedPatterns.h" />
+    <ClInclude Include="Header Files\Scenes\SceneValidation.h" />
     <ClInclude Include="Header Files\Scenes\SceneVegetation.h" />
     <ClInclude Include="Header Files\Texture\CubeMapTextureFactory.h" />
     <ClInclude Include="Header Files\Model\Material.h" />

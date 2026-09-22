@@ -4,10 +4,10 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:\\Tesi\\.common\\dependencies_GL_GLFW\\lib",
-                "C:\\Tesi\\.common\\dependencies_GL_GLFW\\include",
-                "C:\\Tesi\\.common\\dependencies_GL_GLFW",
-                "C:\\Tesi\\.common\\tinyexr\\lib"
+                "..\\.common\\dependencies_GL_GLFW\\lib",
+                "..\\.common\\dependencies_GL_GLFW\\include",
+                "..\\.common\\dependencies_GL_GLFW",
+                "..\\.common\\tinyexr\\lib"
             ],
             "defines": [
                 "_DEBUG",

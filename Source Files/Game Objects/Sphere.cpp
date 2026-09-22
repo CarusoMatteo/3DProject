@@ -24,7 +24,7 @@ Sphere::Sphere(const Transform transform, const shared_ptr<Renderer> renderer)
 	const string name = "Sphere";
 	const fvec3 radius = fvec3(1.0f);
 
-	this->model = ModelFactory::sphere(name, radius, renderer, transform, TextureFactory::brick());
+	this->model = ModelFactory::sphere(name, radius, renderer, transform, TextureFactory::none());
 }
 
 void Sphere::update(float deltaTime)

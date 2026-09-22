@@ -11,6 +11,7 @@
 #include "../Header Files/Scenes/SceneTexBricks.h"
 #include "../Header Files/Scenes/SceneTexCheckerboard.h"
 #include "../Header Files/Scenes/SceneTexRepeatedPatterns.h"
+#include "../Header Files/Scenes/SceneValidation.h"
 #include "../Header Files/Scenes/SceneVegetation.h"
 #include "../Header Files/Texture/TextureLoader.h"
 #include "../Header Files/Window.h"
@@ -53,8 +54,11 @@ Stage::Stage(const shared_ptr<fvec3> clearColor, const bool fixedWindowSize)
 	setupFBO();
 	setupFBO4k();
 
-	this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
-	this->sceneName = "test";
+	// this->scene = unique_ptr<IScene>(new SceneTest(clearColor));
+	// this->sceneName = "test";
+
+	this->scene = unique_ptr<IScene>(new SceneValidation(clearColor));
+	this->sceneName = "vali";
 
 	// this->scene = unique_ptr<IScene>(new SceneDisocclusion(clearColor));
 	// this->sceneName = "diso";

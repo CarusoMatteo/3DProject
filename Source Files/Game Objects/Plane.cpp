@@ -22,7 +22,7 @@ Plane::Plane(const Transform transform, const shared_ptr<Renderer> renderer)
 	const string name = "Plane";
 	const fvec2 size = fvec2(1000);
 
-	this->model = ModelFactory::plane(name, size, renderer, transform, TextureFactory::none());
+	this->model = ModelFactory::plane(name, size, renderer, transform, TextureFactory::fromFile("./assets/textures/dirt.png", false));
 }
 
 void Plane::update(float deltaTime)
